@@ -9,74 +9,109 @@
 :root{--bg:#080d17;--panel:#111a29;--panel2:#172235;--line:#26364d;--txt:#e8eef8;--muted:#8fa1ba;--green:#20c997;--red:#ff647c;--blue:#62a8ff;--gold:#f3bd55}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);font:14px Inter,system-ui,Arial}
-header{padding:22px 4%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.brand{font-size:21px;font-weight:800;letter-spacing:.5px}.brand span{color:var(--blue)}
-.status{color:var(--muted);font-size:12px}
-main{max-width:1500px;margin:auto;padding:25px 4%}
-h2{font-size:17px;margin:0 0 17px}h3{font-size:14px;margin:0 0 14px;color:#c9d6e8}
-.toolbar,.grid,.charts{display:grid;gap:14px}
-.toolbar{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:20px}
-.grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin:15px 0 24px}
-.charts{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin:15px 0 25px}
+header{padding:22px 4%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:21px;font-weight:800}.brand span{color:var(--blue)}
+.status{font-size:12px;color:var(--muted)}
+main{max-width:1500px;margin:auto;padding:24px 4%}
+h2{font-size:17px;margin:0 0 15px}h3{font-size:14px;color:#c9d6e8;margin:0 0 13px}
 .panel,.metric{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:17px}
-.metric small{color:var(--muted);display:block;margin-bottom:9px}
-.metric strong{font-size:25px;font-weight:750}
-.metric .sub{font-size:11px;color:var(--muted);margin-top:6px}
-input,select,button{background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:7px;padding:10px;font:inherit;min-width:0}
-input,select{width:100%;margin-top:6px}button{cursor:pointer;font-weight:650}
-button.primary{background:#2366bd;border-color:#347edb}button:hover{filter:brightness(1.2)}
-label{display:block;color:var(--muted);font-size:12px}
-.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:end}
-.chart{height:250px;width:100%;display:block}
-.tablewrap{overflow:auto;max-height:480px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:16px 0 22px}
+.metric small{display:block;color:var(--muted);margin-bottom:8px}.metric strong{font-size:23px}.metric .sub{font-size:11px;color:var(--muted);margin-top:6px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:end;margin-bottom:15px}
+label{display:block;font-size:12px;color:var(--muted)}
+input,select,button{background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:7px;padding:10px;font:inherit}
+input,select{margin-top:5px;max-width:100%}button{cursor:pointer;font-weight:650}
+button:hover{filter:brightness(1.2)}button.active{background:#2366bd;border-color:#62a8ff}
+button.primary{background:#2366bd;border-color:#347edb}
+.periods{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.periods button{padding:9px 13px}
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+canvas{width:100%;height:300px;display:block}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.tablewrap{overflow:auto;max-height:470px}
 table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}
 th,td{padding:10px;border-bottom:1px solid var(--line);text-align:right}
-th{color:var(--muted);position:sticky;top:0;background:var(--panel);z-index:1}
+th{color:var(--muted);background:var(--panel);position:sticky;top:0}
 th:first-child,td:first-child{text-align:left}
 .green{color:var(--green)}.red{color:var(--red)}.muted{color:var(--muted)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:25px 0 16px}
-.tab{padding:10px 15px}.tab.active{background:#214d83;border-color:#428bdc}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 15px}
 .section{display:none}.section.active{display:block}
-.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
 .note{font-size:12px;color:var(--muted);line-height:1.6}
-footer{padding:25px 4%;color:var(--muted);border-top:1px solid var(--line);font-size:11px}
-@media(max-width:600px){main{padding:18px 12px}.metric strong{font-size:21px}}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+@media(max-width:600px){main{padding:16px 11px}canvas{height:240px}}
 </style>
 </head>
 <body>
 <header>
  <div class="brand">STRIKE WALL <span>ANALYTICS</span></div>
- <div class="status" id="status">Cargando histórico SPX...</div>
+ <div class="status" id="status">Cargando datos SPX...</div>
 </header>
 <main>
+
  <div class="toolbar">
-  <div><label>Periodo histórico</label><select id="period">
-   <option value="all">Todo el histórico</option>
-   <option value="5y">5 años</option><option value="2y">2 años</option>
-   <option value="1y">1 año</option><option value="6m">6 meses</option>
-   <option value="custom">Personalizado</option>
-  </select></div>
   <div><label>Desde</label><input type="date" id="from"></div>
   <div><label>Hasta</label><input type="date" id="to"></div>
-  <div class="actions">
-   <button class="primary" onclick="applyPeriod()">Aplicar periodo</button>
-   <button onclick="loadMarket()">Actualizar datos</button>
+  <button class="primary" onclick="customPeriod()">Aplicar fechas</button>
+  <button onclick="loadMarket()">Actualizar histórico</button>
+ </div>
+
+ <div class="periods" id="periodButtons">
+  <button data-period="10D">10D</button>
+  <button data-period="1M" class="active">1M</button>
+  <button data-period="3M">3M</button>
+  <button data-period="6M">6M</button>
+  <button data-period="YTD">YTD</button>
+  <button data-period="1Y">1Y</button>
+  <button data-period="5Y">5Y</button>
+  <button data-period="Max">Max</button>
+ </div>
+
+ <div class="toolbar">
+  <div><label>Visualización</label>
+   <select id="viewMode" onchange="renderAll()">
+    <option value="value">Valor ATR %</option>
+    <option value="change">% desde inicio del periodo</option>
+   </select>
   </div>
+  <div><label>Referencia ATR %</label><input id="reference" type="number" value="1" step=".05" style="width:110px" onchange="renderAll()"></div>
  </div>
 
  <div class="grid">
-  <div class="metric"><small>SPX · Último cierre</small><strong id="lastClose">—</strong><div class="sub" id="lastDate">Sin datos</div></div>
-  <div class="metric"><small>ATR(14) · Wilder</small><strong id="atrNow">—</strong><div class="sub">Puntos de índice</div></div>
-  <div class="metric"><small>Rango diario medio</small><strong id="avgRange">—</strong><div class="sub">Periodo seleccionado</div></div>
-  <div class="metric"><small>Rango medio %</small><strong id="avgPct">—</strong><div class="sub">Respecto al cierre anterior</div></div>
-  <div class="metric"><small>Volatilidad actual</small><strong id="regime">—</strong><div class="sub" id="thresholds">Clasificación por terciles ATR</div></div>
-  <div class="metric"><small>Sesiones disponibles</small><strong id="bars">—</strong><div class="sub">Datos OHLC reales</div></div>
+  <div class="metric"><small>SPX · Último cierre</small><strong id="lastClose">—</strong><div class="sub" id="lastDate">—</div></div>
+  <div class="metric"><small>ATR(14) · Puntos</small><strong id="atrPoints">—</strong><div class="sub">Suavizado Wilder</div></div>
+  <div class="metric"><small>14D ATR como % del cierre</small><strong id="atrPercent">—</strong><div class="sub">ATR(14) / Close × 100</div></div>
+  <div class="metric"><small>Media ATR % del periodo</small><strong id="avgPercent">—</strong><div class="sub">Media de valores diarios</div></div>
+  <div class="metric"><small>Régimen de volatilidad</small><strong id="regime">—</strong><div class="sub" id="regimeInfo">—</div></div>
+  <div class="metric"><small>Sesiones visibles</small><strong id="bars">—</strong><div class="sub">Datos diarios OHLC</div></div>
+ </div>
+
+ <div class="chartbox">
+  <h2> S&P 500 · ATR(14) como porcentaje del precio</h2>
+  <p class="note">Cada punto representa el ATR de 14 sesiones dividido entre el cierre de esa sesión. La línea horizontal marca el nivel de referencia.</p>
+  <canvas id="atrPercentChart"></canvas>
+  <div class="note" id="chartPeriod"></div>
  </div>
 
  <div class="charts">
-  <div class="panel"><h3>ATR(14) · Volatilidad realizada</h3><canvas id="atrChart" class="chart"></canvas></div>
-  <div class="panel"><h3>SPX · Precio de cierre</h3><canvas id="priceChart" class="chart"></canvas></div>
-  <div class="panel"><h3>Rango diario · High − Low</h3><canvas id="rangeChart" class="chart"></canvas></div>
+  <div class="chartbox"><h3>SPX · Precio de cierre</h3><canvas id="priceChart"></canvas></div>
+  <div class="chartbox"><h3>ATR(14) · Puntos</h3><canvas id="atrChart"></canvas></div>
+  <div class="chartbox"><h3>Rango diario · High − Low</h3><canvas id="rangeChart"></canvas></div>
+ </div>
+
+ <div class="panel">
+  <h2>Consulta histórica por fecha</h2>
+  <div class="toolbar">
+   <div><label>Seleccionar fecha</label><input type="date" id="selectedDate" onchange="showSelectedDate()"></div>
+  </div>
+  <div class="grid">
+   <div class="metric"><small>Fecha seleccionada</small><strong id="selectedLabel">—</strong></div>
+   <div class="metric"><small>Cierre SPX</small><strong id="selectedClose">—</strong></div>
+   <div class="metric"><small>ATR(14)</small><strong id="selectedATR">—</strong></div>
+   <div class="metric"><small>ATR %</small><strong id="selectedPct">—</strong></div>
+   <div class="metric"><small>Régimen</small><strong id="selectedRegime">—</strong></div>
+  </div>
  </div>
 
  <div class="tabs">
@@ -88,9 +123,9 @@ footer{padding:25px 4%;color:var(--muted);border-top:1px solid var(--line);font-
 
  <section id="market" class="section active">
   <div class="panel">
-   <h2>Histórico diario OHLC</h2>
+   <h2>Histórico diario OHLC y ATR porcentual</h2>
    <div class="tablewrap"><table>
-    <thead><tr><th>Fecha</th><th>Open</th><th>High</th><th>Low</th><th>Close</th><th>Rango</th><th>Rango %</th><th>True Range</th><th>ATR 14</th><th>Régimen</th></tr></thead>
+    <thead><tr><th>Fecha</th><th>Open</th><th>High</th><th>Low</th><th>Close</th><th>Rango</th><th>True Range</th><th>ATR 14</th><th>ATR %</th><th>Régimen</th></tr></thead>
     <tbody id="marketRows"></tbody>
    </table></div>
    <p class="note" id="marketInfo"></p>
@@ -104,17 +139,17 @@ footer{padding:25px 4%;color:var(--muted);border-top:1px solid var(--line);font-
     <div><label>Fecha</label><input type="date" id="tradeDate"></div>
     <div><label>Estrategia</label><select id="tradeType"><option>CW</option><option>PW</option></select></div>
     <div><label>P&L neto USD</label><input type="number" id="tradePnl" step=".01" placeholder="Ej. 500"></div>
-    <div><label>Setup (opcional)</label><input id="tradeSetup" placeholder="Setup"></div>
-    <div><label>Contratos (opcional)</label><input type="number" id="tradeContracts" min="0"></div>
-    <div><label>Régimen ATR</label><select id="tradeRegime"><option value="auto">Automático por ATR</option><option>Bajo</option><option>Medio</option><option>Alto</option></select></div>
+    <div><label>Setup</label><input id="tradeSetup" placeholder="Opcional"></div>
+    <div><label>Contratos</label><input type="number" id="tradeContracts" min="0"></div>
+    <div><label>Régimen ATR</label><select id="tradeRegime"><option value="auto">Automático</option><option>Bajo</option><option>Medio</option><option>Alto</option></select></div>
    </div>
-   <div style="margin-top:12px"><label>Notas</label><input id="tradeNotes" placeholder="Observaciones de la operación"></div>
-   <div class="actions" style="margin-top:14px"><button class="primary" onclick="addTrade()">Guardar operación</button></div>
+   <div style="margin-top:12px"><label>Notas</label><input id="tradeNotes" placeholder="Observaciones"></div>
+   <div class="actions"><button class="primary" onclick="addTrade()">Guardar operación</button></div>
   </div>
   <div class="panel" style="margin-top:15px">
    <h2>Registro de operaciones</h2>
    <div class="tablewrap"><table>
-    <thead><tr><th>Fecha</th><th>Tipo</th><th>P&L</th><th>Resultado</th><th>Régimen</th><th>Setup</th><th>Contratos</th><th>Notas</th><th></th></tr></thead>
+    <thead><tr><th>Fecha</th><th>Tipo</th><th>P&L</th><th>Resultado</th><th>Régimen</th><th>ATR %</th><th>Setup</th><th>Contratos</th><th>Notas</th><th></th></tr></thead>
     <tbody id="tradeRows"></tbody>
    </table></div>
   </div>
@@ -122,33 +157,33 @@ footer{padding:25px 4%;color:var(--muted);border-top:1px solid var(--line);font-
 
  <section id="stats" class="section">
   <div class="panel">
-   <h2>Estadísticas de trading</h2>
+   <h2>Estadísticas CW / PW</h2>
    <div class="toolbar"><div><label>Filtrar estrategia</label><select id="statsType" onchange="renderStats()"><option value="ALL">CW + PW</option><option value="CW">Call Wall</option><option value="PW">Put Wall</option></select></div></div>
    <div class="grid">
     <div class="metric"><small>Operaciones</small><strong id="sTotal">0</strong></div>
-    <div class="metric"><small>Ganadoras</small><strong id="sWins" class="green">0</strong></div>
-    <div class="metric"><small>Perdedoras</small><strong id="sLoss" class="red">0</strong></div>
+    <div class="metric"><small>Ganadoras</small><strong id="sWins">0</strong></div>
+    <div class="metric"><small>Perdedoras</small><strong id="sLoss">0</strong></div>
     <div class="metric"><small>Breakeven</small><strong id="sBE">0</strong></div>
-    <div class="metric"><small>Win rate · sin BE</small><strong id="sWinrate">—</strong></div>
-    <div class="metric"><small>P&L neto</small><strong id="sPnl">0</strong></div>
+    <div class="metric"><small>Win rate sin BE</small><strong id="sWinrate">—</strong></div>
+    <div class="metric"><small>P&L neto</small><strong id="sPnl">—</strong></div>
     <div class="metric"><small>Profit factor</small><strong id="sPF">—</strong></div>
     <div class="metric"><small>Expectancy</small><strong id="sExp">—</strong></div>
     <div class="metric"><small>Media ganadora</small><strong id="sAvgWin">—</strong></div>
     <div class="metric"><small>Media perdedora</small><strong id="sAvgLoss">—</strong></div>
    </div>
-   <h3>Resultados por régimen de volatilidad</h3>
+   <h3>Resultados por régimen ATR</h3>
    <div class="tablewrap"><table><thead><tr><th>Régimen</th><th>Operaciones</th><th>Ganadoras</th><th>Perdedoras</th><th>BE</th><th>Win rate</th><th>P&L</th></tr></thead><tbody id="regimeStats"></tbody></table></div>
-   <h3 style="margin-top:22px">Resultados mensuales</h3>
+   <h3 style="margin-top:20px">Resultados por mes</h3>
    <div class="tablewrap"><table><thead><tr><th>Mes</th><th>Operaciones</th><th>Ganadoras</th><th>Perdedoras</th><th>P&L</th></tr></thead><tbody id="monthlyStats"></tbody></table></div>
   </div>
  </section>
 
  <section id="data" class="section">
   <div class="panel">
-   <h2>Datos de mercado y respaldos</h2>
-   <p class="note">Fuente histórica: GetData Finance · SPX500 diario OHLCV. El ATR se calcula con los datos OHLC importados, no con valores estimados.</p>
+   <h2>Datos y respaldos</h2>
+   <p class="note">La fuente actual es el CSV diario OHLC de GetData Finance. El histórico depende de las sesiones que contenga el archivo descargado. No se generan cotizaciones ficticias.</p>
    <div class="actions">
-    <button class="primary" onclick="loadMarket()">Cargar histórico</button>
+    <button class="primary" onclick="loadMarket()">Actualizar histórico</button>
     <button onclick="$('csvFile').click()">Importar CSV OHLC</button>
     <button onclick="exportTrades()">Exportar operaciones CSV</button>
     <button onclick="exportJSON()">Respaldo JSON</button>
@@ -156,27 +191,28 @@ footer{padding:25px 4%;color:var(--muted);border-top:1px solid var(--line);font-
     <input type="file" id="csvFile" accept=".csv" hidden onchange="importCSV(event)">
     <input type="file" id="jsonFile" accept=".json" hidden onchange="importJSON(event)">
    </div>
-   <p class="note" id="dataInfo">Las operaciones se guardan en este navegador. Exporta respaldos periódicamente.</p>
+   <p id="dataInfo" class="note"></p>
    <h3>VIX · Volatilidad implícita</h3>
-   <p class="note">El VIX no está conectado. No se mostrarán valores ficticios ni se confundirá con el ATR, que mide volatilidad realizada.</p>
-   <p class="note">Fuente: <a style="color:#62a8ff" href="https://github.com/getdata-finance/spx500-1d-ohlcv-index-historical-data" target="_blank">GetData Finance · Histórico SPX</a></p>
+   <p class="note">El VIX no está conectado. El ATR porcentual representa volatilidad realizada y no debe confundirse con la volatilidad implícita del VIX.</p>
+   <p class="note"><a href="https://github.com/getdata-finance/spx500-1d-ohlcv-index-historical-data" target="_blank" style="color:#62a8ff">Fuente histórica GetData Finance</a></p>
   </div>
  </section>
 </main>
-<footer>STRIKE WALL ANALYTICS · Investigación cuantitativa · Herramienta de análisis, no recomendación financiera.</footer>
+<footer>STRIKE WALL ANALYTICS · Análisis cuantitativo · No constituye asesoramiento financiero.</footer>
 
 <script>
 const CSV_URL="https://raw.githubusercontent.com/getdata-finance/spx500-1d-ohlcv-index-historical-data/main/SPX500_1d.csv";
-let market=[],visible=[],levels={low:null,high:null};
-let trades=JSON.parse(localStorage.getItem("swa_trades")||"[]");
+let market=[],visible=[],trades=JSON.parse(localStorage.getItem("swa_trades")||"[]");
+let currentPeriod="1M";
+let thresholds={low:null,high:null};
 const $=id=>document.getElementById(id);
-const num=x=>Number(x).toLocaleString("en-US",{maximumFractionDigits:2});
-const money=x=>(x<0?"-$":"$")+num(Math.abs(x));
+const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:2});
+const cash=n=>(n<0?"-$":"$")+fmt(Math.abs(n));
 
 function parseCSV(text){
  const lines=text.trim().split(/\r?\n/);
- const head=lines.shift().replace(/^\uFEFF/,"").split(",").map(x=>x.trim().toLowerCase());
- const ix=k=>head.indexOf(k);
+ const h=lines.shift().replace(/^\uFEFF/,"").split(",").map(x=>x.trim().toLowerCase());
+ const ix=k=>h.indexOf(k);
  return lines.map(line=>{
   const c=line.split(",");
   return {
@@ -185,151 +221,188 @@ function parseCSV(text){
    low:Number(c[ix("low")]),close:Number(c[ix("close")]),
    volume:Number(c[ix("volume")])||0
   };
- }).filter(x=>x.date&&[x.open,x.high,x.low,x.close].every(Number.isFinite))
+ }).filter(d=>d.date&&[d.open,d.high,d.low,d.close].every(Number.isFinite))
  .sort((a,b)=>a.date.localeCompare(b.date));
 }
 
 function calculate(data){
- let prev=null,atr=null,trs=[];
+ let previous=null,atr=null,trValues=[];
  data.forEach((d,i)=>{
   d.range=d.high-d.low;
-  d.rangePct=prev?d.range/prev.close*100:null;
-  d.tr=prev?Math.max(d.range,Math.abs(d.high-prev.close),Math.abs(d.low-prev.close)):d.range;
-  trs.push(d.tr);
-  if(i===13)atr=trs.slice(0,14).reduce((a,b)=>a+b,0)/14;
+  d.tr=previous?Math.max(d.range,Math.abs(d.high-previous.close),Math.abs(d.low-previous.close)):d.range;
+  trValues.push(d.tr);
+  if(i===13)atr=trValues.slice(0,14).reduce((a,b)=>a+b,0)/14;
   else if(i>13)atr=((atr*13)+d.tr)/14;
   d.atr=i>=13?atr:null;
-  prev=d;
+  d.atrPct=d.atr!=null&&d.close>0?d.atr/d.close*100:null;
+  previous=d;
  });
- const vals=data.map(d=>d.atr).filter(Number.isFinite).sort((a,b)=>a-b);
- const q=v=>vals.length?vals[Math.floor((vals.length-1)*v)]:null;
- levels={low:q(1/3),high:q(2/3)};
+ const values=data.map(d=>d.atrPct).filter(Number.isFinite).sort((a,b)=>a-b);
+ const q=p=>values.length?values[Math.floor((values.length-1)*p)]:null;
+ thresholds={low:q(1/3),high:q(2/3)};
  data.forEach(d=>{
-  d.regime=d.atr==null?"—":d.atr<=levels.low?"Bajo":d.atr<=levels.high?"Medio":"Alto";
+  d.regime=d.atrPct==null?"Sin datos":d.atrPct<=thresholds.low?"Bajo":d.atrPct<=thresholds.high?"Medio":"Alto";
  });
 }
 
 async function loadMarket(){
- $("status").textContent="Descargando histórico SPX...";
+ $("status").textContent="Descargando histórico...";
  try{
   const response=await fetch(CSV_URL,{cache:"no-store"});
   if(!response.ok)throw Error("HTTP "+response.status);
-  const text=await response.text();
-  const parsed=parseCSV(text);
-  if(parsed.length<20)throw Error("La fuente no devolvió suficientes sesiones ("+parsed.length+").");
-  market=parsed;
-  calculate(market);
-  $("status").textContent="Histórico cargado · "+market.length.toLocaleString("es-ES")+" sesiones";
-  $("dataInfo").textContent="CSV cargado: "+market.length.toLocaleString("es-ES")+" sesiones · "+market[0].date+" a "+market.at(-1).date;
-  $("thresholds").textContent="Bajo ≤ "+num(levels.low)+" · Alto > "+num(levels.high);
-  applyPeriod();
- }catch(error){
-  $("status").textContent="No se pudo descargar el histórico";
-  $("dataInfo").textContent="Error de descarga: "+error.message+". Puedes importar el archivo CSV manualmente.";
+  const parsed=parseCSV(await response.text());
+  if(parsed.length<20)throw Error("La fuente no devolvió suficientes registros.");
+  market=parsed;calculate(market);
+  $("status").textContent="Histórico cargado · "+market.length+" sesiones";
+  $("dataInfo").textContent="Sesiones: "+market.length+" · Desde "+market[0].date+" hasta "+market.at(-1).date+". Los datos corresponden al archivo de origen.";
+  setPeriod("1M");
+ }catch(e){
+  $("status").textContent="Error cargando histórico";
+  $("dataInfo").textContent="No se pudo descargar el CSV: "+e.message+". Puedes importar un CSV OHLC en la pestaña Datos y respaldo.";
  }
 }
 
-function applyPeriod(){
+function setPeriod(period){
+ currentPeriod=period;
+ document.querySelectorAll("[data-period]").forEach(b=>b.classList.toggle("active",b.dataset.period===period));
  if(!market.length)return;
- const end=new Date(market.at(-1).date+"T12:00:00");
- const p=$("period").value;
- let from="",to=market.at(-1).date;
- if(p==="5y"){let d=new Date(end);d.setFullYear(d.getFullYear()-5);from=d.toISOString().slice(0,10);}
- if(p==="2y"){let d=new Date(end);d.setFullYear(d.getFullYear()-2);from=d.toISOString().slice(0,10);}
- if(p==="1y"){let d=new Date(end);d.setFullYear(d.getFullYear()-1);from=d.toISOString().slice(0,10);}
- if(p==="6m"){let d=new Date(end);d.setMonth(d.getMonth()-6);from=d.toISOString().slice(0,10);}
- if(p==="custom"){from=$("from").value;to=$("to").value;}
- visible=market.filter(d=>(!from||d.date>=from)&&(!to||d.date<=to));
- renderMarket();renderOverview();renderCharts();
+ const last=new Date(market.at(-1).date+"T12:00:00");
+ let start=new Date(last);
+ if(period==="10D")start.setDate(start.getDate()-14);
+ if(period==="1M")start.setMonth(start.getMonth()-1);
+ if(period==="3M")start.setMonth(start.getMonth()-3);
+ if(period==="6M")start.setMonth(start.getMonth()-6);
+ if(period==="YTD")start=new Date(last.getFullYear(),0,1,12);
+ if(period==="1Y")start.setFullYear(start.getFullYear()-1);
+ if(period==="5Y")start.setFullYear(start.getFullYear()-5);
+ if(period==="Max")start=new Date(market[0].date+"T12:00:00");
+ const from=start.toISOString().slice(0,10);
+ const to=market.at(-1).date;
+ visible=market.filter(d=>d.date>=from&&d.date<=to);
+ renderAll();
+}
+
+function customPeriod(){
+ if(!$("from").value||!$("to").value){alert("Selecciona ambas fechas.");return;}
+ if($("from").value>$("to").value){alert("La fecha inicial debe ser anterior a la final.");return;}
+ currentPeriod="Personalizado";
+ document.querySelectorAll("[data-period]").forEach(b=>b.classList.remove("active"));
+ visible=market.filter(d=>d.date>=$("from").value&&d.date<=$("to").value);
+ renderAll();
+}
+
+function renderAll(){
+ if(!visible.length)return;
+ renderOverview();renderCharts();renderMarket();showSelectedDate();
 }
 
 function renderOverview(){
- if(!visible.length)return;
  const d=visible.at(-1);
- $("lastClose").textContent=num(d.close);
+ $("lastClose").textContent=fmt(d.close);
  $("lastDate").textContent=d.date;
- $("atrNow").textContent=d.atr==null?"—":num(d.atr);
- $("avgRange").textContent=num(visible.reduce((a,x)=>a+x.range,0)/visible.length);
- const p=visible.filter(x=>x.rangePct!=null);
- $("avgPct").textContent=p.length?(p.reduce((a,x)=>a+x.rangePct,0)/p.length).toFixed(2)+"%":"—";
+ $("atrPoints").textContent=d.atr==null?"—":fmt(d.atr);
+ $("atrPercent").textContent=d.atrPct==null?"—":d.atrPct.toFixed(2)+"%";
+ const vals=visible.map(x=>x.atrPct).filter(Number.isFinite);
+ $("avgPercent").textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)+"%":"—";
  $("regime").textContent=d.regime;
- $("bars").textContent=visible.length.toLocaleString("es-ES");
+ $("regimeInfo").textContent="Bajo ≤ "+(thresholds.low??"—").toFixed?.(2)+"% · Alto > "+(thresholds.high??"—").toFixed?.(2)+"%";
+ $("bars").textContent=visible.length;
+ $("chartPeriod").textContent=currentPeriod+" · "+visible[0].date+" a "+visible.at(-1).date+" · "+visible.length+" sesiones";
+}
+
+function drawChart(id,values,color,reference=null,percent=false){
+ const canvas=$(id),ctx=canvas.getContext("2d");
+ const w=canvas.clientWidth,h=300,dpr=window.devicePixelRatio||1;
+ canvas.width=w*dpr;canvas.height=h*dpr;ctx.scale(dpr,dpr);
+ ctx.clearRect(0,0,w,h);
+ const valid=values.map(x=>x.v).filter(Number.isFinite);
+ if(!valid.length)return;
+ let min=Math.min(...valid),max=Math.max(...valid);
+ if(reference!==null){min=Math.min(min,reference);max=Math.max(max,reference);}
+ if(min===max){min-=1;max+=1;}
+ const pad={l:48,r:48,t:20,b:25},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+ const y=v=>pad.t+(max-v)/(max-min)*ch;
+ ctx.font="10px Arial";ctx.strokeStyle="#26364d";ctx.fillStyle="#8fa1ba";ctx.lineWidth=1;
+ for(let i=0;i<=5;i++){
+  const v=max-(max-min)*i/5,yy=y(v);
+  ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();
+  ctx.fillText(percent?v.toFixed(2)+"%":fmt(v),3,yy+3);
+ }
+ if(reference!==null){
+  ctx.strokeStyle="#f3bd55";ctx.setLineDash([5,4]);ctx.beginPath();
+  ctx.moveTo(pad.l,y(reference));ctx.lineTo(w-pad.r,y(reference));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle="#f3bd55";ctx.fillText("Referencia "+reference.toFixed(2)+"%",w-pad.r-85,y(reference)-7);
+ }
+ ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();
+ let started=false;
+ values.forEach((d,i)=>{
+  if(!Number.isFinite(d.v)){started=false;return;}
+  const x=pad.l+i/Math.max(1,values.length-1)*cw,yy=y(d.v);
+  if(!started){ctx.moveTo(x,yy);started=true;}else ctx.lineTo(x,yy);
+ });
+ ctx.stroke();
+ ctx.fillStyle="#8fa1ba";ctx.font="10px Arial";
+ ctx.fillText(visible[0].date,pad.l,h-6);
+ ctx.fillText(visible.at(-1).date,w-pad.r-75,h-6);
+}
+
+function renderCharts(){
+ const mode=$("viewMode").value;
+ const first=visible.find(d=>Number.isFinite(d.atrPct));
+ const base=first?first.atrPct:0;
+ const pctValues=visible.map(d=>({v:mode==="value"?d.atrPct:(d.atrPct==null?null:d.atrPct-base)}));
+ const ref=Number($("reference").value);
+ drawChart("atrPercentChart",pctValues,"#78ddff",mode==="value"?ref:0,true);
+ drawChart("priceChart",visible.map(d=>({v:d.close})),"#20c997");
+ drawChart("atrChart",visible.map(d=>({v:d.atr})),"#62a8ff");
+ drawChart("rangeChart",visible.map(d=>({v:d.range})),"#f3bd55");
 }
 
 function renderMarket(){
  $("marketRows").innerHTML=visible.slice().reverse().map(d=>`<tr>
- <td>${d.date}</td><td>${num(d.open)}</td><td>${num(d.high)}</td><td>${num(d.low)}</td><td>${num(d.close)}</td>
- <td>${num(d.range)}</td><td>${d.rangePct==null?"—":d.rangePct.toFixed(2)+"%"}</td>
- <td>${num(d.tr)}</td><td>${d.atr==null?"—":num(d.atr)}</td><td>${d.regime}</td></tr>`).join("");
- $("marketInfo").textContent="Mostrando "+visible.length.toLocaleString("es-ES")+" sesiones. ATR calculado sobre la serie completa antes de aplicar el filtro.";
+ <td>${d.date}</td><td>${fmt(d.open)}</td><td>${fmt(d.high)}</td><td>${fmt(d.low)}</td><td>${fmt(d.close)}</td>
+ <td>${fmt(d.range)}</td><td>${fmt(d.tr)}</td><td>${d.atr==null?"—":fmt(d.atr)}</td>
+ <td>${d.atrPct==null?"—":d.atrPct.toFixed(3)+"%"}</td><td>${d.regime}</td></tr>`).join("");
+ $("marketInfo").textContent="Mostrando "+visible.length+" sesiones. El ATR se calcula sobre toda la serie disponible antes de filtrar el periodo.";
 }
 
-function draw(id,data,color){
- const canvas=$(id),ctx=canvas.getContext("2d");
- const w=canvas.clientWidth,h=250,dpr=window.devicePixelRatio||1;
- canvas.width=w*dpr;canvas.height=h*dpr;ctx.scale(dpr,dpr);
- ctx.clearRect(0,0,w,h);
- const vals=data.map(x=>x.v).filter(Number.isFinite);
- if(!vals.length)return;
- const min=Math.min(...vals),max=Math.max(...vals),pad=28;
- ctx.strokeStyle="#26364d";ctx.lineWidth=1;
- for(let i=0;i<5;i++){
-  const y=pad+(h-2*pad)*i/4;
-  ctx.beginPath();ctx.moveTo(35,y);ctx.lineTo(w-8,y);ctx.stroke();
- }
- ctx.fillStyle="#8fa1ba";ctx.font="10px Arial";
- ctx.fillText(num(max),3,pad+3);ctx.fillText(num(min),3,h-pad);
- ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();
- data.forEach((d,i)=>{
-  if(!Number.isFinite(d.v))return;
-  const x=35+(w-45)*i/Math.max(1,data.length-1);
-  const y=h-pad-(d.v-min)/(max-min||1)*(h-2*pad);
-  if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
- });
- ctx.stroke();
-}
-
-function renderCharts(){
- draw("atrChart",visible.map(d=>({v:d.atr})),"#62a8ff");
- draw("priceChart",visible.map(d=>({v:d.close})),"#20c997");
- draw("rangeChart",visible.map(d=>({v:d.range})),"#f3bd55");
+function showSelectedDate(){
+ if(!market.length)return;
+ const date=$("selectedDate").value||visible.at(-1)?.date;
+ if(!date)return;
+ let d=market.find(x=>x.date===date);
+ if(!d)d=market.filter(x=>x.date<=date).at(-1);
+ if(!d)return;
+ $("selectedLabel").textContent=d.date;
+ $("selectedClose").textContent=fmt(d.close);
+ $("selectedATR").textContent=d.atr==null?"—":fmt(d.atr);
+ $("selectedPct").textContent=d.atrPct==null?"—":d.atrPct.toFixed(3)+"%";
+ $("selectedRegime").textContent=d.regime;
 }
 
 function saveTrades(){localStorage.setItem("swa_trades",JSON.stringify(trades));}
-
 function addTrade(){
  const date=$("tradeDate").value,pnl=$("tradePnl").value;
  if(!date||pnl===""){alert("Introduce fecha y P&L.");return;}
- const md=market.find(x=>x.date===date);
+ const d=market.find(x=>x.date===date);
  let regime=$("tradeRegime").value;
- if(regime==="auto")regime=md?md.regime:"Sin datos";
- trades.push({
-  id:Date.now(),date,type:$("tradeType").value,pnl:Number(pnl),
-  setup:$("tradeSetup").value,contracts:$("tradeContracts").value,
-  regime,notes:$("tradeNotes").value
- });
+ if(regime==="auto")regime=d?d.regime:"Sin datos";
+ trades.push({id:Date.now(),date,type:$("tradeType").value,pnl:Number(pnl),regime,atrPct:d?.atrPct??null,setup:$("tradeSetup").value,contracts:$("tradeContracts").value,notes:$("tradeNotes").value});
  saveTrades();renderTrades();renderStats();
- $("tradePnl").value="";$("tradeSetup").value="";
- $("tradeContracts").value="";$("tradeNotes").value="";
+ ["tradePnl","tradeSetup","tradeContracts","tradeNotes"].forEach(id=>$(id).value="");
 }
-
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function deleteTrade(id){
  if(confirm("¿Eliminar esta operación?")){
-  trades=trades.filter(t=>t.id!==id);
-  saveTrades();renderTrades();renderStats();
+  trades=trades.filter(t=>t.id!==id);saveTrades();renderTrades();renderStats();
  }
 }
-
-function esc(s){
- return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-
 function renderTrades(){
  $("tradeRows").innerHTML=trades.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(t=>`<tr>
- <td>${t.date}</td><td>${t.type}</td>
- <td class="${t.pnl>0?"green":t.pnl<0?"red":""}">${money(t.pnl)}</td>
- <td>${t.pnl>0?"Ganadora":t.pnl<0?"Perdedora":"BE"}</td>
- <td>${esc(t.regime)}</td><td>${esc(t.setup)}</td><td>${esc(t.contracts)}</td><td>${esc(t.notes)}</td>
+ <td>${t.date}</td><td>${t.type}</td><td class="${t.pnl>0?"green":t.pnl<0?"red":""}">${cash(t.pnl)}</td>
+ <td>${t.pnl>0?"Ganadora":t.pnl<0?"Perdedora":"BE"}</td><td>${esc(t.regime)}</td>
+ <td>${t.atrPct==null?"—":Number(t.atrPct).toFixed(2)+"%"}</td>
+ <td>${esc(t.setup)}</td><td>${esc(t.contracts)}</td><td>${esc(t.notes)}</td>
  <td><button onclick="deleteTrade(${t.id})">Eliminar</button></td></tr>`).join("");
 }
 
@@ -337,84 +410,66 @@ function renderStats(){
  const type=$("statsType").value;
  const arr=trades.filter(t=>type==="ALL"||t.type===type);
  const wins=arr.filter(t=>t.pnl>0),loss=arr.filter(t=>t.pnl<0),be=arr.filter(t=>t.pnl===0);
- const gp=wins.reduce((a,t)=>a+t.pnl,0);
- const gl=-loss.reduce((a,t)=>a+t.pnl,0),total=gp-gl;
- $("sTotal").textContent=arr.length;
- $("sWins").textContent=wins.length;
- $("sLoss").textContent=loss.length;
- $("sBE").textContent=be.length;
- $("sWinrate").textContent=(wins.length+loss.length)?(wins.length/(wins.length+loss.length)*100).toFixed(1)+"%":"—";
- $("sPnl").textContent=money(total);
- $("sPnl").className=total>=0?"green":"red";
+ const gp=wins.reduce((s,t)=>s+t.pnl,0),gl=-loss.reduce((s,t)=>s+t.pnl,0),net=gp-gl;
+ $("sTotal").textContent=arr.length;$("sWins").textContent=wins.length;
+ $("sLoss").textContent=loss.length;$("sBE").textContent=be.length;
+ $("sWinrate").textContent=wins.length+loss.length?(wins.length/(wins.length+loss.length)*100).toFixed(1)+"%":"—";
+ $("sPnl").textContent=cash(net);$("sPnl").className=net>=0?"green":"red";
  $("sPF").textContent=gl?(gp/gl).toFixed(2):gp?"∞":"—";
- $("sExp").textContent=arr.length?money(total/arr.length):"—";
- $("sAvgWin").textContent=wins.length?money(gp/wins.length):"—";
- $("sAvgLoss").textContent=loss.length?money(-gl/loss.length):"—";
-
- $("regimeStats").innerHTML=["Bajo","Medio","Alto","Sin datos","—"].map(r=>{
-  const a=arr.filter(t=>t.regime===r);
-  const w=a.filter(t=>t.pnl>0).length,l=a.filter(t=>t.pnl<0).length,b=a.filter(t=>t.pnl===0).length;
-  const p=a.reduce((s,t)=>s+t.pnl,0);
-  return `<tr><td>${r}</td><td>${a.length}</td><td>${w}</td><td>${l}</td><td>${b}</td><td>${w+l?(w/(w+l)*100).toFixed(1)+"%":"—"}</td><td>${money(p)}</td></tr>`;
+ $("sExp").textContent=arr.length?cash(net/arr.length):"—";
+ $("sAvgWin").textContent=wins.length?cash(gp/wins.length):"—";
+ $("sAvgLoss").textContent=loss.length?cash(-gl/loss.length):"—";
+ $("regimeStats").innerHTML=["Bajo","Medio","Alto","Sin datos"].map(r=>{
+  const a=arr.filter(t=>t.regime===r),w=a.filter(t=>t.pnl>0).length,l=a.filter(t=>t.pnl<0).length,b=a.filter(t=>t.pnl===0).length,p=a.reduce((s,t)=>s+t.pnl,0);
+  return `<tr><td>${r}</td><td>${a.length}</td><td>${w}</td><td>${l}</td><td>${b}</td><td>${w+l?(w/(w+l)*100).toFixed(1)+"%":"—"}</td><td>${cash(p)}</td></tr>`;
  }).join("");
-
- const months={};
- arr.forEach(t=>{const m=t.date.slice(0,7);(months[m]??=[]).push(t);});
+ const months={};arr.forEach(t=>{const m=t.date.slice(0,7);(months[m]??=[]).push(t);});
  $("monthlyStats").innerHTML=Object.keys(months).sort().reverse().map(m=>{
-  const a=months[m],w=a.filter(t=>t.pnl>0).length,l=a.filter(t=>t.pnl<0).length;
-  const p=a.reduce((s,t)=>s+t.pnl,0);
-  return `<tr><td>${m}</td><td>${a.length}</td><td>${w}</td><td>${l}</td><td class="${p>=0?"green":"red"}">${money(p)}</td></tr>`;
+  const a=months[m],w=a.filter(t=>t.pnl>0).length,l=a.filter(t=>t.pnl<0).length,p=a.reduce((s,t)=>s+t.pnl,0);
+  return `<tr><td>${m}</td><td>${a.length}</td><td>${w}</td><td>${l}</td><td class="${p>=0?"green":"red"}">${cash(p)}</td></tr>`;
  }).join("");
 }
 
 function download(name,content,type){
- const a=document.createElement("a");
- const u=URL.createObjectURL(new Blob([content],{type}));
- a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);
+ const a=document.createElement("a"),url=URL.createObjectURL(new Blob([content],{type}));
+ a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
 }
-
 function exportTrades(){
- const rows=[["date","type","pnl","regime","setup","contracts","notes"],
- ...trades.map(t=>[t.date,t.type,t.pnl,t.regime,t.setup,t.contracts,t.notes])];
+ const rows=[["date","type","pnl","regime","atrPct","setup","contracts","notes"],...trades.map(t=>[t.date,t.type,t.pnl,t.regime,t.atrPct,t.setup,t.contracts,t.notes])];
  download("strike-wall-trades.csv",rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n"),"text/csv");
 }
-
-function exportJSON(){
- download("strike-wall-backup.json",JSON.stringify({trades},null,2),"application/json");
-}
-
+function exportJSON(){download("strike-wall-backup.json",JSON.stringify({trades},null,2),"application/json");}
 function importCSV(e){
  const f=e.target.files[0];if(!f)return;
- const r=new FileReader();
- r.onload=()=>{
-  const parsed=parseCSV(r.result);
-  if(parsed.length<20){alert("El CSV no contiene suficientes filas OHLC válidas.");return;}
-  market=parsed;calculate(market);applyPeriod();
+ const reader=new FileReader();
+ reader.onload=()=>{
+  const parsed=parseCSV(reader.result);
+  if(parsed.length<20){alert("No se encontraron suficientes filas OHLC válidas.");return;}
+  market=parsed;calculate(market);
   $("status").textContent="CSV importado · "+market.length+" sesiones";
+  setPeriod(currentPeriod==="Personalizado"?"Max":currentPeriod);
  };
- r.readAsText(f);
+ reader.readAsText(f);
 }
-
 function importJSON(e){
  const f=e.target.files[0];if(!f)return;
- const r=new FileReader();
- r.onload=()=>{
+ const reader=new FileReader();
+ reader.onload=()=>{
   try{
-   const x=JSON.parse(r.result);
-   if(!Array.isArray(x.trades))throw Error();
-   trades=x.trades;saveTrades();renderTrades();renderStats();
-   alert("Respaldo restaurado.");
-  }catch{alert("Archivo JSON no válido.");}
+   const data=JSON.parse(reader.result);
+   if(!Array.isArray(data.trades))throw Error();
+   trades=data.trades;saveTrades();renderTrades();renderStats();alert("Respaldo restaurado.");
+  }catch{alert("El archivo JSON no es válido.");}
  };
- r.readAsText(f);
+ reader.readAsText(f);
 }
 
+document.querySelectorAll("[data-period]").forEach(b=>b.addEventListener("click",()=>setPeriod(b.dataset.period)));
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
  document.querySelectorAll(".tab,.section").forEach(x=>x.classList.remove("active"));
  b.classList.add("active");$(b.dataset.tab).classList.add("active");
  if(b.dataset.tab==="stats")renderStats();
 }));
-
 window.addEventListener("resize",()=>{if(visible.length)renderCharts();});
 $("tradeDate").value=new Date().toISOString().slice(0,10);
 renderTrades();renderStats();loadMarket();
