@@ -161,7 +161,7 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
 </main>
 <footer>STRIKE WALL ANALYTICS · Análisis cuantitativo · No constituye asesoramiento financiero.</footer>
 <script>
-const STO​​OQ_URL="https://stooq.com/q/d/l/?s=%5Espx&i=d";
+const STOOQ_URL = "https://stooq.com/q/d/l/?s=%5Espx&i=d";
 let market=[],visible=[],trades=JSON.parse(localStorage.getItem("swa_trades")||"[]");
 let currentPeriod="5Y",thresholds={low:null,high:null};
 const $=id=>document.getElementById(id);
@@ -202,7 +202,7 @@ async function loadMarket(){
   setPeriod(currentPeriod);
  }catch(e){
   $("status").textContent="No se pudo conectar con Stooq";
-  $("qualityWarning").innerHTML='<div class="warning">La descarga automática de Stooq ha fallado. Puede deberse a CORS, límite de consultas o requisito de API key. No se han inventado ni sustituido datos. Descarga el CSV manualmente desde el enlace de la pestaña Datos y respaldo e impórtalo aquí.</div>';
+  $("qualityWarning").innerHTML='<div class="warning">La descarga automática de Stooq ha fallado. Puede deberse a CORS, límite de consultas o requisito de API key. No se han inventado ni sustituido datos. Descarga el CSV manualmente desde el enlace de la pestaña Datos y respaldo.</div>';
   $("dataInfo").textContent=e.message;
  }
 }
