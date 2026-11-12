@@ -38,6 +38,7 @@ th:first-child,td:first-child{text-align:left}
 .section{display:none}.section.active{display:block}
 .formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
 .note{font-size:12px;color:var(--muted);line-height:1.6}
+.warning{color:var(--gold);background:#302716;border:1px solid #705323;padding:12px;border-radius:8px;margin:12px 0}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
 @media(max-width:600px){main{padding:16px 11px}canvas{height:240px}}
@@ -48,8 +49,8 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
  <div class="brand">STRIKE WALL <span>ANALYTICS</span></div>
  <div class="status" id="status">Cargando datos SPX...</div>
 </header>
-<main>
 
+<main>
  <div class="toolbar">
   <div><label>Desde</label><input type="date" id="from"></div>
   <div><label>Hasta</label><input type="date" id="to"></div>
@@ -57,7 +58,7 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
   <button onclick="loadMarket()">Actualizar histórico</button>
  </div>
 
- <div class="periods" id="periodButtons">
+ <div class="periods">
   <button data-period="10D">10D</button>
   <button data-period="1M" class="active">1M</button>
   <button data-period="3M">3M</button>
@@ -87,8 +88,10 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
   <div class="metric"><small>Sesiones visibles</small><strong id="bars">—</strong><div class="sub">Datos diarios OHLC</div></div>
  </div>
 
+ <div id="qualityWarning"></div>
+
  <div class="chartbox">
-  <h2> S&P 500 · ATR(14) como porcentaje del precio</h2>
+  <h2>S&P 500 · ATR(14) como porcentaje del precio</h2>
   <p class="note">Cada punto representa el ATR de 14 sesiones dividido entre el cierre de esa sesión. La línea horizontal marca el nivel de referencia.</p>
   <canvas id="atrPercentChart"></canvas>
   <div class="note" id="chartPeriod"></div>
@@ -181,7 +184,7 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
  <section id="data" class="section">
   <div class="panel">
    <h2>Datos y respaldos</h2>
-   <p class="note">La fuente actual es el CSV diario OHLC de GetData Finance. El histórico depende de las sesiones que contenga el archivo descargado. No se generan cotizaciones ficticias.</p>
+   <p class="note">Fuente histórica seleccionada: versión etiquetada de GetData Finance. Se comprueba la calidad básica de los registros, pero una comprobación automática no garantiza que todos los precios antiguos sean auténticos.</p>
    <div class="actions">
     <button class="primary" onclick="loadMarket()">Actualizar histórico</button>
     <button onclick="$('csvFile').click()">Importar CSV OHLC</button>
@@ -194,25 +197,25 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
    <p id="dataInfo" class="note"></p>
    <h3>VIX · Volatilidad implícita</h3>
    <p class="note">El VIX no está conectado. El ATR porcentual representa volatilidad realizada y no debe confundirse con la volatilidad implícita del VIX.</p>
-   <p class="note"><a href="https://github.com/getdata-finance/spx500-1d-ohlcv-index-historical-data" target="_blank" style="color:#62a8ff">Fuente histórica GetData Finance</a></p>
+   <p class="note"><a href="https://github.com/getdata-finance/spx500-1d-ohlcv-index-historical-data/tree/sample-2026-07-31" target="_blank" style="color:#62a8ff">Ver versión histórica seleccionada</a></p>
   </div>
  </section>
 </main>
+
 <footer>STRIKE WALL ANALYTICS · Análisis cuantitativo · No constituye asesoramiento financiero.</footer>
 
 <script>
-const CSV_URL="https://raw.githubusercontent.com/getdata-finance/spx500-1d-ohlcv-index-historical-data/main/SPX500_1d.csv";
+const CSV_URL="https://raw.githubusercontent.com/getdata-finance/spx500-1d-ohlcv-index-historical-data/sample-2026-07-31/SPX500_1d.csv";
 let market=[],visible=[],trades=JSON.parse(localStorage.getItem("swa_trades")||"[]");
-let currentPeriod="1M";
-let thresholds={low:null,high:null};
+let currentPeriod="1M",thresholds={low:null,high:null};
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:2});
 const cash=n=>(n<0?"-$":"$")+fmt(Math.abs(n));
 
 function parseCSV(text){
  const lines=text.trim().split(/\r?\n/);
- const h=lines.shift().replace(/^\uFEFF/,"").split(",").map(x=>x.trim().toLowerCase());
- const ix=k=>h.indexOf(k);
+ const headers=lines.shift().replace(/^\uFEFF/,"").split(",").map(x=>x.trim().toLowerCase());
+ const ix=k=>headers.indexOf(k);
  return lines.map(line=>{
   const c=line.split(",");
   return {
@@ -245,20 +248,30 @@ function calculate(data){
  });
 }
 
+function inspectQuality(data){
+ const flat=data.filter(d=>d.open===d.high&&d.high===d.low&&d.low===d.close);
+ const zeroVolume=data.filter(d=>d.volume===0);
+ const invalid=data.filter(d=>d.high<d.low||d.high<Math.max(d.open,d.close)||d.low>Math.min(d.open,d.close));
+ return {flat:flat.length,zeroVolume:zeroVolume.length,invalid:invalid.length};
+}
+
 async function loadMarket(){
- $("status").textContent="Descargando histórico...";
+ $("status").textContent="Descargando histórico ampliado...";
  try{
   const response=await fetch(CSV_URL,{cache:"no-store"});
   if(!response.ok)throw Error("HTTP "+response.status);
   const parsed=parseCSV(await response.text());
-  if(parsed.length<20)throw Error("La fuente no devolvió suficientes registros.");
+  if(parsed.length<20)throw Error("El archivo no contiene suficientes registros OHLC.");
   market=parsed;calculate(market);
-  $("status").textContent="Histórico cargado · "+market.length+" sesiones";
-  $("dataInfo").textContent="Sesiones: "+market.length+" · Desde "+market[0].date+" hasta "+market.at(-1).date+". Los datos corresponden al archivo de origen.";
+  const q=inspectQuality(market);
+  $("status").textContent="Histórico cargado · "+market.length.toLocaleString("es-ES")+" sesiones";
+  $("dataInfo").textContent="Registros: "+market.length.toLocaleString("es-ES")+" · Desde "+market[0].date+" hasta "+market.at(-1).date+".";
+  $("qualityWarning").innerHTML=(q.flat||q.invalid)?`<div class="warning"><b>Revisión de calidad necesaria:</b> ${q.flat} filas tienen Open=High=Low=Close; ${q.zeroVolume} filas tienen volumen cero; ${q.invalid} filas presentan OHLC incoherentes. No uses las primeras filas sospechosas para conclusiones de trading sin validarlas.</div>`:"";
+  if(q.invalid) $("status").textContent+=" · Atención: OHLC incoherentes";
   setPeriod("1M");
  }catch(e){
   $("status").textContent="Error cargando histórico";
-  $("dataInfo").textContent="No se pudo descargar el CSV: "+e.message+". Puedes importar un CSV OHLC en la pestaña Datos y respaldo.";
+  $("dataInfo").textContent="No se pudo descargar el CSV: "+e.message+". Puedes importar un CSV OHLC manualmente.";
  }
 }
 
@@ -276,8 +289,7 @@ function setPeriod(period){
  if(period==="1Y")start.setFullYear(start.getFullYear()-1);
  if(period==="5Y")start.setFullYear(start.getFullYear()-5);
  if(period==="Max")start=new Date(market[0].date+"T12:00:00");
- const from=start.toISOString().slice(0,10);
- const to=market.at(-1).date;
+ const from=start.toISOString().slice(0,10),to=market.at(-1).date;
  visible=market.filter(d=>d.date>=from&&d.date<=to);
  renderAll();
 }
@@ -305,8 +317,8 @@ function renderOverview(){
  const vals=visible.map(x=>x.atrPct).filter(Number.isFinite);
  $("avgPercent").textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)+"%":"—";
  $("regime").textContent=d.regime;
- $("regimeInfo").textContent="Bajo ≤ "+(thresholds.low??"—").toFixed?.(2)+"% · Alto > "+(thresholds.high??"—").toFixed?.(2)+"%";
- $("bars").textContent=visible.length;
+ $("regimeInfo").textContent="Bajo ≤ "+(thresholds.low==null?"—":thresholds.low.toFixed(2)+"%")+" · Alto > "+(thresholds.high==null?"—":thresholds.high.toFixed(2)+"%");
+ $("bars").textContent=visible.length.toLocaleString("es-ES");
  $("chartPeriod").textContent=currentPeriod+" · "+visible[0].date+" a "+visible.at(-1).date+" · "+visible.length+" sesiones";
 }
 
@@ -350,9 +362,9 @@ function renderCharts(){
  const mode=$("viewMode").value;
  const first=visible.find(d=>Number.isFinite(d.atrPct));
  const base=first?first.atrPct:0;
- const pctValues=visible.map(d=>({v:mode==="value"?d.atrPct:(d.atrPct==null?null:d.atrPct-base)}));
- const ref=Number($("reference").value);
- drawChart("atrPercentChart",pctValues,"#78ddff",mode==="value"?ref:0,true);
+ const values=visible.map(d=>({v:mode==="value"?d.atrPct:(d.atrPct==null?null:d.atrPct-base)}));
+ const reference=Number($("reference").value);
+ drawChart("atrPercentChart",values,"#78ddff",mode==="value"?reference:0,true);
  drawChart("priceChart",visible.map(d=>({v:d.close})),"#20c997");
  drawChart("atrChart",visible.map(d=>({v:d.atr})),"#62a8ff");
  drawChart("rangeChart",visible.map(d=>({v:d.range})),"#f3bd55");
@@ -363,7 +375,7 @@ function renderMarket(){
  <td>${d.date}</td><td>${fmt(d.open)}</td><td>${fmt(d.high)}</td><td>${fmt(d.low)}</td><td>${fmt(d.close)}</td>
  <td>${fmt(d.range)}</td><td>${fmt(d.tr)}</td><td>${d.atr==null?"—":fmt(d.atr)}</td>
  <td>${d.atrPct==null?"—":d.atrPct.toFixed(3)+"%"}</td><td>${d.regime}</td></tr>`).join("");
- $("marketInfo").textContent="Mostrando "+visible.length+" sesiones. El ATR se calcula sobre toda la serie disponible antes de filtrar el periodo.";
+ $("marketInfo").textContent="Mostrando "+visible.length.toLocaleString("es-ES")+" sesiones. ATR calculado sobre toda la serie disponible antes de filtrar.";
 }
 
 function showSelectedDate(){
@@ -446,8 +458,10 @@ function importCSV(e){
   const parsed=parseCSV(reader.result);
   if(parsed.length<20){alert("No se encontraron suficientes filas OHLC válidas.");return;}
   market=parsed;calculate(market);
+  const q=inspectQuality(market);
   $("status").textContent="CSV importado · "+market.length+" sesiones";
-  setPeriod(currentPeriod==="Personalizado"?"Max":currentPeriod);
+  $("qualityWarning").innerHTML=(q.flat||q.invalid)?`<div class="warning">Revisión de calidad: ${q.flat} velas planas; ${q.zeroVolume} volúmenes cero; ${q.invalid} OHLC incoherentes.</div>`:"";
+  setPeriod("Max");
  };
  reader.readAsText(f);
 }
