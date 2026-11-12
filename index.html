@@ -47,7 +47,7 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
 <body>
 <header>
  <div class="brand">STRIKE WALL <span>ANALYTICS</span></div>
- <div class="status" id="status">Cargando datos SPX...</div>
+ <div class="status" id="status">Conectando con Yahoo Finance...</div>
 </header>
 
 <main>
@@ -65,7 +65,9 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
   <button data-period="6M">6M</button>
   <button data-period="YTD">YTD</button>
   <button data-period="1Y">1Y</button>
+  <button data-period="2Y">2Y</button>
   <button data-period="5Y">5Y</button>
+  <button data-period="10Y">10Y</button>
   <button data-period="Max">Max</button>
  </div>
 
@@ -92,7 +94,7 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
 
  <div class="chartbox">
   <h2>S&P 500 · ATR(14) como porcentaje del precio</h2>
-  <p class="note">Cada punto representa el ATR de 14 sesiones dividido entre el cierre de esa sesión. La línea horizontal marca el nivel de referencia.</p>
+  <p class="note">ATR de 14 sesiones dividido entre el cierre de cada sesión. La línea horizontal marca tu referencia.</p>
   <canvas id="atrPercentChart"></canvas>
   <div class="note" id="chartPeriod"></div>
  </div>
@@ -184,7 +186,7 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
  <section id="data" class="section">
   <div class="panel">
    <h2>Datos y respaldos</h2>
-   <p class="note">Fuente histórica seleccionada: versión etiquetada de GetData Finance. Se comprueba la calidad básica de los registros, pero una comprobación automática no garantiza que todos los precios antiguos sean auténticos.</p>
+   <p class="note">Fuente: Yahoo Finance, símbolo ^SPX. Datos diarios OHLC del índice. El histórico se solicita al servidor al actualizar; el navegador no genera velas que no existan en la fuente.</p>
    <div class="actions">
     <button class="primary" onclick="loadMarket()">Actualizar histórico</button>
     <button onclick="$('csvFile').click()">Importar CSV OHLC</button>
@@ -196,8 +198,8 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
    </div>
    <p id="dataInfo" class="note"></p>
    <h3>VIX · Volatilidad implícita</h3>
-   <p class="note">El VIX no está conectado. El ATR porcentual representa volatilidad realizada y no debe confundirse con la volatilidad implícita del VIX.</p>
-   <p class="note"><a href="https://github.com/getdata-finance/spx500-1d-ohlcv-index-historical-data/tree/sample-2026-07-31" target="_blank" style="color:#62a8ff">Ver versión histórica seleccionada</a></p>
+   <p class="note">El VIX no está conectado. ATR porcentual representa volatilidad realizada y no debe confundirse con volatilidad implícita.</p>
+   <p class="note"><a href="https://finance.yahoo.com/quote/%5ESPX/history/" target="_blank" style="color:#62a8ff">Consultar histórico ^SPX en Yahoo Finance</a></p>
   </div>
  </section>
 </main>
@@ -205,12 +207,32 @@ footer{padding:22px 4%;border-top:1px solid var(--line);color:var(--muted);font-
 <footer>STRIKE WALL ANALYTICS · Análisis cuantitativo · No constituye asesoramiento financiero.</footer>
 
 <script>
-const CSV_URL="https://raw.githubusercontent.com/getdata-finance/spx500-1d-ohlcv-index-historical-data/sample-2026-07-31/SPX500_1d.csv";
+const YAHOO_URLS=[
+ "https://query1.finance.yahoo.com/v8/finance/chart/%5ESPX?range=max&interval=1d&events=history",
+ "https://query2.finance.yahoo.com/v8/finance/chart/%5ESPX?range=max&interval=1d&events=history"
+];
+
 let market=[],visible=[],trades=JSON.parse(localStorage.getItem("swa_trades")||"[]");
 let currentPeriod="1M",thresholds={low:null,high:null};
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:2});
 const cash=n=>(n<0?"-$":"$")+fmt(Math.abs(n));
+
+function parseYahoo(json){
+ const result=json?.chart?.result?.[0];
+ if(!result)throw Error(json?.chart?.error?.description||"Yahoo no devolvió datos");
+ const timestamps=result.timestamp||[];
+ const q=result.indicators?.quote?.[0];
+ if(!q)throw Error("La respuesta no contiene OHLC");
+ const rows=[];
+ timestamps.forEach((ts,i)=>{
+  const open=q.open?.[i],high=q.high?.[i],low=q.low?.[i],close=q.close?.[i];
+  if([open,high,low,close].some(v=>v==null||!Number.isFinite(Number(v))))return;
+  const date=new Date(ts*1000).toISOString().slice(0,10);
+  rows.push({date,open:Number(open),high:Number(high),low:Number(low),close:Number(close),volume:Number(q.volume?.[i]||0)});
+ });
+ return rows.sort((a,b)=>a.date.localeCompare(b.date));
+}
 
 function parseCSV(text){
  const lines=text.trim().split(/\r?\n/);
@@ -218,14 +240,9 @@ function parseCSV(text){
  const ix=k=>headers.indexOf(k);
  return lines.map(line=>{
   const c=line.split(",");
-  return {
-   date:(c[ix("datetime")]||c[ix("date")]||"").slice(0,10),
-   open:Number(c[ix("open")]),high:Number(c[ix("high")]),
-   low:Number(c[ix("low")]),close:Number(c[ix("close")]),
-   volume:Number(c[ix("volume")])||0
-  };
- }).filter(d=>d.date&&[d.open,d.high,d.low,d.close].every(Number.isFinite))
- .sort((a,b)=>a.date.localeCompare(b.date));
+  const date=(c[ix("datetime")]||c[ix("date")]||"").slice(0,10);
+  return {date,open:Number(c[ix("open")]),high:Number(c[ix("high")]),low:Number(c[ix("low")]),close:Number(c[ix("close")]),volume:Number(c[ix("volume")])||0};
+ }).filter(d=>d.date&&[d.open,d.high,d.low,d.close].every(Number.isFinite)).sort((a,b)=>a.date.localeCompare(b.date));
 }
 
 function calculate(data){
@@ -250,29 +267,37 @@ function calculate(data){
 
 function inspectQuality(data){
  const flat=data.filter(d=>d.open===d.high&&d.high===d.low&&d.low===d.close);
- const zeroVolume=data.filter(d=>d.volume===0);
  const invalid=data.filter(d=>d.high<d.low||d.high<Math.max(d.open,d.close)||d.low>Math.min(d.open,d.close));
- return {flat:flat.length,zeroVolume:zeroVolume.length,invalid:invalid.length};
+ return {flat:flat.length,invalid:invalid.length};
 }
 
 async function loadMarket(){
- $("status").textContent="Descargando histórico ampliado...";
- try{
-  const response=await fetch(CSV_URL,{cache:"no-store"});
-  if(!response.ok)throw Error("HTTP "+response.status);
-  const parsed=parseCSV(await response.text());
-  if(parsed.length<20)throw Error("El archivo no contiene suficientes registros OHLC.");
-  market=parsed;calculate(market);
-  const q=inspectQuality(market);
-  $("status").textContent="Histórico cargado · "+market.length.toLocaleString("es-ES")+" sesiones";
-  $("dataInfo").textContent="Registros: "+market.length.toLocaleString("es-ES")+" · Desde "+market[0].date+" hasta "+market.at(-1).date+".";
-  $("qualityWarning").innerHTML=(q.flat||q.invalid)?`<div class="warning"><b>Revisión de calidad necesaria:</b> ${q.flat} filas tienen Open=High=Low=Close; ${q.zeroVolume} filas tienen volumen cero; ${q.invalid} filas presentan OHLC incoherentes. No uses las primeras filas sospechosas para conclusiones de trading sin validarlas.</div>`:"";
-  if(q.invalid) $("status").textContent+=" · Atención: OHLC incoherentes";
-  setPeriod("1M");
- }catch(e){
-  $("status").textContent="Error cargando histórico";
-  $("dataInfo").textContent="No se pudo descargar el CSV: "+e.message+". Puedes importar un CSV OHLC manualmente.";
+ $("status").textContent="Descargando histórico diario de Yahoo Finance...";
+ $("qualityWarning").innerHTML="";
+ let lastError=null;
+ for(const url of YAHOO_URLS){
+  try{
+   const response=await fetch(url,{cache:"no-store"});
+   if(!response.ok)throw Error("HTTP "+response.status);
+   const json=await response.json();
+   const parsed=parseYahoo(json);
+   if(parsed.length<100)throw Error("Yahoo devolvió un histórico incompleto");
+   market=parsed;
+   calculate(market);
+   const q=inspectQuality(market);
+   const first=market[0],last=market.at(-1);
+   $("status").textContent="Yahoo Finance · "+market.length.toLocaleString("es-ES")+" sesiones · Actualizado";
+   $("dataInfo").textContent="Fuente Yahoo Finance ^SPX · "+first.date+" a "+last.date+" · "+market.length.toLocaleString("es-ES")+" sesiones.";
+   if(q.flat||q.invalid){
+    $("qualityWarning").innerHTML=`<div class="warning">Control OHLC: ${q.flat} velas con Open=High=Low=Close; ${q.invalid} registros con incoherencias OHLC. Revisa los datos antes de utilizarlos.</div>`;
+   }
+   setPeriod(currentPeriod);
+   return;
+  }catch(e){lastError=e;}
  }
+ $("status").textContent="No se pudo actualizar Yahoo Finance";
+ $("qualityWarning").innerHTML='<div class="warning">El navegador no ha podido conectar directamente con Yahoo Finance. No se han sustituido los datos por valores inventados. Prueba de nuevo o importa un CSV OHLC desde Datos y respaldo.</div>';
+ $("dataInfo").textContent=lastError?.message||"Error de conexión o de permisos CORS.";
 }
 
 function setPeriod(period){
@@ -287,7 +312,9 @@ function setPeriod(period){
  if(period==="6M")start.setMonth(start.getMonth()-6);
  if(period==="YTD")start=new Date(last.getFullYear(),0,1,12);
  if(period==="1Y")start.setFullYear(start.getFullYear()-1);
+ if(period==="2Y")start.setFullYear(start.getFullYear()-2);
  if(period==="5Y")start.setFullYear(start.getFullYear()-5);
+ if(period==="10Y")start.setFullYear(start.getFullYear()-10);
  if(period==="Max")start=new Date(market[0].date+"T12:00:00");
  const from=start.toISOString().slice(0,10),to=market.at(-1).date;
  visible=market.filter(d=>d.date>=from&&d.date<=to);
@@ -375,7 +402,7 @@ function renderMarket(){
  <td>${d.date}</td><td>${fmt(d.open)}</td><td>${fmt(d.high)}</td><td>${fmt(d.low)}</td><td>${fmt(d.close)}</td>
  <td>${fmt(d.range)}</td><td>${fmt(d.tr)}</td><td>${d.atr==null?"—":fmt(d.atr)}</td>
  <td>${d.atrPct==null?"—":d.atrPct.toFixed(3)+"%"}</td><td>${d.regime}</td></tr>`).join("");
- $("marketInfo").textContent="Mostrando "+visible.length.toLocaleString("es-ES")+" sesiones. ATR calculado sobre toda la serie disponible antes de filtrar.";
+ $("marketInfo").textContent="Mostrando "+visible.length.toLocaleString("es-ES")+" sesiones. El ATR se calcula sobre toda la serie histórica antes de aplicar el filtro.";
 }
 
 function showSelectedDate(){
@@ -460,7 +487,7 @@ function importCSV(e){
   market=parsed;calculate(market);
   const q=inspectQuality(market);
   $("status").textContent="CSV importado · "+market.length+" sesiones";
-  $("qualityWarning").innerHTML=(q.flat||q.invalid)?`<div class="warning">Revisión de calidad: ${q.flat} velas planas; ${q.zeroVolume} volúmenes cero; ${q.invalid} OHLC incoherentes.</div>`:"";
+  $("qualityWarning").innerHTML=(q.flat||q.invalid)?`<div class="warning">Revisión de calidad: ${q.flat} velas planas; ${q.invalid} OHLC incoherentes.</div>`:"";
   setPeriod("Max");
  };
  reader.readAsText(f);
