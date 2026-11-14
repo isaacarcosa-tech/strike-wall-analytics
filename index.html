@@ -7,9 +7,15 @@
 <title>Strike Wall Analytics</title>
 <style>
 :root {
-  --bg:#0b1019;--panel:#111a27;--border:#263447;
-  --text:#e7edf6;--muted:#91a0b5;--blue:#65b5ff;
-  --yellow:#f2bd55;--green:#31c995;--red:#ff7777;
+  --bg:#0b1019;
+  --panel:#111a27;
+  --border:#263447;
+  --text:#e7edf6;
+  --muted:#91a0b5;
+  --blue:#65b5ff;
+  --yellow:#f2bd55;
+  --green:#31c995;
+  --red:#ff7777;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}
@@ -58,11 +64,52 @@ canvas{width:100%;height:100%;display:block;cursor:crosshair;touch-action:pan-y}
 .negative{color:var(--red)}
 .neutral{color:var(--blue)}
 .strategy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
-.strategy-card{background:#172335;border:1px solid var(--border);border-radius:9px;padding:16px}
-.strategy-card .strategy-title{font-weight:800;margin-bottom:12px}
-.strategy-card .strategy-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.strategy-stats small{display:block;color:var(--muted);font-size:11px}
-.strategy-stats strong{display:block;margin-top:5px;font-size:18px}
+
+/* TARJETAS DE ESTRATEGIAS - OPCIÓN 3 */
+.strategy-card{
+  border-radius:9px;
+  padding:16px;
+  border:1px solid transparent;
+}
+.strategy-card.put-wall{
+  background:#164B78;
+  border-color:#286b9f;
+}
+.strategy-card.call-wall{
+  background:#35516D;
+  border-color:#58728d;
+}
+.strategy-card.discretional{
+  background:#51436D;
+  border-color:#756493;
+}
+.strategy-card .strategy-title{
+  color:#ffffff;
+  font-weight:800;
+  font-size:14px;
+  letter-spacing:.5px;
+  margin-bottom:14px;
+}
+.strategy-card .strategy-stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.strategy-stats small{
+  display:block;
+  color:#d4dfeb;
+  font-size:11px;
+}
+.strategy-stats strong{
+  display:block;
+  margin-top:5px;
+  font-size:18px;
+  color:#ffffff;
+}
+.strategy-card .strategy-stats strong.positive{color:#55e0b1}
+.strategy-card .strategy-stats strong.negative{color:#ff9999}
+.strategy-card .strategy-stats strong.neutral{color:#ffffff}
+
 .table-wrap{overflow:auto;max-height:520px;margin-top:15px}
 table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}
 th,td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:right}
@@ -73,8 +120,15 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .tag-tp{color:var(--green);background:#15382f}
 .tag-sl{color:var(--red);background:#40232b}
 .tag-be{color:var(--yellow);background:#40351f}
+.strategy-label{font-weight:700}
+.strategy-label.put-wall{color:#65b5ff}
+.strategy-label.call-wall{color:#9bb8d4}
+.strategy-label.discretional{color:#bba9e8}
 .backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
-@media(max-width:800px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:800px){
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:650px){
   main{padding:18px 4%}
   .chart-wrap{height:320px}
@@ -186,7 +240,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
     </div>
 
     <div class="strategy-grid">
-      <div class="strategy-card">
+      <div class="strategy-card put-wall">
         <div class="strategy-title">PUT WALL</div>
         <div class="strategy-stats">
           <div><small>Operaciones</small><strong id="pwTotal">0</strong></div>
@@ -195,7 +249,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div><small>Ganadoras / Perdedoras / BE</small><strong id="pwRecord">0 / 0 / 0</strong></div>
         </div>
       </div>
-      <div class="strategy-card">
+      <div class="strategy-card call-wall">
         <div class="strategy-title">CALL WALL</div>
         <div class="strategy-stats">
           <div><small>Operaciones</small><strong id="cwTotal">0</strong></div>
@@ -204,7 +258,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div><small>Ganadoras / Perdedoras / BE</small><strong id="cwRecord">0 / 0 / 0</strong></div>
         </div>
       </div>
-      <div class="strategy-card">
+      <div class="strategy-card discretional">
         <div class="strategy-title">DISCRECIONAL</div>
         <div class="strategy-stats">
           <div><small>Operaciones</small><strong id="disTotal">0</strong></div>
@@ -631,6 +685,12 @@ function strategyName(strategy){
   return "Discrecional";
 }
 
+function strategyClass(strategy){
+  if(strategy==="PW")return "put-wall";
+  if(strategy==="CW")return "call-wall";
+  return "discretional";
+}
+
 function renderTrades(){
   const rows=$("tradeRows");
   $("tradeCount").textContent=trades.length+" operaciones registradas";
@@ -646,7 +706,7 @@ function renderTrades(){
   rows.innerHTML=sorted.map(t=>`
     <tr>
       <td>${escapeHTML(t.date)}</td>
-      <td>${strategyName(t.strategy)}</td>
+      <td><span class="strategy-label ${strategyClass(t.strategy)}">${strategyName(t.strategy)}</span></td>
       <td><span class="result-tag tag-${t.result.toLowerCase()}">${t.result}</span></td>
       <td class="${Number(t.pnl)>0?"positive":Number(t.pnl)<0?"negative":""}">${money(Number(t.pnl))}</td>
       <td>${escapeHTML(t.notes||"—")}</td>
