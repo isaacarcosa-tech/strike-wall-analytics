@@ -182,7 +182,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
       <div class="stat-card"><small>Ganadoras</small><strong id="winningTrades">0</strong></div>
       <div class="stat-card"><small>Perdedoras</small><strong id="losingTrades">0</strong></div>
       <div class="stat-card"><small>Break Even</small><strong id="breakevenTrades">0</strong></div>
-      <div class="stat-card"><small>Beneficio bruto</small><strong id="grossProfit">$0.00</strong></div>
+      <div class="stat-card"><small>Drawdown máximo</small><strong id="maxDrawdown">$0.00</strong></div>
     </div>
 
     <div class="strategy-grid">
@@ -532,7 +532,6 @@ function loadTrades(){
       ...t,
       pnl:t.result==="SL"?-Math.abs(Number(t.pnl)):Number(t.pnl)
     })):[];
-    // Guarda la corrección de los SL antiguos que estuvieran en positivo.
     localStorage.setItem(STORAGE_KEY,JSON.stringify(trades));
   }catch{
     trades=[];
@@ -549,18 +548,44 @@ function saveTrades(){
   }
 }
 
+/* ESTADÍSTICAS Y DRAWDOWN */
+
+function calculateMaxDrawdown(list){
+  const chronological=[...list].sort((a,b)=>
+    a.date.localeCompare(b.date)||a.id.localeCompare(b.id)
+  );
+
+  let balance=0;
+  let peak=0;
+  let maxDrawdown=0;
+
+  chronological.forEach(trade=>{
+    balance+=Number(trade.pnl);
+    if(balance>peak)peak=balance;
+
+    const drawdown=peak-balance;
+    if(drawdown>maxDrawdown)maxDrawdown=drawdown;
+  });
+
+  return maxDrawdown;
+}
+
 function makeStats(list){
   const wins=list.filter(t=>t.result==="TP").length;
   const losses=list.filter(t=>t.result==="SL").length;
   const be=list.filter(t=>t.result==="BE").length;
   const net=list.reduce((sum,t)=>sum+Number(t.pnl),0);
-  const gross=list.filter(t=>Number(t.pnl)>0)
-    .reduce((sum,t)=>sum+Number(t.pnl),0);
   const decided=wins+losses;
+
   return{
-    total:list.length,wins,losses,be,net,gross,
+    total:list.length,
+    wins,
+    losses,
+    be,
+    net,
     average:list.length?net/list.length:0,
-    rate:decided?wins/decided*100:null
+    rate:decided?wins/decided*100:null,
+    maxDrawdown:calculateMaxDrawdown(list)
   };
 }
 
@@ -578,10 +603,11 @@ function renderStats(){
   $("winningTrades").textContent=s.wins;
   $("losingTrades").textContent=s.losses;
   $("breakevenTrades").textContent=s.be;
-  $("grossProfit").textContent=money(s.gross);
+  $("maxDrawdown").textContent=money(-s.maxDrawdown);
+
   setMoneyClass($("netProfit"),s.net);
   setMoneyClass($("averageTrade"),s.average);
-  setMoneyClass($("grossProfit"),s.gross);
+  setMoneyClass($("maxDrawdown"),s.maxDrawdown>0?-1:0);
 
   const strategyStats=[
     {key:"PW",prefix:"pw"},
@@ -644,7 +670,6 @@ $("tradeForm").addEventListener("submit",event=>{
     return;
   }
 
-  // Normaliza automáticamente el signo según el resultado.
   if(result==="TP")pnl=Math.abs(pnl);
   if(result==="SL")pnl=-Math.abs(pnl);
   if(result==="BE")pnl=0;
@@ -721,7 +746,6 @@ $("importFile").addEventListener("change",async event=>{
       const result=c[col("result")];
       let pnl=Number(c[col("pnl")]);
 
-      // También normaliza los SL que vengan positivos en el CSV.
       if(result==="TP")pnl=Math.abs(pnl);
       if(result==="SL")pnl=-Math.abs(pnl);
       if(result==="BE")pnl=0;
