@@ -1,11 +1,12 @@
+
 const CACHE_NAME = "strike-wall-v1";
 
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -56,9 +57,10 @@ self.addEventListener("fetch", event => {
           );
 
           return await caches.match(cleanRequest) ||
-            new Response("Datos del SPX no disponibles sin conexión.", {
-              status: 503
-            });
+            new Response(
+              "Datos del SPX no disponibles sin conexión.",
+              { status: 503 }
+            );
         })
     );
     return;
