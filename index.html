@@ -89,7 +89,6 @@ button,select,input {
 }
 
 button { cursor:pointer; }
-
 button:hover { border-color:var(--blue); }
 
 button.active {
@@ -118,9 +117,7 @@ label {
   color:var(--blue);
 }
 
-.value-card small {
-  color:var(--muted);
-}
+.value-card small { color:var(--muted); }
 
 .chart-wrap {
   position:relative;
@@ -133,6 +130,37 @@ canvas {
   width:100%;
   height:100%;
   display:block;
+  cursor:crosshair;
+  touch-action:pan-y;
+}
+
+/* Ventana de datos del cursor */
+.chart-tooltip {
+  position:absolute;
+  z-index:5;
+  display:none;
+  pointer-events:none;
+  min-width:190px;
+  padding:12px 14px;
+  background:#080e18;
+  border:1px solid #426080;
+  border-radius:9px;
+  box-shadow:0 8px 25px rgba(0,0,0,.45);
+  font-size:12px;
+  line-height:1.7;
+  color:var(--text);
+}
+
+.chart-tooltip .tooltip-date {
+  color:var(--blue);
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.chart-tooltip .tooltip-value {
+  font-size:19px;
+  font-weight:800;
+  color:var(--blue);
 }
 
 .chart-legend {
@@ -301,8 +329,9 @@ th {
       <button id="changeMode">% from view start</button>
     </div>
 
-    <div class="chart-wrap">
+    <div class="chart-wrap" id="chartWrap">
       <canvas id="chart"></canvas>
+      <div class="chart-tooltip" id="chartTooltip"></div>
     </div>
 
     <div class="chart-legend">
@@ -391,6 +420,10 @@ let market = [];
 let visible = [];
 let mode = "value";
 let currentPeriod = "5Y";
+
+/* Estado de la posición del cursor */
+let hoverIndex = null;
+let chartGeometry = null;
 
 const $ = id => document.getElementById(id);
 
@@ -514,6 +547,8 @@ async function loadMarket() {
 function setPeriod(period) {
 
   currentPeriod = period;
+  hoverIndex = null;
+  hideTooltip();
 
   document.querySelectorAll("[data-period]").forEach(button => {
     button.classList.toggle(
@@ -577,20 +612,17 @@ function drawChart(reference) {
 
   ctx.setTransform(ratio,0,0,ratio,0,0);
 
+  const first = visible.find(x=>x.atrPct!==null);
+
   const values = visible.map(d => {
 
     if(d.atrPct===null) return null;
 
     if(mode==="change") {
-
-      const first = visible.find(x=>x.atrPct!==null);
-
       return d.atrPct-first.atrPct;
-
     }
 
     return d.atrPct;
-
   });
 
   const valid = values.filter(Number.isFinite);
@@ -618,8 +650,23 @@ function drawChart(reference) {
   const plotWidth = width-left-right;
   const plotHeight = height-top-bottom;
 
+  const x = index =>
+    left+index/Math.max(1,values.length-1)*plotWidth;
+
   const y = value =>
     top+(max-value)/(max-min)*plotHeight;
+
+  /* Guardamos las coordenadas para detectar el cursor */
+  chartGeometry = {
+    left,
+    right,
+    top,
+    bottom,
+    plotWidth,
+    plotHeight,
+    x,
+    y
+  };
 
   ctx.font = "11px Arial";
   ctx.lineWidth = 1;
@@ -643,6 +690,7 @@ function drawChart(reference) {
     );
   }
 
+  /* Línea horizontal de referencia */
   ctx.save();
 
   ctx.strokeStyle = "#f2bd55";
@@ -654,6 +702,7 @@ function drawChart(reference) {
 
   ctx.restore();
 
+  /* Curva principal */
   ctx.strokeStyle = "#65b5ff";
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -667,23 +716,150 @@ function drawChart(reference) {
       return;
     }
 
-    const x = left+i/Math.max(1,values.length-1)*plotWidth;
+    const px = x(i);
     const py = y(value);
 
     if(!started) {
-      ctx.moveTo(x,py);
+      ctx.moveTo(px,py);
       started = true;
     } else {
-      ctx.lineTo(x,py);
+      ctx.lineTo(px,py);
     }
 
   });
 
   ctx.stroke();
 
+  /* Dibujar línea vertical y punto bajo el cursor */
+  if(
+    hoverIndex!==null &&
+    Number.isFinite(values[hoverIndex])
+  ) {
+
+    const px = x(hoverIndex);
+    const py = y(values[hoverIndex]);
+
+    ctx.save();
+
+    ctx.strokeStyle = "#f2bd55";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+
+    ctx.beginPath();
+    ctx.moveTo(px,top);
+    ctx.lineTo(px,height-bottom);
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = "#65b5ff";
+    ctx.beginPath();
+    ctx.arc(px,py,5,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
   ctx.fillStyle = "#91a0b5";
   ctx.fillText(visible[0].date,left,height-7);
   ctx.fillText(visible.at(-1).date,width-right-80,height-7);
+}
+
+/* Detectar la sesión más cercana al cursor */
+function handleChartPointer(event) {
+
+  if(!chartGeometry || !visible.length) return;
+
+  const canvas = $("chart");
+  const rect = canvas.getBoundingClientRect();
+
+  const mouseX = event.clientX-rect.left;
+  const g = chartGeometry;
+
+  if(
+    mouseX<g.left ||
+    mouseX>rect.width-g.right
+  ) {
+    hideTooltip();
+    return;
+  }
+
+  const ratio = (mouseX-g.left)/g.plotWidth;
+
+  const index = Math.round(
+    ratio*(visible.length-1)
+  );
+
+  const safeIndex = Math.max(
+    0,
+    Math.min(visible.length-1,index)
+  );
+
+  if(!Number.isFinite(visible[safeIndex].atrPct)) {
+    hideTooltip();
+    return;
+  }
+
+  hoverIndex = safeIndex;
+
+  /* Redibujar el gráfico con el cursor */
+  drawChart(Number($("reference").value));
+
+  showTooltip(
+    visible[safeIndex],
+    event.clientX-rect.left,
+    event.clientY-rect.top
+  );
+}
+
+/* Mostrar los valores de la sesión seleccionada */
+function showTooltip(d,mouseX,mouseY) {
+
+  const tooltip = $("chartTooltip");
+
+  const displayedValue = mode==="change"
+    ? (d.atrPct-visible.find(x=>x.atrPct!==null).atrPct)
+    : d.atrPct;
+
+  tooltip.innerHTML = `
+    <div class="tooltip-date">${d.date}</div>
+    <div>SPX Close: <strong>${number(d.close)}</strong></div>
+    <div>ATR(14): <strong>${number(d.atr)} puntos</strong></div>
+    <div>ATR real: <strong>${d.atrPct.toFixed(3)}%</strong></div>
+    ${mode==="change"
+      ? `<div>Variación: <strong>${displayedValue.toFixed(3)} pp</strong></div>`
+      : ""}
+    <div class="tooltip-value">${d.atrPct.toFixed(2)}%</div>
+  `;
+
+  tooltip.style.display = "block";
+
+  const wrap = $("chartWrap");
+  const maxX = wrap.clientWidth-tooltip.offsetWidth-8;
+  const maxY = wrap.clientHeight-tooltip.offsetHeight-8;
+
+  let left = mouseX+15;
+  let top = mouseY+15;
+
+  if(left>maxX) left=mouseX-tooltip.offsetWidth-15;
+  if(top>maxY) top=mouseY-tooltip.offsetHeight-15;
+
+  tooltip.style.left=Math.max(5,left)+"px";
+  tooltip.style.top=Math.max(5,top)+"px";
+}
+
+function hideTooltip() {
+
+  $("chartTooltip").style.display = "none";
+  hoverIndex = null;
+
+  if(visible.length) {
+    drawChart(Number($("reference").value));
+  }
 }
 
 function renderTable() {
@@ -720,14 +896,18 @@ function showDate(date) {
     d.atrPct===null?"—":d.atrPct.toFixed(3)+"%";
 }
 
+/* Eventos de los botones de período */
 document.querySelectorAll("[data-period]").forEach(button => {
   button.addEventListener("click",()=>{
     setPeriod(button.dataset.period);
   });
 });
 
+/* Modo de visualización */
 $("valueMode").addEventListener("click",()=>{
   mode="value";
+  hoverIndex=null;
+  hideTooltip();
   $("valueMode").classList.add("active");
   $("changeMode").classList.remove("active");
   render();
@@ -735,6 +915,8 @@ $("valueMode").addEventListener("click",()=>{
 
 $("changeMode").addEventListener("click",()=>{
   mode="change";
+  hoverIndex=null;
+  hideTooltip();
   $("changeMode").classList.add("active");
   $("valueMode").classList.remove("active");
   render();
@@ -742,11 +924,24 @@ $("changeMode").addEventListener("click",()=>{
 
 $("reference").addEventListener("change",render);
 
+/* Consulta histórica */
 $("searchDate").addEventListener("click",()=>{
   showDate($("selectedDate").value);
 });
 
+/* Eventos del ratón y pantalla táctil */
+$("chart").addEventListener("pointermove",handleChartPointer);
+
+$("chart").addEventListener("pointerleave",()=>{
+  hideTooltip();
+});
+
+$("chart").addEventListener("pointerdown",handleChartPointer);
+
+/* Redibujar al cambiar tamaño de ventana */
 window.addEventListener("resize",()=>{
+  hoverIndex=null;
+  hideTooltip();
   if(visible.length) render();
 });
 
