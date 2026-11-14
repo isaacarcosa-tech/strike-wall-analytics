@@ -15,7 +15,6 @@
   --muted:#91a0b5;
   --blue:#65b5ff;
   --yellow:#f2bd55;
-  --green:#31c995;
 }
 
 * { box-sizing:border-box; }
@@ -79,7 +78,7 @@ h1 {
   margin:18px 0;
 }
 
-button,select,input {
+button,input {
   background:#172335;
   color:var(--text);
   border:1px solid var(--border);
@@ -122,7 +121,7 @@ label {
 .chart-wrap {
   position:relative;
   width:100%;
-  height:430px;
+  height:480px;
   margin-top:12px;
 }
 
@@ -134,33 +133,33 @@ canvas {
   touch-action:pan-y;
 }
 
-/* Ventana de datos del cursor */
 .chart-tooltip {
   position:absolute;
   z-index:5;
   display:none;
   pointer-events:none;
-  min-width:190px;
+  min-width:195px;
   padding:12px 14px;
   background:#080e18;
   border:1px solid #426080;
   border-radius:9px;
   box-shadow:0 8px 25px rgba(0,0,0,.45);
   font-size:12px;
-  line-height:1.7;
+  line-height:1.8;
   color:var(--text);
 }
 
-.chart-tooltip .tooltip-date {
+.tooltip-date {
   color:var(--blue);
   font-weight:700;
   margin-bottom:5px;
 }
 
-.chart-tooltip .tooltip-value {
-  font-size:19px;
+.tooltip-value {
+  font-size:20px;
   font-weight:800;
   color:var(--blue);
+  margin-top:4px;
 }
 
 .chart-legend {
@@ -190,70 +189,6 @@ canvas {
   margin-right:6px;
 }
 
-.controls {
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  align-items:end;
-  margin-top:20px;
-}
-
-.control { min-width:150px; }
-
-.reading {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:12px;
-  margin-top:20px;
-}
-
-.reading div {
-  background:#172335;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:14px;
-}
-
-.reading small {
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.reading strong {
-  display:block;
-  margin-top:7px;
-  font-size:20px;
-}
-
-.table-wrap {
-  overflow:auto;
-  max-height:450px;
-  margin-top:15px;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  white-space:nowrap;
-  font-size:12px;
-}
-
-th,td {
-  padding:10px;
-  border-bottom:1px solid var(--border);
-  text-align:right;
-}
-
-th:first-child,td:first-child { text-align:left; }
-
-th {
-  position:sticky;
-  top:0;
-  background:#172335;
-  color:var(--muted);
-}
-
 .note {
   color:var(--muted);
   font-size:12px;
@@ -272,7 +207,7 @@ th {
 
 @media(max-width:650px) {
   main { padding:18px 4%; }
-  .chart-wrap { height:300px; }
+  .chart-wrap { height:340px; }
   h1 { font-size:21px; }
 }
 </style>
@@ -343,66 +278,6 @@ th {
 
   </div>
 
-  <div class="panel">
-
-    <h2>Consulta histórica</h2>
-
-    <div class="controls">
-      <div class="control">
-        <label>Fecha</label>
-        <input type="date" id="selectedDate">
-      </div>
-
-      <button id="searchDate">Consultar</button>
-    </div>
-
-    <div class="reading">
-      <div>
-        <small>Fecha</small>
-        <strong id="readDate">—</strong>
-      </div>
-
-      <div>
-        <small>SPX Close</small>
-        <strong id="readClose">—</strong>
-      </div>
-
-      <div>
-        <small>ATR(14) puntos</small>
-        <strong id="readATR">—</strong>
-      </div>
-
-      <div>
-        <small>ATR(14) %</small>
-        <strong id="readPercent">—</strong>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="panel">
-
-    <h2>Historical values</h2>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>SPX Close</th>
-            <th>True Range</th>
-            <th>ATR 14</th>
-            <th>ATR %</th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
-
-    <p class="note" id="tableInfo"></p>
-
-  </div>
-
   <div id="error" class="error"></div>
 
   <p class="note">
@@ -420,8 +295,6 @@ let market = [];
 let visible = [];
 let mode = "value";
 let currentPeriod = "5Y";
-
-/* Estado de la posición del cursor */
 let hoverIndex = null;
 let chartGeometry = null;
 
@@ -434,6 +307,7 @@ const number = n =>
   });
 
 function parseCSV(text) {
+
   const lines = text.trim()
     .replace(/^\uFEFF/,"")
     .split(/\r?\n/);
@@ -445,6 +319,7 @@ function parseCSV(text) {
   const index = key => headers.indexOf(key);
 
   return lines.map(line => {
+
     const c = line.split(",");
 
     return {
@@ -530,11 +405,7 @@ async function loadMarket() {
 
     $("latestDate").textContent = last.date;
 
-    $("selectedDate").value = last.date;
-
     setPeriod("5Y");
-
-    showDate(last.date);
 
   } catch(error) {
 
@@ -583,14 +454,27 @@ function setPeriod(period) {
   render();
 }
 
+function getValues() {
+
+  const first = visible.find(x=>x.atrPct!==null);
+
+  return visible.map(d => {
+
+    if(d.atrPct===null) return null;
+
+    if(mode==="change") {
+      return d.atrPct-first.atrPct;
+    }
+
+    return d.atrPct;
+  });
+}
+
 function render() {
 
   if(!visible.length) return;
 
-  const reference = Number($("reference").value);
-
-  drawChart(reference);
-  renderTable();
+  drawChart(Number($("reference").value));
 
   $("chartDates").textContent =
     currentPeriod+" · "+
@@ -612,19 +496,7 @@ function drawChart(reference) {
 
   ctx.setTransform(ratio,0,0,ratio,0,0);
 
-  const first = visible.find(x=>x.atrPct!==null);
-
-  const values = visible.map(d => {
-
-    if(d.atrPct===null) return null;
-
-    if(mode==="change") {
-      return d.atrPct-first.atrPct;
-    }
-
-    return d.atrPct;
-  });
-
+  const values = getValues();
   const valid = values.filter(Number.isFinite);
 
   if(!valid.length) return;
@@ -656,16 +528,9 @@ function drawChart(reference) {
   const y = value =>
     top+(max-value)/(max-min)*plotHeight;
 
-  /* Guardamos las coordenadas para detectar el cursor */
   chartGeometry = {
-    left,
-    right,
-    top,
-    bottom,
-    plotWidth,
-    plotHeight,
-    x,
-    y
+    left,right,top,bottom,
+    plotWidth,plotHeight,x,y
   };
 
   ctx.font = "11px Arial";
@@ -691,10 +556,12 @@ function drawChart(reference) {
   }
 
   /* Línea horizontal de referencia */
+
   ctx.save();
 
   ctx.strokeStyle = "#f2bd55";
   ctx.setLineDash([5,5]);
+
   ctx.beginPath();
   ctx.moveTo(left,y(ref));
   ctx.lineTo(width-right,y(ref));
@@ -702,7 +569,8 @@ function drawChart(reference) {
 
   ctx.restore();
 
-  /* Curva principal */
+  /* Curva ATR */
+
   ctx.strokeStyle = "#65b5ff";
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -730,7 +598,8 @@ function drawChart(reference) {
 
   ctx.stroke();
 
-  /* Dibujar línea vertical y punto bajo el cursor */
+  /* Cursor vertical y punto */
+
   if(
     hoverIndex!==null &&
     Number.isFinite(values[hoverIndex])
@@ -769,7 +638,8 @@ function drawChart(reference) {
   ctx.fillText(visible.at(-1).date,width-right-80,height-7);
 }
 
-/* Detectar la sesión más cercana al cursor */
+/* Detectar posición del ratón */
+
 function handleChartPointer(event) {
 
   if(!chartGeometry || !visible.length) return;
@@ -778,11 +648,14 @@ function handleChartPointer(event) {
   const rect = canvas.getBoundingClientRect();
 
   const mouseX = event.clientX-rect.left;
+  const mouseY = event.clientY-rect.top;
   const g = chartGeometry;
 
   if(
     mouseX<g.left ||
-    mouseX>rect.width-g.right
+    mouseX>rect.width-g.right ||
+    mouseY<g.top ||
+    mouseY>rect.height-g.bottom
   ) {
     hideTooltip();
     return;
@@ -799,37 +672,37 @@ function handleChartPointer(event) {
     Math.min(visible.length-1,index)
   );
 
-  if(!Number.isFinite(visible[safeIndex].atrPct)) {
+  const d = visible[safeIndex];
+
+  if(!d || !Number.isFinite(d.atrPct)) {
     hideTooltip();
     return;
   }
 
   hoverIndex = safeIndex;
 
-  /* Redibujar el gráfico con el cursor */
   drawChart(Number($("reference").value));
 
-  showTooltip(
-    visible[safeIndex],
-    event.clientX-rect.left,
-    event.clientY-rect.top
-  );
+  showTooltip(d,mouseX,mouseY);
 }
 
-/* Mostrar los valores de la sesión seleccionada */
+/* Mostrar información de la sesión */
+
 function showTooltip(d,mouseX,mouseY) {
 
   const tooltip = $("chartTooltip");
 
+  const first = visible.find(x=>x.atrPct!==null);
+
   const displayedValue = mode==="change"
-    ? (d.atrPct-visible.find(x=>x.atrPct!==null).atrPct)
+    ? d.atrPct-first.atrPct
     : d.atrPct;
 
   tooltip.innerHTML = `
     <div class="tooltip-date">${d.date}</div>
     <div>SPX Close: <strong>${number(d.close)}</strong></div>
     <div>ATR(14): <strong>${number(d.atr)} puntos</strong></div>
-    <div>ATR real: <strong>${d.atrPct.toFixed(3)}%</strong></div>
+    <div>ATR %: <strong>${d.atrPct.toFixed(3)}%</strong></div>
     ${mode==="change"
       ? `<div>Variación: <strong>${displayedValue.toFixed(3)} pp</strong></div>`
       : ""}
@@ -839,6 +712,7 @@ function showTooltip(d,mouseX,mouseY) {
   tooltip.style.display = "block";
 
   const wrap = $("chartWrap");
+
   const maxX = wrap.clientWidth-tooltip.offsetWidth-8;
   const maxY = wrap.clientHeight-tooltip.offsetHeight-8;
 
@@ -862,86 +736,61 @@ function hideTooltip() {
   }
 }
 
-function renderTable() {
+/* Botones de período */
 
-  $("rows").innerHTML = visible.slice().reverse().map(d=>`
-
-    <tr>
-      <td>${d.date}</td>
-      <td>${number(d.close)}</td>
-      <td>${number(d.tr)}</td>
-      <td>${d.atr===null?"—":number(d.atr)}</td>
-      <td>${d.atrPct===null?"—":d.atrPct.toFixed(3)+"%"}</td>
-    </tr>
-
-  `).join("");
-
-  $("tableInfo").textContent =
-    "Mostrando "+visible.length+" sesiones.";
-}
-
-function showDate(date) {
-
-  const d = market.find(x=>x.date===date);
-
-  if(!d) {
-    $("readDate").textContent = "Sin datos";
-    return;
-  }
-
-  $("readDate").textContent = d.date;
-  $("readClose").textContent = number(d.close);
-  $("readATR").textContent = d.atr===null?"—":number(d.atr);
-  $("readPercent").textContent =
-    d.atrPct===null?"—":d.atrPct.toFixed(3)+"%";
-}
-
-/* Eventos de los botones de período */
 document.querySelectorAll("[data-period]").forEach(button => {
   button.addEventListener("click",()=>{
     setPeriod(button.dataset.period);
   });
 });
 
-/* Modo de visualización */
+/* Modo Value */
+
 $("valueMode").addEventListener("click",()=>{
+
   mode="value";
   hoverIndex=null;
   hideTooltip();
+
   $("valueMode").classList.add("active");
   $("changeMode").classList.remove("active");
+
   render();
 });
 
+/* Modo variación */
+
 $("changeMode").addEventListener("click",()=>{
+
   mode="change";
   hoverIndex=null;
   hideTooltip();
+
   $("changeMode").classList.add("active");
   $("valueMode").classList.remove("active");
+
   render();
 });
 
+/* Referencia */
+
 $("reference").addEventListener("change",render);
 
-/* Consulta histórica */
-$("searchDate").addEventListener("click",()=>{
-  showDate($("selectedDate").value);
-});
+/* Ratón y pantalla táctil */
 
-/* Eventos del ratón y pantalla táctil */
 $("chart").addEventListener("pointermove",handleChartPointer);
 
-$("chart").addEventListener("pointerleave",()=>{
-  hideTooltip();
-});
+$("chart").addEventListener("pointerleave",hideTooltip);
 
 $("chart").addEventListener("pointerdown",handleChartPointer);
 
-/* Redibujar al cambiar tamaño de ventana */
+/* Cambio de tamaño de ventana */
+
 window.addEventListener("resize",()=>{
+
   hoverIndex=null;
   hideTooltip();
+
   if(visible.length) render();
 });
 
