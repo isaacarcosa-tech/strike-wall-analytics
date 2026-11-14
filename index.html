@@ -132,7 +132,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 
   <div class="panel">
     <h2>Registro de operaciones</h2>
-    <p class="note">Registra cada operación de Put Wall, Call Wall o Discrecional. El beneficio o pérdida se introduce manualmente en dólares.</p>
+    <p class="note">Registra cada operación de Put Wall, Call Wall o Discrecional. Introduce el importe sin signo negativo cuando sea un SL: el sistema lo convertirá automáticamente.</p>
     <form id="tradeForm">
       <div class="form-grid">
         <div class="field">
@@ -157,7 +157,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
         </div>
         <div class="field">
           <label for="pnl">Beneficio / pérdida ($)</label>
-          <input id="pnl" type="number" step="0.01" placeholder="Ej. 500 o -250" required>
+          <input id="pnl" type="number" step="0.01" placeholder="Ej. 500 o 250" required>
         </div>
         <div class="field full">
           <label for="notes">Observaciones (opcional)</label>
@@ -528,8 +528,15 @@ function loadTrades(){
       ["PW","CW","DIS"].includes(t.strategy)&&
       ["TP","SL","BE"].includes(t.result)&&
       Number.isFinite(Number(t.pnl))
-    ):[];
-  }catch{trades=[];}
+    ).map(t=>({
+      ...t,
+      pnl:t.result==="SL"?-Math.abs(Number(t.pnl)):Number(t.pnl)
+    })):[];
+    // Guarda la corrección de los SL antiguos que estuvieran en positivo.
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(trades));
+  }catch{
+    trades=[];
+  }
 }
 
 function saveTrades(){
@@ -629,23 +636,26 @@ $("tradeForm").addEventListener("submit",event=>{
   const strategy=$("strategy").value;
   const result=$("result").value;
   const pnlText=$("pnl").value.trim();
-  const pnl=Number(pnlText);
+  let pnl=Number(pnlText);
   const notes=$("notes").value.trim();
 
   if(!date||!pnlText||!Number.isFinite(pnl)){
     $("formMessage").textContent="Completa la fecha y el resultado económico.";
     return;
   }
-  if(result==="TP"&&pnl<=0){
-    $("formMessage").textContent="Una operación TP debe tener un beneficio positivo.";
+
+  // Normaliza automáticamente el signo según el resultado.
+  if(result==="TP")pnl=Math.abs(pnl);
+  if(result==="SL")pnl=-Math.abs(pnl);
+  if(result==="BE")pnl=0;
+
+  if(result==="TP"&&pnl===0){
+    $("formMessage").textContent="Una operación TP debe tener un beneficio mayor que cero.";
     return;
   }
-  if(result==="SL"&&pnl>=0){
-    $("formMessage").textContent="Una operación SL debe tener una pérdida negativa.";
-    return;
-  }
-  if(result==="BE"&&pnl!==0){
-    $("formMessage").textContent="Una operación BE debe tener resultado de 0 dólares.";
+
+  if(result==="SL"&&pnl===0){
+    $("formMessage").textContent="Una operación SL debe tener una pérdida mayor que cero.";
     return;
   }
 
@@ -708,12 +718,20 @@ $("importFile").addEventListener("change",async event=>{
 
     const imported=lines.map(line=>{
       const c=parseCSVLine(line);
+      const result=c[col("result")];
+      let pnl=Number(c[col("pnl")]);
+
+      // También normaliza los SL que vengan positivos en el CSV.
+      if(result==="TP")pnl=Math.abs(pnl);
+      if(result==="SL")pnl=-Math.abs(pnl);
+      if(result==="BE")pnl=0;
+
       return{
         id:c[col("id")]||Date.now().toString()+"-"+Math.random().toString(36).slice(2,8),
         date:c[col("date")],
         strategy:c[col("strategy")],
-        result:c[col("result")],
-        pnl:Number(c[col("pnl")]),
+        result,
+        pnl,
         notes:c[col("notes")]||""
       };
     }).filter(t=>
