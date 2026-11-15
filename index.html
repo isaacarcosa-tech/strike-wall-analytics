@@ -491,8 +491,13 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
         <div class="funding-field"><div class="funding-field-top"><label for="frGoal">Objetivo mensual</label><output id="frGoalOut">$5,000</output></div><input class="funding-range" id="frGoal" type="range" min="1000" max="30000" value="5000" step="250"></div>
         <div class="funding-field"><div class="funding-field-top"><label for="frPayout">Retiro por cuenta</label><output id="frPayoutOut">$1,200</output></div><input class="funding-range" id="frPayout" type="range" min="250" max="3000" value="1200" step="50"><small>Lo que te llega cuando esa cuenta cobra, ya con el split.</small></div>
         <div class="funding-field"><div class="funding-field-top"><label for="frSurvival">Fondeadas que llegan a retiro</label><output id="frSurvivalOut">3 de cada 10</output></div><input class="funding-range" id="frSurvival" type="range" min="1" max="10" value="3" step="1"><small>De cada 10 cuentas fondeadas, cuántas llegan al primer retiro. El resto se pierde y se repone.</small></div>
-        <div class="funding-field"><div class="funding-field-top"><label>Coste de cada fondeada</label><output id="frCostOut">$533</output></div><small>Se calcula en la pestaña 2 según el precio de evaluación y el porcentaje que apruebas.</small></div>
-        <div class="funding-field"><div class="funding-field-top"><label for="frWithdrawals">Retiros por cuenta antes de quemarla</label><output id="frWithdrawalsOut">2</output></div><input class="funding-range" id="frWithdrawals" type="range" min="1" max="5" value="2" step="1"><small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live.</small></div>
+        <div class="funding-field">
+  <div class="funding-field-top">
+    <label for="frManualCost">Coste de cada fondeada ($)</label>
+  </div>
+  <input id="frManualCost" type="number" min="0" max="10000" step="1" value="375" style="width:100%">
+  <small>Introduce manualmente cuánto te cuesta conseguir cada cuenta fondeada.</small>
+</div>        <div class="funding-field"><div class="funding-field-top"><label for="frWithdrawals">Retiros por cuenta antes de quemarla</label><output id="frWithdrawalsOut">2</output></div><input class="funding-range" id="frWithdrawals" type="range" min="1" max="5" value="2" step="1"><small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live.</small></div>
         <div class="funding-field"><div class="funding-field-top"><label for="frDays">Cada cuánto retiras una cuenta</label><output id="frDaysOut">7 días</output></div><input class="funding-range" id="frDays" type="range" min="3" max="30" value="7" step="1"><small>Días entre un retiro y el siguiente cuando la cuenta ya está cobrando.</small></div>
       </div>
       <div class="funding-card">
@@ -590,7 +595,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
    $("frCostOut").textContent=money(cost);
  }
    function updateReal(){
-    const goal=val("frGoal");
+    const cost=val("frManualCost");
     const payout=val("frPayout");
     const survival=val("frSurvival")/10;
     const withdrawals=val("frWithdrawals");
@@ -691,7 +696,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
    for(let n=1;n<=5;n++){
      const scenarioNet=payoutAccounts*n*payout-spend;
      const card=document.createElement("div");card.className="funding-mini"+(n===withdrawals?" active":"");
-     card.innerHTML="<small>"+n+" "+(n===1?"RETIRO":"RETIROS")+" POR CUENTA</small><strong>"+money(scenarioNet)+"</strong><span>Neto de 10 evaluaciones</span>";
+     ["fcPass","fcPrice","frGoal","frPayout","frSurvival","frWithdrawals","frDays","frManualCost"].forEach(id=>$(id).addEventListener("input",updateAll));
      scenarios.append(card);
    }
     }
