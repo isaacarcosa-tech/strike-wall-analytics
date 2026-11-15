@@ -131,6 +131,13 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .strategy-label.call-wall{color:#9bb8d4}
 .strategy-label.discretional{color:#bba9e8}
 .backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.vol-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin:6px 0 4px}
+.vol-controls input{width:110px}
+.vol-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.vol-block{background:#172335;border:1px solid var(--border);border-radius:9px;padding:14px;min-width:0}
+.vol-block h3{font-size:13px;margin:0 0 10px;letter-spacing:.5px}
+.vol-block .table-wrap{margin-top:0;max-height:none}
+@media(max-width:650px){.vol-grid{grid-template-columns:1fr}}
 
 @media(max-width:800px){
   .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -343,18 +350,28 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
   </div>
 
   <div class="panel">
+    <h2>Rendimiento según volatilidad</h2>
+    <p class="note">Cada cuenta por separado. Se usa el ATR % del cierre anterior a la operación: el valor que ves en el gráfico antes de entrar.</p>
+    <div class="vol-controls">
+      <div><label for="volLow">Volatilidad baja hasta (ATR %)</label><input id="volLow" type="number" value="0.9" step="0.05" min="0"></div>
+      <div><label for="volHigh">Volatilidad alta desde (ATR %)</label><input id="volHigh" type="number" value="1.2" step="0.05" min="0"></div>
+    </div>
+    <div class="vol-grid" id="volStats"><div class="note">Cargando histórico del SPX...</div></div>
+  </div>
+
+  <div class="panel">
     <h2>Historial de operaciones</h2>
     <div class="note" id="tradeCount">0 operaciones registradas</div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Fecha</th><th>Estrategia</th><th>Resultado</th>
+            <th>Fecha</th><th>Estrategia</th><th>Resultado</th><th>ATR %</th>
             <th>Beneficio / pérdida</th><th>Observaciones</th><th>Acción</th>
           </tr>
         </thead>
         <tbody id="tradeRows">
-          <tr><td colspan="6" class="empty">Todavía no hay operaciones registradas.</td></tr>
+          <tr><td colspan="7" class="empty">Todavía no hay operaciones registradas.</td></tr>
         </tbody>
       </table>
     </div>
@@ -854,6 +871,7 @@ async function loadMarket(){
     $("latestValue").textContent=last.atrPct.toFixed(2)+"%";
     $("latestDate").textContent=last.date;
     setPeriod("5Y");
+    renderTrades();
   }catch(error){
     $("status").textContent="Error al cargar datos";
     $("error").textContent=error.message;
@@ -1159,12 +1177,69 @@ function strategyClass(strategy){
   return "discretional";
 }
 
+/* ATR % POR OPERACIÓN Y RENDIMIENTO SEGÚN VOLATILIDAD */
+
+function atrBefore(date){
+  for(let i=market.length-1;i>=0;i--){
+    const d=market[i];
+    if(d.date<date&&d.atrPct!==null)return d.atrPct;
+  }
+  return null;
+}
+
+function atrText(date){
+  const value=atrBefore(date);
+  return value===null?"—":value.toFixed(2)+"%";
+}
+
+function renderVolatility(){
+  const box=$("volStats");
+  if(!box)return;
+  if(!market.length){
+    box.innerHTML='<div class="note">Cargando histórico del SPX...</div>';
+    return;
+  }
+  let low=Number($("volLow").value);
+  let high=Number($("volHigh").value);
+  if(!Number.isFinite(low))low=0.9;
+  if(!Number.isFinite(high))high=1.2;
+  if(high<low)[low,high]=[high,low];
+
+  const buckets=[
+    {label:"Baja · < "+low.toFixed(2)+"%",test:v=>v<low},
+    {label:"Media · "+low.toFixed(2)+"–"+high.toFixed(2)+"%",test:v=>v>=low&&v<high},
+    {label:"Alta · ≥ "+high.toFixed(2)+"%",test:v=>v>=high}
+  ];
+  const keys=["PW","CW","DIS"].filter(k=>k!=="DIS"||trades.some(t=>t.strategy==="DIS"));
+
+  box.innerHTML=keys.map(key=>{
+    const list=trades.filter(t=>t.strategy===key).map(t=>({...t,atr:atrBefore(t.date)}));
+    const body=buckets.map(b=>{
+      const s=makeStats(list.filter(t=>t.atr!==null&&b.test(t.atr)));
+      const cls=s.net>0?"positive":s.net<0?"negative":"";
+      return "<tr><td>"+b.label+"</td><td>"+s.total+"</td><td>"+s.wins+" / "+s.losses+" / "+s.be+"</td>"+
+        "<td>"+(s.rate===null?"—":s.rate.toFixed(1)+"%")+"</td>"+
+        "<td class='"+cls+"'>"+money(s.net)+"</td>"+
+        "<td class='"+cls+"'>"+(s.total?money(s.average):"—")+"</td></tr>";
+    }).join("");
+    const missing=list.filter(t=>t.atr===null).length;
+    return "<div class='vol-block'><h3><span class='strategy-label "+strategyClass(key)+"'>"+
+      strategyName(key).toUpperCase()+"</span></h3><div class='table-wrap'><table><thead><tr>"+
+      "<th>ATR %</th><th>Ops</th><th>G / P / BE</th><th>Win rate</th><th>Neto</th><th>Media</th>"+
+      "</tr></thead><tbody>"+body+"</tbody></table></div>"+
+      (missing?"<div class='note' style='margin-top:8px'>"+missing+" operaciones sin dato de ATR.</div>":"")+
+      "</div>";
+  }).join("");
+}
+
+["volLow","volHigh"].forEach(id=>$(id).addEventListener("input",renderVolatility));
+
 function renderTrades(){
   const rows=$("tradeRows");
   $("tradeCount").textContent=trades.length+" operaciones registradas";
   if(!trades.length){
-    rows.innerHTML='<tr><td colspan="6" class="empty">Todavía no hay operaciones registradas.</td></tr>';
-    renderStats();return;
+    rows.innerHTML='<tr><td colspan="7" class="empty">Todavía no hay operaciones registradas.</td></tr>';
+    renderStats();renderVolatility();return;
   }
 
   const sorted=[...trades].sort((a,b)=>
@@ -1176,12 +1251,14 @@ function renderTrades(){
       <td>${escapeHTML(t.date)}</td>
       <td><span class="strategy-label ${strategyClass(t.strategy)}">${strategyName(t.strategy)}</span></td>
       <td><span class="result-tag tag-${t.result.toLowerCase()}">${t.result}</span></td>
+      <td>${atrText(t.date)}</td>
       <td class="${Number(t.pnl)>0?"positive":Number(t.pnl)<0?"negative":""}">${money(Number(t.pnl))}</td>
       <td>${escapeHTML(t.notes||"—")}</td>
       <td><button class="danger" data-delete="${escapeHTML(t.id)}" type="button">Eliminar</button></td>
     </tr>
   `).join("");
   renderStats();
+  renderVolatility();
 }
 
 $("tradeForm").addEventListener("submit",event=>{
