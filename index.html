@@ -198,103 +198,70 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 @media(max-width:850px){.funding-grid{grid-template-columns:1fr}.funding-tabs{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.funding-card{padding:14px}.funding-comparison{gap:7px}.funding-big strong{font-size:39px}.funding-day{min-width:62px;padding:7px}.funding-bar-row{grid-template-columns:88px minmax(30px,1fr) 68px}.funding-bar-row output{font-size:12px}.funding-bottom{grid-template-columns:1fr}}
 
+
+/* CALCULADORA DE FONDEOS - CUATRO PESTAÑAS */
+.funding-calc{margin:34px 0 8px;color:#202735;font-family:Inter,system-ui,Arial,sans-serif}
+.funding-calc *{box-sizing:border-box}
+.funding-head{margin:0 0 14px}
+.funding-kicker,.funding-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.8px;color:#687080;text-transform:uppercase}
+.funding-head h2{font-size:clamp(22px,3vw,31px);font-weight:900;letter-spacing:-1px;margin:5px 0;color:#202735}
+.funding-sub{font-size:12px;color:#606978}
+.funding-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:5px;background:#e8ebef;border:1px solid #d4d9df;border-radius:12px;margin:14px 0}
+.funding-tabs button{border:0;background:transparent;color:#515b69;padding:10px 6px;font-size:10px;font-weight:800;letter-spacing:.3px;border-radius:8px}
+.funding-tabs button.active{background:#20283c;color:white}
+.funding-panel{display:none}.funding-panel.active{display:block}
+.funding-grid{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(320px,1.1fr);gap:14px}
+.funding-card{background:#f2f3f4;border:1px solid #d6d9dd;border-radius:16px;padding:18px;box-shadow:0 2px 8px #1018280b;min-width:0;color:#202735}
+.funding-card h3{font-size:13px;margin:0 0 14px;color:#202735}
+.funding-field{margin:0 0 16px;min-width:0}
+.funding-field:last-child{margin-bottom:0}
+.funding-field-top{display:flex;justify-content:space-between;gap:10px;align-items:end;margin:7px 0}
+.funding-field-top label{color:#303846;font-size:12px;font-weight:750;margin:0}
+.funding-field-top output{font-size:15px;font-weight:900;color:#202735;white-space:nowrap}
+.funding-field small{display:block;font-size:10px;line-height:1.45;color:#697281;margin-top:5px}
+.funding-range{display:block;width:100%;padding:0;margin:0;accent-color:#20283c;height:7px;cursor:pointer;background:#cfd3d8;border:0}
+.funding-result{display:flex;flex-direction:column;justify-content:center;min-height:180px}
+.funding-result .big{font-size:clamp(45px,7vw,76px);font-weight:900;line-height:1;color:#20283c;margin:8px 0}
+.funding-result .desc{font-size:12px;color:#515b69;line-height:1.6}
+.funding-callout{background:#20283c;color:#fff;border-radius:11px;padding:13px 15px;margin-top:12px}
+.funding-callout strong{font-size:22px;display:block;margin-top:4px}
+.funding-assumptions{display:grid;gap:12px}
+.funding-assumption{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;padding:8px 0;border-bottom:1px solid #dce0e4}
+.funding-assumption:last-child{border-bottom:0}
+.funding-assumption b.num{display:grid;place-items:center;width:27px;height:27px;background:#20283c;color:white;border-radius:7px}
+.funding-assumption strong{font-size:12px;display:block}
+.funding-assumption small{display:block;color:#687080;font-size:10px;line-height:1.5;margin-top:3px}
+.funding-equation{font-size:17px;font-weight:900;color:#303846;background:#e8ebef;padding:12px;border-radius:9px;margin:12px 0}
+.funding-bars{display:grid;gap:10px;margin-top:14px}
+.funding-bar-row{display:grid;grid-template-columns:125px minmax(40px,1fr) 90px;gap:8px;align-items:center;font-size:11px;font-weight:750;color:#303846}
+.funding-bar{height:15px;background:#e1e4e7;border:1px solid #cbd0d6;border-radius:5px;overflow:hidden}
+.funding-bar span{display:block;height:100%;border-radius:4px;background:#8db9a6}
+.funding-bar-row.cost .funding-bar span{background:#d98d8d}
+.funding-bar-row.net .funding-bar span{background:#20283c}
+.funding-bar-row output{text-align:right;font-size:14px;font-weight:900;white-space:nowrap}
+.funding-bottom-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+.funding-mini{background:#f2f3f4;border:1px solid #d6d9dd;border-radius:10px;padding:12px;color:#202735}
+.funding-mini small{font-size:9px;color:#687080;font-weight:800;letter-spacing:.6px;display:block}
+.funding-mini strong{font-size:19px;display:block;margin:5px 0}
+.funding-mini span{font-size:9px;color:#687080}
+.funding-mini.active{background:#f4e1b5;border-color:#e4c16d}
+.funding-highlight{background:#e8ebef;border-radius:12px;padding:17px;margin-top:14px;font-size:clamp(16px,2vw,23px);font-weight:900;line-height:1.35;color:#303846}
+.funding-two-results{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.funding-box{border:1px solid #d1d5da;border-radius:12px;padding:14px;background:#f7f7f7;color:#202735}
+.funding-box.dark{background:#343f63;color:#fff;border-color:#343f63}
+.funding-box small{font-size:9px;letter-spacing:1px;font-weight:800;display:block}
+.funding-box strong{font-size:clamp(26px,4vw,42px);display:block;margin:5px 0}
+.funding-box span{font-size:10px}
+.funding-note{font-size:10px;line-height:1.5;color:#687080;margin-top:9px}
+@media(max-width:800px){.funding-grid{grid-template-columns:1fr}.funding-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.funding-bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.funding-card{padding:14px}.funding-bar-row{grid-template-columns:95px minmax(25px,1fr) 72px}.funding-bar-row output{font-size:12px}.funding-bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.funding-two-results{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <header><div class="brand">STRIKE WALL <span>ANALYTICS</span></div></header>
 <main>
 
-<section class="funding-calc" id="fundingCalculator">
-  <div class="funding-head">
-    <div class="funding-kicker">STRIKE WALL ANALYTICS · FUTURES FUNDING</div>
-    <h2>¿CUÁNTAS CUENTAS PARA COBRAR $10,000 AL MES?</h2>
-    <div class="funding-sub">Fondeo de futuros · La cuenta fácil, la cuenta real y lo que cambia el número</div>
-  </div>
-  <div class="funding-tabs" aria-label="Secciones de la calculadora">
-    <button type="button">1 · LA CUENTA FÁCIL</button>
-    <button type="button">2 · LO QUE CUESTA FONDEAR</button>
-    <button type="button" class="active">3 · LA CUENTA REAL</button>
-    <button type="button">4 · DÓNDE SALE LA RENTABILIDAD</button>
-  </div>
-  <div class="funding-grid">
-    <div class="funding-card funding-left">
-      <div>
-        <div class="funding-eyebrow">TUS NÚMEROS</div>
-        <div class="funding-field-top"><label>CÓMO ARRIESGAS</label></div>
-        <div class="funding-presets" id="fundingRisk">
-          <button type="button" data-risk="conservador">CONSERVADOR</button>
-          <button type="button" class="active" data-risk="realista">REALISTA</button>
-          <button type="button" data-risk="agresivo">AGRESIVO</button>
-        </div>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundGoal">Objetivo mensual</label><output id="fundGoalOut">$10,000</output></div>
-        <input class="funding-range" id="fundGoal" type="range" min="1000" max="30000" step="500" value="10000">
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundPayout">Retiro por cuenta</label><output id="fundPayoutOut">$1,400</output></div>
-        <input class="funding-range" id="fundPayout" type="range" min="250" max="3000" step="50" value="1400">
-        <small>Lo que te llega cuando esa cuenta cobra, ya con el split.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundPass">Cuentas fondeadas que cobran</label><output id="fundPassOut">6 de cada 10</output></div>
-        <input class="funding-range" id="fundPass" type="range" min="1" max="10" step="1" value="6">
-        <small>De cada 10 que pasan a fondeo, cuántas llegan al retiro. El resto se pierde y se repone.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundCost">Coste de cada fondeada</label><output id="fundCostOut">$375</output></div>
-        <input class="funding-range" id="fundCost" type="range" min="50" max="1000" step="25" value="375">
-        <small>Sale de la lámina 2: precio de la cuenta y tu pass rate.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundWithdrawals">Retiros por cuenta antes de quemarla</label><output id="fundWithdrawalsOut">3</output></div>
-        <input class="funding-range" id="fundWithdrawals" type="range" min="1" max="8" step="1" value="3">
-        <small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live. Máximo 5.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundDays">Cada cuánto retiras una cuenta</label><output id="fundDaysOut">7 días</output></div>
-        <input class="funding-range" id="fundDays" type="range" min="3" max="30" step="1" value="7">
-        <small>Días entre un retiro y el siguiente cuando la cuenta ya está cobrando.</small>
-      </div>
-    </div>
-    <div class="funding-card funding-right">
-      <div class="funding-eyebrow">LA FÁCIL CONTRA LA REAL</div>
-      <div class="funding-comparison">
-        <div class="funding-big"><span>CUENTA FÁCIL</span><strong id="fundEasy">2</strong><small>Si todas cobraran siempre</small></div>
-        <div class="funding-big dark"><span>CUENTA REAL</span><strong id="fundReal">4</strong><small>Fondeadas activas a la vez</small></div>
-      </div>
-      <div>
-        <div class="funding-eyebrow">LA VIDA DE UNA CUENTA QUE COBRA</div>
-        <div class="funding-timeline" id="fundTimeline">
-          <div class="funding-day"><strong>DÍA 0</strong><b>Fondeada</b></div><span class="funding-arrow">→</span>
-          <div class="funding-day"><strong>DÍA 7</strong><b>+$1,400</b></div><span class="funding-arrow">→</span>
-          <div class="funding-day"><strong>DÍA 14</strong><b>+$1,400</b></div><span class="funding-arrow">→</span>
-          <div class="funding-day"><strong>DÍA 21</strong><b>+$1,400</b></div><span class="funding-arrow">→</span>
-        </div>
-        <div class="funding-total">TOTAL COBRADO <span id="fundTotal">$4,200</span></div>
-      </div>
-      <div>
-        <div class="funding-eyebrow">QUÉ PASA CON TUS <span id="fundActiveLabel">4</span> FONDEADAS</div>
-        <div class="funding-dots" id="fundDots">
-          <span class="funding-dot"></span><span class="funding-dot"></span><span class="funding-dot fail"></span><span class="funding-dot fail"></span>
-        </div>
-        <div class="funding-legend"><i></i><strong id="fundSurvivors">2</strong> llegan a retiro y cobran <strong id="fundPayoutCount">3 veces</strong>, <strong id="fundPayoutLegend">$1,400</strong> cada 7 días<br><i class="fail"></i><strong id="fundFailures">2</strong> se queman sin cobrar. Reponer cada una: <strong id="fundReplacement">$375</strong></div>
-      </div>
-      <div>
-        <div class="funding-eyebrow">LO QUE ENTRA Y LO QUE SALE CADA MES</div>
-        <div class="funding-bars">
-          <div class="funding-bar-row"><span>Cobras</span><div class="funding-bar"><span id="fundIncomeBar" style="width:100%"></span></div><output id="fundIncome">$15,429</output></div>
-          <div class="funding-bar-row cost"><span>Repones cuentas</span><div class="funding-bar"><span id="fundCostBar" style="width:15%"></span></div><output id="fundMonthlyCost">-$2,296</output></div>
-          <div class="funding-bar-row net"><span>Te queda</span><div class="funding-bar"><span id="fundNetBar" style="width:85%"></span></div><output id="fundNet">$13,133</output></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="funding-bottom">
-    <div class="funding-card"><div class="funding-eyebrow">PARA EMPEZAR</div><strong id="fundStart">$1,500</strong><small id="fundStartNote">10 evaluaciones para tener 4 fondeadas</small></div>
-    <div class="funding-card"><div class="funding-eyebrow">MEDIA MENSUAL</div><strong id="fundAverage">$13,133</strong><small>Neto al mes, después de reponer cuentas</small></div>
-  </div>
-</section>
 
   <h1>S&P 500 ATR as Percent of Price</h1>
   <div class="subtitle">Volatilidad diaria del índice S&P 500. ATR de 14 sesiones como porcentaje del precio de cierre.</div>
@@ -351,7 +318,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <label for="strategy">Estrategia</label>
           <select id="strategy" required>
             <option value="PW">Put Wall</option>
-            <option value="CW">Call Wall</option>
+                        <option value="CW">Call Wall</option>
             <option value="DIS">Discrecional</option>
           </select>
         </div>
@@ -454,81 +421,238 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
     ATR(14) calculado mediante media simple de los últimos 14 True Range.
     Los datos se actualizan mediante GitHub Actions.
   </p>
+
+<section class="funding-calc" id="fundingCalculator">
+  <div class="funding-head">
+    <div class="funding-kicker">STRIKE WALL ANALYTICS · FUTURES FUNDING</div>
+    <h2>¿CUÁNTAS CUENTAS PARA COBRAR $5,000 AL MES?</h2>
+    <div class="funding-sub">Fondeo de futuros · La cuenta fácil, el coste real y lo que cambia el número</div>
+  </div>
+  <nav class="funding-tabs" aria-label="Secciones de la calculadora">
+    <button type="button" class="active" data-fund-tab="easy">1 · LA CUENTA FÁCIL</button>
+    <button type="button" data-fund-tab="cost">2 · LO QUE CUESTA FONDEAR</button>
+    <button type="button" data-fund-tab="real">3 · LA CUENTA REAL</button>
+    <button type="button" data-fund-tab="profit">4 · DÓNDE SALE LA RENTABILIDAD</button>
+  </nav>
+
+  <section class="funding-panel active" data-fund-panel="easy">
+    <div class="funding-grid">
+      <div class="funding-card funding-result">
+        <div class="funding-eyebrow">LA DIVISIÓN ES FÁCIL</div>
+        <div class="big"><span id="feEasyCount">4</span> <span style="font-size:25px">CUENTAS</span></div>
+        <div class="funding-equation" id="feEasyEquation">$5,000 ÷ $1,500 = 3.3</div>
+        <div class="desc">Objetivo mensual dividido entre lo que te paga una cuenta. El resultado se redondea hacia arriba.</div>
+      </div>
+      <div class="funding-card">
+        <div class="funding-eyebrow">LO QUE ESTA CUENTA DA POR HECHO</div>
+        <div class="funding-assumptions">
+          <div class="funding-assumption"><b class="num">1</b><div><strong>Que toda cuenta fondeada cobra</strong><small>De cada 10 que pasan a fondeo, al retiro llegan todas. El resto se queda por el camino.</small></div></div>
+          <div class="funding-assumption"><b class="num">2</b><div><strong>Que reponerlas es gratis</strong><small>Evaluación, activación y resets. Cada cuenta perdida sale de lo que has cobrado.</small></div></div>
+          <div class="funding-assumption"><b class="num">3</b><div><strong>Que cobras lo mismo cada mes</strong><small>Hay meses que cobran cuatro y meses que no cobra ninguna. La media no paga las facturas.</small></div></div>
+        </div>
+        <div class="funding-callout">La división es fácil. <strong>Lo difícil es llegar al cobro.</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="funding-panel" data-fund-panel="cost">
+    <div class="funding-grid">
+      <div class="funding-card">
+        <div class="funding-eyebrow">ANTES DE COBRAR, HAY QUE LLEGAR</div>
+        <div class="funding-field"><div class="funding-field-top"><label for="fcPass">Evaluaciones que pasas</label><output id="fcPassOut">3 de cada 10</output></div><input class="funding-range" id="fcPass" type="range" min="1" max="10" value="3" step="1"><small>Tu pass rate: de cada 10 evaluaciones que compras, cuántas llegan a fondeo.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="fcPrice">Precio de la cuenta</label><output id="fcPriceOut">$160</output></div><input class="funding-range" id="fcPrice" type="range" min="50" max="300" value="160" step="5"><small>Lo que pagas por cada evaluación, con la activación si la hay.</small></div>
+        <div class="funding-equation" id="fcEquation">$160 ÷ 30% = $533</div>
+        <div class="funding-note">Las evaluaciones que suspendes también las pagas.</div>
+      </div>
+      <div class="funding-card funding-result">
+        <div class="funding-eyebrow">LO QUE TE CUESTA CADA FONDEADA</div>
+        <div class="big" id="fcFundedCost">$533</div>
+        <div class="desc" id="fcCostDesc">No pagas $160 por cuenta fondeada. Pagas $533, contando las evaluaciones que no pasan.</div>
+        <div class="funding-bars">
+          <div class="funding-bar-row"><span>10 evaluaciones</span><div class="funding-bar"><span id="fcEvalBar" style="width:100%;background:#8bb6d7"></span></div><output id="fcEvalTotal">$1,600</output></div>
+          <div class="funding-bar-row"><span>Pasan a fondeo</span><div class="funding-bar"><span id="fcPassBar" style="width:30%;background:#e5c36d"></span></div><output id="fcPassTotal">3</output></div>
+          <div class="funding-bar-row"><span>Llegan a cobrar</span><div class="funding-bar"><span id="fcPayoutBar" style="width:9%;background:#8db9a6"></span></div><output id="fcPayoutTotal">0.9</output></div>
+        </div>
+        <div class="funding-note">El porcentaje de cuentas que llega al primer retiro se toma de la pestaña 3.</div>
+      </div>
+    </div>
+  </section>
+    <section class="funding-panel" data-fund-panel="real">
+    <div class="funding-grid">
+      <div class="funding-card">
+        <div class="funding-eyebrow">TUS NÚMEROS</div>
+        <div class="funding-field"><div class="funding-field-top"><label>CÓMO ARRIESGAS</label></div>
+          <div class="funding-presets" id="frRisk">
+            <button type="button" data-risk="conservador">CONSERVADOR</button>
+            <button type="button" class="active" data-risk="realista">REALISTA</button>
+            <button type="button" data-risk="agresivo">AGRESIVO</button>
+          </div>
+        </div>
+        <div class="funding-field"><div class="funding-field-top"><label for="frGoal">Objetivo mensual</label><output id="frGoalOut">$5,000</output></div><input class="funding-range" id="frGoal" type="range" min="1000" max="30000" value="5000" step="250"></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="frPayout">Retiro por cuenta</label><output id="frPayoutOut">$1,200</output></div><input class="funding-range" id="frPayout" type="range" min="250" max="3000" value="1200" step="50"><small>Lo que te llega cuando esa cuenta cobra, ya con el split.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="frSurvival">Fondeadas que llegan a retiro</label><output id="frSurvivalOut">3 de cada 10</output></div><input class="funding-range" id="frSurvival" type="range" min="1" max="10" value="3" step="1"><small>De cada 10 cuentas fondeadas, cuántas llegan al primer retiro. El resto se pierde y se repone.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label>Coste de cada fondeada</label><output id="frCostOut">$533</output></div><small>Se calcula en la pestaña 2 según el precio de evaluación y el porcentaje que apruebas.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="frWithdrawals">Retiros por cuenta antes de quemarla</label><output id="frWithdrawalsOut">2</output></div><input class="funding-range" id="frWithdrawals" type="range" min="1" max="5" value="2" step="1"><small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="frDays">Cada cuánto retiras una cuenta</label><output id="frDaysOut">7 días</output></div><input class="funding-range" id="frDays" type="range" min="3" max="30" value="7" step="1"><small>Días entre un retiro y el siguiente cuando la cuenta ya está cobrando.</small></div>
+      </div>
+      <div class="funding-card">
+        <div class="funding-eyebrow">LA FÁCIL CONTRA LA REAL</div>
+        <div class="funding-two-results" style="margin-top:10px">
+          <div class="funding-box"><small>CUENTA FÁCIL</small><strong id="frEasy">3</strong><span>Cuentas si todas cobraran los retiros previstos</span></div>
+          <div class="funding-box dark"><small>CUENTA REAL</small><strong id="frReal">10</strong><span>Cuentas fondeadas necesarias para compensar las que se pierden</span></div>
+        </div>
+        <div class="funding-eyebrow" style="margin-top:17px">LA VIDA DE UNA CUENTA QUE COBRA</div>
+        <div class="funding-bars" id="frTimeline"></div>
+        <div class="funding-callout">TOTAL COBRADO POR CUENTA <strong id="frTotal">$2,400</strong></div>
+        <div class="funding-eyebrow" style="margin-top:17px">QUÉ PASA CON TUS CUENTAS FONDEADAS</div>
+        <div class="funding-note" id="frPopulation">De cada 10 cuentas: 3 llegan al retiro y 7 se pierden.</div>
+        <div class="funding-bars">
+          <div class="funding-bar-row"><span>Cobras al mes</span><div class="funding-bar"><span id="frIncomeBar"></span></div><output id="frIncome">—</output></div>
+          <div class="funding-bar-row cost"><span>Repones cuentas</span><div class="funding-bar"><span id="frCostBar"></span></div><output id="frMonthlyCost">—</output></div>
+          <div class="funding-bar-row net"><span>Te queda</span><div class="funding-bar"><span id="frNetBar"></span></div><output id="frNet">—</output></div>
+        </div>
+        <div class="funding-note">Estimación mensual: se prorratean los retiros por los días entre cobros y se repone el flujo de cuentas perdidas. Los resultados son promedios, no una garantía de cobro.</div>
+      </div>
+    </div>
+    <div class="funding-two-results" style="margin-top:12px">
+      <div class="funding-card"><div class="funding-eyebrow">PARA EMPEZAR</div><div class="big" style="font-size:30px" id="frStart">—</div><div class="funding-note" id="frStartNote">Capital estimado para las evaluaciones necesarias.</div></div>
+      <div class="funding-card"><div class="funding-eyebrow">MEDIA MENSUAL</div><div class="big" style="font-size:30px" id="frAverage">—</div><div class="funding-note">Neto mensual después de reponer cuentas.</div></div>
+    </div>
+  </section>
+
+  <section class="funding-panel" data-fund-panel="profit">
+    <div class="funding-grid">
+      <div class="funding-card">
+        <div class="funding-eyebrow">UNA TANDA DE 10 EVALUACIONES</div>
+        <div class="funding-field"><div class="funding-field-top"><label>Evaluaciones que pasas</label><output id="fpPassOut">3 de cada 10</output></div><small>Viene de la pestaña 2 · Lo que cuesta fondear.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label>Fondeadas que llegan a retiro</label><output id="fpSuccessOut">3 de cada 10</output></div><small>Viene de la pestaña 3 · La cuenta real.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label>Retiros por cuenta que cobra</label><output id="fpWithdrawalsOut">2</output></div><small>Viene de la pestaña 3 · La cuenta real.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label>Retiro por cuenta</label><output id="fpPayoutOut">$1,200</output></div><small>Viene de la pestaña 3 · La cuenta real.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label>Precio de cada evaluación</label><output id="fpPriceOut">$160</output></div><small>Viene de la pestaña 2 · Lo que cuesta fondear.</small></div>
+      </div>
+      <div class="funding-card">
+        <div class="funding-eyebrow">LO QUE TE QUEDA DE ESAS 10</div>
+        <div class="funding-two-results" style="margin-top:10px">
+          <div class="funding-box"><small>PAGAS</small><strong id="fpSpend">$1,500</strong><span>10 evaluaciones</span></div>
+          <div class="funding-box dark"><small>TE QUEDA</small><strong id="fpNet">$3,300</strong><span id="fpGrossCaption">Cobras $4,800 en 4 retiros</span></div>
+        </div>
+        <div class="funding-eyebrow" style="margin-top:17px">QUÉ PASA SI MEJORAS UNA SOLA COSA</div>
+        <div class="funding-two-results" style="margin-top:8px">
+          <div class="funding-box"><small>PASAR UNA EVALUACIÓN MÁS</small><strong id="fpExtraPass">+$960</strong><span>De <span id="fpPassBase">5</span> a <span id="fpPassNext">6</span> de cada 10</span></div>
+          <div class="funding-box dark"><small>COBRAR UN RETIRO MÁS POR CUENTA</small><strong id="fpExtraWithdrawal">+$2,400</strong><span>De <span id="fpWBase">2</span> a <span id="fpWNext">3</span> retiros</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="funding-bottom-grid" id="fpScenarios"></div>
+    <div class="funding-highlight">LA RENTABILIDAD SALE DE COBRAR MUCHAS VECES DE LA MISMA CUENTA. NO DE PASAR MÁS EVALUACIONES.</div>
+  </section>
+  <div class="funding-note">Calculadora orientativa. Los porcentajes representan promedios introducidos por el usuario; las firmas de fondeo pueden aplicar reglas, límites, activaciones, splits y condiciones distintas.</div>
+</section>
+
 </main>
 
+
+
 <script>
-
-/* CALCULADORA DE FONDEOS */
+/* CALCULADORA DE FONDEOS: MODELO INTERCONECTADO */
 (()=>{
- const $f=id=>document.getElementById(id);
- const ids=["fundGoal","fundPayout","fundPass","fundCost","fundWithdrawals","fundDays"];
- const money=n=>"$"+Math.round(n).toLocaleString("en-US");
- const state={risk:"realista"};
- const values=()=>Object.fromEntries(ids.map(id=>[id,Number($f(id).value)]));
- function update(){
-   const v=values();
-   const goal=v.fundGoal,payout=v.fundPayout,pass=v.fundPass/10,cost=v.fundCost,n=v.fundWithdrawals,days=v.fundDays;
-   const perAccount=payout*n;
-   const easy=Math.max(1,Math.ceil(goal/(perAccount*1.2)));
-   const real=Math.max(1,Math.ceil(easy/pass));
-   const survivors=Math.max(1,Math.round(real*pass));
-   const failures=Math.max(0,real-survivors);
-   const total=payout*n;
-   const monthlyPayouts=30/days;
-   const income=survivors*payout*Math.min(n,monthlyPayouts);
-   const replacementRate=failures/(n*days/30||1);
-   const monthlyCost=failures*cost*Math.max(1,30/(days*n));
-   const net=income-monthlyCost;
-   let evals=Math.ceil(real/pass);
-   let shownIncome=income,shownCost=monthlyCost,shownNet=net,shownStart=evals*cost;
-   if(goal===10000&&payout===1400&&v.fundPass===6&&cost===375&&n===3&&days===7){
-     shownIncome=15429;shownCost=2296;shownNet=13133;shownStart=1500;evals=10;
-   }
-   const easyValue=easy;
-   $f("fundGoalOut").textContent=money(goal);
-   $f("fundPayoutOut").textContent=money(payout);
-   $f("fundPassOut").textContent=v.fundPass+" de cada 10";
-   $f("fundCostOut").textContent=money(cost);
-   $f("fundWithdrawalsOut").textContent=n;
-   $f("fundDaysOut").textContent=days+" días";
-   $f("fundEasy").textContent=easyValue;
-   $f("fundReal").textContent=real;
-   $f("fundActiveLabel").textContent=real;
-   $f("fundTotal").textContent=money(total);
-   $f("fundSurvivors").textContent=survivors;
-   $f("fundPayoutCount").textContent=n+" veces";
-   $f("fundPayoutLegend").textContent=money(payout);
-   $f("fundFailures").textContent=failures;
-   $f("fundReplacement").textContent=money(cost);
-   $f("fundIncome").textContent=money(shownIncome);
-   $f("fundMonthlyCost").textContent="-"+money(shownCost);
-   $f("fundNet").textContent=money(shownNet);
-   $f("fundStart").textContent=money(shownStart);
-   $f("fundStartNote").textContent=evals+" evaluaciones para tener "+real+" fondeadas";
-   $f("fundAverage").textContent=money(shownNet);
-   const max=Math.max(shownIncome,shownCost,shownNet,1);
-   $f("fundIncomeBar").style.width=(shownIncome/max*100)+"%";
-   $f("fundCostBar").style.width=(shownCost/max*100)+"%";
-   $f("fundNetBar").style.width=(Math.max(0,shownNet)/max*100)+"%";
-   const dots=$f("fundDots");dots.innerHTML="";
-   for(let i=0;i<real;i++){const d=document.createElement("span");d.className="funding-dot"+(i>=survivors?" fail":"");dots.appendChild(d);}
-   const timeline=$f("fundTimeline");timeline.innerHTML="";
-   const first=document.createElement("div");first.className="funding-day";first.innerHTML="<strong>DÍA 0</strong><b>Fondeada</b>";timeline.append(first);
-   for(let i=1;i<=n;i++){
-     const arrow=document.createElement("span");arrow.className="funding-arrow";arrow.textContent="→";timeline.append(arrow);
-     const day=document.createElement("div");day.className="funding-day";day.innerHTML="<strong>DÍA "+(i*days)+"</strong><b>+"+money(payout)+"</b>";timeline.append(day);
-   }
-   const arrow=document.createElement("span");arrow.className="funding-arrow";arrow.textContent="→";timeline.append(arrow);
- }
- ids.forEach(id=>$f(id).addEventListener("input",update));
- document.querySelectorAll("#fundingRisk button").forEach(b=>b.addEventListener("click",()=>{
-   document.querySelectorAll("#fundingRisk button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-   const presets={conservador:{fundPass:5,fundWithdrawals:2,fundDays:10},realista:{fundPass:6,fundWithdrawals:3,fundDays:7},agresivo:{fundPass:8,fundWithdrawals:4,fundDays:5}};
-   Object.entries(presets[b.dataset.risk]).forEach(([id,val])=>$f(id).value=val);update();
+ const $=id=>document.getElementById(id);
+ const val=id=>Number($(id).value);
+ const money=n=> (n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
+ const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:1});
+ const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+ const tabs=[...document.querySelectorAll("[data-fund-tab]")];
+ tabs.forEach(btn=>btn.addEventListener("click",()=>{
+   tabs.forEach(x=>x.classList.toggle("active",x===btn));
+   document.querySelectorAll("[data-fund-panel]").forEach(panel=>panel.classList.toggle("active",panel.dataset.fundPanel===btn.dataset.fundTab));
  }));
- update();
+ const easyCount=()=>Math.ceil(val("frGoal")/(val("frPayout")*val("frWithdrawals")));
+ function updateEasy(){
+   const goal=5000, payout=1500;
+   const exact=goal/payout;
+   $("feEasyCount").textContent=Math.ceil(exact);
+   $("feEasyEquation").textContent=money(goal)+" ÷ "+money(payout)+" = "+fmt(exact);
+ }
+ function updateCost(){
+   const pass=val("fcPass")/10, price=val("fcPrice"), cost=price/pass;
+   const survival=val("frSurvival")/10;
+   $("fcPassOut").textContent=val("fcPass")+" de cada 10";
+   $("fcPriceOut").textContent=money(price);
+   $("fcFundedCost").textContent=money(cost);
+   $("fcEquation").textContent=money(price)+" ÷ "+Math.round(pass*100)+"% = "+money(cost);
+   $("fcCostDesc").textContent="No pagas "+money(price)+" por cada cuenta fondeada. Pagas "+money(cost)+", contando las evaluaciones que no pasan.";
+   $("fcEvalTotal").textContent=money(price*10);
+   $("fcPassTotal").textContent=fmt(10*pass);
+   $("fcPayoutTotal").textContent=fmt(10*pass*survival);
+   $("fcEvalBar").style.width="100%";
+   $("fcPassBar").style.width=(pass*100)+"%";
+   $("fcPayoutBar").style.width=(pass*survival*100)+"%";
+   $("frCostOut").textContent=money(cost);
+ }
+ function updateReal(){
+   const goal=val("frGoal"), payout=val("frPayout"), survival=val("frSurvival")/10;
+   const withdrawals=val("frWithdrawals"), days=val("frDays"), cost=val("fcPrice")/(val("fcPass")/10);
+   const easy=Math.ceil(goal/(payout*withdrawals));
+   const real=Math.ceil(easy/survival);
+   const survivors=real*survival, failures=real-survivors;
+   const monthlyPayouts=Math.min(withdrawals,30/days);
+   const income=survivors*payout*monthlyPayouts;
+   const replacementCost=failures*cost*(30/(days*withdrawals));
+   const net=income-replacementCost;
+   $("frGoalOut").textContent=money(goal);$("frPayoutOut").textContent=money(payout);
+   $("frSurvivalOut").textContent=val("frSurvival")+" de cada 10";
+   $("frWithdrawalsOut").textContent=withdrawals;$("frDaysOut").textContent=days+" días";
+   $("frEasy").textContent=easy;$("frReal").textContent=real;
+   $("frTotal").textContent=money(payout*withdrawals);
+   $("frPopulation").textContent="De cada "+real+" cuentas fondeadas: aproximadamente "+fmt(survivors)+" llegan al retiro y "+fmt(failures)+" se pierden.";
+   $("frIncome").textContent=money(income);$("frMonthlyCost").textContent="-"+money(replacementCost);$("frNet").textContent=money(net);
+   const scale=Math.max(income,replacementCost,Math.abs(net),1);
+   $("frIncomeBar").style.width=(income/scale*100)+"%";
+   $("frCostBar").style.width=(replacementCost/scale*100)+"%";
+   $("frNetBar").style.width=(Math.max(0,net)/scale*100)+"%";
+   $("frStart").textContent=money(real*cost);
+   $("frStartNote").textContent="Coste estimado para conseguir "+real+" cuentas fondeadas, según tu pass rate.";
+   $("frAverage").textContent=money(net);
+   const timeline=$("frTimeline");timeline.innerHTML="";
+   const entries=[{label:"DÍA 0",value:"Fondeada"}];
+   for(let i=1;i<=withdrawals;i++)entries.push({label:"DÍA "+(i*days),value:"+"+money(payout)});
+   entries.forEach((e,i)=>{const row=document.createElement("div");row.className="funding-bar-row";row.style.gridTemplateColumns="72px 1fr";row.innerHTML="<span>"+e.label+"</span><strong style='font-size:12px'>"+e.value+"</strong>";timeline.append(row);});
+ }
+ function updateProfit(){
+   const pass=val("fcPass")/10, success=val("frSurvival")/10, withdrawals=val("frWithdrawals"), payout=val("frPayout"), price=val("fcPrice");
+   const evaluations=10, passed=evaluations*pass, payoutAccounts=passed*success;
+   const payoutCount=payoutAccounts*withdrawals, gross=payoutCount*payout, spend=evaluations*price, net=gross-spend;
+   const extraPass=success*withdrawals*payout;
+   const extraWithdrawal=payoutAccounts*payout;
+   $("fpPassOut").textContent=val("fcPass")+" de cada 10";$("fpSuccessOut").textContent=val("frSurvival")+" de cada 10";
+   $("fpWithdrawalsOut").textContent=withdrawals;$("fpPayoutOut").textContent=money(payout);$("fpPriceOut").textContent=money(price);
+   $("fpSpend").textContent=money(spend);$("fpNet").textContent=money(net);
+   $("fpGrossCaption").textContent="Cobras "+money(gross)+" en "+fmt(payoutCount)+" retiros";
+   $("fpExtraPass").textContent="+"+money(extraPass);$("fpPassBase").textContent=val("fcPass");$("fpPassNext").textContent=clamp(val("fcPass")+1,1,10);
+   $("fpExtraWithdrawal").textContent="+"+money(extraWithdrawal);$("fpWBase").textContent=withdrawals;$("fpWNext").textContent=Math.min(5,withdrawals+1);
+   const scenarios=$("fpScenarios");scenarios.innerHTML="";
+   for(let n=1;n<=5;n++){
+     const scenarioNet=payoutAccounts*n*payout-spend;
+     const card=document.createElement("div");card.className="funding-mini"+(n===withdrawals?" active":"");
+     card.innerHTML="<small>"+n+" "+(n===1?"RETIRO":"RETIROS")+" POR CUENTA</small><strong>"+money(scenarioNet)+"</strong><span>Neto de 10 evaluaciones</span>";
+     scenarios.append(card);
+   }
+    }
+ function updateAll(){updateEasy();updateCost();updateReal();updateProfit();}
+ ["fcPass","fcPrice","frGoal","frPayout","frSurvival","frWithdrawals","frDays"].forEach(id=>$(id).addEventListener("input",updateAll));
+ const riskPresets={
+   conservador:{survival:2,withdrawals:2,days:10},
+   realista:{survival:3,withdrawals:2,days:7},
+   agresivo:{survival:5,withdrawals:3,days:5}
+ };
+ document.querySelectorAll("#frRisk [data-risk]").forEach(btn=>btn.addEventListener("click",()=>{
+   document.querySelectorAll("#frRisk [data-risk]").forEach(x=>x.classList.toggle("active",x===btn));
+   const preset=riskPresets[btn.dataset.risk];
+   $("frSurvival").value=preset.survival;$("frWithdrawals").value=preset.withdrawals;$("frDays").value=preset.days;
+   updateAll();
+ }));
+ updateAll();
 })();
-
 </script>
 
 <script>
@@ -832,6 +956,7 @@ function saveTrades(){
 }
 
 /* ESTADÍSTICAS Y DRAWDOWN */
+  /* ESTADÍSTICAS Y DRAWDOWN */
 
 function calculateMaxDrawdown(list){
   const chronological=[...list].sort((a,b)=>
