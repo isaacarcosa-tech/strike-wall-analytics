@@ -306,17 +306,8 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
   </div>
 
   <div class="panel">
-    <h2>Estadísticas generales</h2>
-    <div class="stats-grid">
-      <div class="stat-card"><small>Total operaciones</small><strong id="totalTrades">0</strong></div>
-      <div class="stat-card"><small>Win rate (sin BE)</small><strong id="winRate">—</strong></div>
-      <div class="stat-card"><small>Beneficio neto</small><strong id="netProfit">$0.00</strong></div>
-      <div class="stat-card"><small>Promedio por operación</small><strong id="averageTrade">$0.00</strong></div>
-      <div class="stat-card"><small>Ganadoras</small><strong id="winningTrades">0</strong></div>
-      <div class="stat-card"><small>Perdedoras</small><strong id="losingTrades">0</strong></div>
-      <div class="stat-card"><small>Break Even</small><strong id="breakevenTrades">0</strong></div>
-      <div class="stat-card"><small>Drawdown máximo</small><strong id="maxDrawdown">$0.00</strong></div>
-    </div>
+    <h2>Estadísticas por estrategia</h2>
+    <p class="note">Cada estrategia se lleva en una cuenta separada.</p>
 
     <div class="strategy-grid">
       <div class="strategy-card put-wall">
@@ -326,6 +317,8 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div><small>Win rate</small><strong id="pwRate">—</strong></div>
           <div><small>Balance neto</small><strong id="pwNet">$0.00</strong></div>
           <div><small>Ganadoras / Perdedoras / BE</small><strong id="pwRecord">0 / 0 / 0</strong></div>
+          <div><small>Promedio por operación</small><strong id="pwAvg">$0.00</strong></div>
+          <div><small>Drawdown máximo</small><strong id="pwDd">$0.00</strong></div>
         </div>
       </div>
       <div class="strategy-card call-wall">
@@ -335,6 +328,8 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div><small>Win rate</small><strong id="cwRate">—</strong></div>
           <div><small>Balance neto</small><strong id="cwNet">$0.00</strong></div>
           <div><small>Ganadoras / Perdedoras / BE</small><strong id="cwRecord">0 / 0 / 0</strong></div>
+          <div><small>Promedio por operación</small><strong id="cwAvg">$0.00</strong></div>
+          <div><small>Drawdown máximo</small><strong id="cwDd">$0.00</strong></div>
         </div>
       </div>
       <div class="strategy-card discretional">
@@ -344,6 +339,8 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div><small>Win rate</small><strong id="disRate">—</strong></div>
           <div><small>Balance neto</small><strong id="disNet">$0.00</strong></div>
           <div><small>Ganadoras / Perdedoras / BE</small><strong id="disRecord">0 / 0 / 0</strong></div>
+          <div><small>Promedio por operación</small><strong id="disAvg">$0.00</strong></div>
+          <div><small>Drawdown máximo</small><strong id="disDd">$0.00</strong></div>
         </div>
       </div>
     </div>
@@ -1135,20 +1132,6 @@ function setMoneyClass(element,value){
 }
 
 function renderStats(){
-  const s=makeStats(trades);
-  $("totalTrades").textContent=s.total;
-  $("winRate").textContent=s.rate===null?"—":s.rate.toFixed(2)+"%";
-  $("netProfit").textContent=money(s.net);
-  $("averageTrade").textContent=money(s.average);
-  $("winningTrades").textContent=s.wins;
-  $("losingTrades").textContent=s.losses;
-  $("breakevenTrades").textContent=s.be;
-  $("maxDrawdown").textContent=money(-s.maxDrawdown);
-
-  setMoneyClass($("netProfit"),s.net);
-  setMoneyClass($("averageTrade"),s.average);
-  setMoneyClass($("maxDrawdown"),s.maxDrawdown>0?-1:0);
-
   const strategyStats=[
     {key:"PW",prefix:"pw"},
     {key:"CW",prefix:"cw"},
@@ -1162,6 +1145,10 @@ function renderStats(){
     $(prefix+"Net").textContent=money(stats.net);
     $(prefix+"Record").textContent=stats.wins+" / "+stats.losses+" / "+stats.be;
     setMoneyClass($(prefix+"Net"),stats.net);
+    $(prefix+"Avg").textContent=money(stats.average);
+    setMoneyClass($(prefix+"Avg"),stats.average);
+    $(prefix+"Dd").textContent=money(-stats.maxDrawdown);
+    setMoneyClass($(prefix+"Dd"),stats.maxDrawdown>0?-1:0);
   });
 }
 
