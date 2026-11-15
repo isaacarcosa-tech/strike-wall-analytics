@@ -69,52 +69,17 @@ canvas{width:100%;height:100%;display:block;cursor:crosshair;touch-action:pan-y}
 .negative{color:var(--red)}
 .neutral{color:var(--blue)}
 .strategy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
-
-/* TARJETAS DE ESTRATEGIAS - OPCIÓN 3 */
-.strategy-card{
-  border-radius:9px;
-  padding:16px;
-  border:1px solid transparent;
-}
-.strategy-card.put-wall{
-  background:#164B78;
-  border-color:#286b9f;
-}
-.strategy-card.call-wall{
-  background:#35516D;
-  border-color:#58728d;
-}
-.strategy-card.discretional{
-  background:#51436D;
-  border-color:#756493;
-}
-.strategy-card .strategy-title{
-  color:#ffffff;
-  font-weight:800;
-  font-size:14px;
-  letter-spacing:.5px;
-  margin-bottom:14px;
-}
-.strategy-card .strategy-stats{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-}
-.strategy-stats small{
-  display:block;
-  color:#d4dfeb;
-  font-size:11px;
-}
-.strategy-stats strong{
-  display:block;
-  margin-top:5px;
-  font-size:18px;
-  color:#ffffff;
-}
+.strategy-card{border-radius:9px;padding:16px;border:1px solid transparent}
+.strategy-card.put-wall{background:#164B78;border-color:#286b9f}
+.strategy-card.call-wall{background:#35516D;border-color:#58728d}
+.strategy-card.discretional{background:#51436D;border-color:#756493}
+.strategy-card .strategy-title{color:#ffffff;font-weight:800;font-size:14px;letter-spacing:.5px;margin-bottom:14px}
+.strategy-card .strategy-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.strategy-stats small{display:block;color:#d4dfeb;font-size:11px}
+.strategy-stats strong{display:block;margin-top:5px;font-size:18px;color:#ffffff}
 .strategy-card .strategy-stats strong.positive{color:#55e0b1}
 .strategy-card .strategy-stats strong.negative{color:#ff9999}
 .strategy-card .strategy-stats strong.neutral{color:#ffffff}
-
 .table-wrap{overflow:auto;max-height:520px;margin-top:15px}
 table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}
 th,td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:right}
@@ -130,10 +95,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .strategy-label.call-wall{color:#9bb8d4}
 .strategy-label.discretional{color:#bba9e8}
 .backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
-
-@media(max-width:800px){
-  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+@media(max-width:800px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){
   main{padding:18px 4%}
   .chart-wrap{height:320px}
@@ -150,8 +112,8 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .funding-kicker,.funding-eyebrow{font-size:10px;font-weight:800;letter-spacing:2px;color:#687080;text-transform:uppercase}
 .funding-head h2{font-size:clamp(22px,3vw,31px);font-weight:900;letter-spacing:-1px;margin:5px 0;color:#202735}
 .funding-sub{font-size:12px;color:#606978}
-.funding-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:5px;background:#e8ebef;border:1px solid #d4d9df;border-radius:12px;margin:14px 0}
-.funding-tabs button{border:0;background:transparent;color:#515b69;padding:10px 6px;font-size:10px;font-weight:800;letter-spacing:.4px;border-radius:8px}
+.funding-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:5px;background:#e8ebef;border:1px solid #d4d9df;border-radius:12px;margin:14px 0}
+.funding-tabs button{border:0;background:transparent;color:#515b69;padding:10px 6px;font-size:10px;font-weight:800;letter-spacing:.3px;border-radius:8px}
 .funding-tabs button.active{background:#20283c;color:white}
 .funding-grid{display:grid;grid-template-columns:minmax(320px,.85fr) minmax(440px,1.15fr);gap:14px}
 .funding-card{background:#f2f3f4;border:1px solid #d6d9dd;border-radius:16px;padding:17px 18px;box-shadow:0 2px 8px #1018280b;min-width:0}
@@ -195,958 +157,366 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .funding-bottom .funding-card{padding:14px 17px}
 .funding-bottom strong{display:block;font-size:25px;margin:3px 0}
 .funding-bottom small{font-size:10px;color:#687080}
-@media(max-width:850px){.funding-grid{grid-template-columns:1fr}.funding-tabs{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.funding-card{padding:14px}.funding-comparison{gap:7px}.funding-big strong{font-size:39px}.funding-day{min-width:62px;padding:7px}.funding-bar-row{grid-template-columns:88px minmax(30px,1fr) 68px}.funding-bar-row output{font-size:12px}.funding-bottom{grid-template-columns:1fr}}
-
+.funding-page{background:#e9ecef;border-radius:16px;padding:20px;margin-top:24px}
+.funding-page .funding-head h2{color:#202735}
+@media(max-width:850px){
+  .funding-grid{grid-template-columns:1fr}
+  .funding-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .funding-card{padding:14px}
+  .funding-comparison{gap:7px}
+  .funding-big strong{font-size:39px}
+  .funding-day{min-width:62px;padding:7px}
+  .funding-bar-row{grid-template-columns:88px minmax(30px,1fr) 68px}
+  .funding-bar-row output{font-size:12px}
+  .funding-bottom{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <header><div class="brand">STRIKE WALL <span>ANALYTICS</span></div></header>
 <main>
 
-<section class="funding-calc" id="fundingCalculator">
+<!-- CONTENIDO PRINCIPAL DE STRIKE WALL ANALYTICS -->
+<h1>S&P 500 ATR as Percent of Price</h1>
+<div class="subtitle">Volatilidad diaria del índice S&P 500. ATR de 14 sesiones como porcentaje del precio de cierre.</div>
+<div class="metadata" id="status">Cargando datos diarios...</div>
+
+<div class="value-card">
+  <div>
+    <small class="status">Último valor · 14D ATR as % of Close</small><br>
+    <strong id="latestValue">—</strong>
+    <div class="status" id="latestDate">—</div>
+  </div>
+  <div>
+    <label>Referencia ATR %</label>
+    <input id="reference" type="number" value="1" step="0.05" style="width:110px">
+  </div>
+</div>
+
+<div class="panel">
+  <div class="toolbar">
+    <button data-period="10D">10D</button>
+    <button data-period="1M">1M</button>
+    <button data-period="3M">3M</button>
+    <button data-period="6M">6M</button>
+    <button data-period="YTD">YTD</button>
+    <button data-period="1Y">1Y</button>
+    <button data-period="5Y" class="active">5Y</button>
+    <button data-period="Max">Max</button>
+  </div>
+  <div class="toolbar">
+    <button id="valueMode" class="active">Value</button>
+    <button id="changeMode">% from view start</button>
+  </div>
+  <div class="chart-wrap" id="chartWrap">
+    <canvas id="chart"></canvas>
+    <div class="chart-tooltip" id="chartTooltip"></div>
+  </div>
+  <div class="chart-legend">
+    <span><i class="legend-line"></i>14D ATR as % of Close</span>
+    <span><i class="legend-ref"></i>Referencia</span>
+  </div>
+  <div class="note" id="chartDates"></div>
+</div>
+
+<div class="panel">
+  <h2>Registro de operaciones</h2>
+  <p class="note">Registra cada operación de Put Wall, Call Wall o Discrecional. Introduce el importe sin signo negativo cuando sea un SL: el sistema lo convertirá automáticamente.</p>
+  <form id="tradeForm">
+    <div class="form-grid">
+      <div class="field">
+        <label for="tradeDate">Fecha de operación</label>
+        <input id="tradeDate" type="date" required>
+      </div>
+      <div class="field">
+        <label for="strategy">Estrategia</label>
+        <select id="strategy" required>
+          <option value="PW">Put Wall</option>
+          <option value="CW">Call Wall</option>
+          <option value="DIS">Discrecional</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="result">Resultado</label>
+        <select id="result" required>
+          <option value="TP">TP · Ganadora</option>
+          <option value="SL">SL · Perdedora</option>
+          <option value="BE">BE · Break even</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pnl">Importe ($)</label>
+        <input id="pnl" type="number" min="0" step="0.01" placeholder="Ej. 250" required>
+      </div>
+      <div class="field full">
+        <label for="notes">Notas (opcional)</label>
+        <textarea id="notes" placeholder="Detalle de la operación"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="primary" type="submit">Registrar operación</button>
+      <span class="note" id="formMessage"></span>
+    </div>
+  </form>
+</div>
+
+<div class="panel">
+  <h2>Estadísticas generales</h2>
+  <div class="stats-grid">
+    <div class="stat-card"><small>Operaciones</small><strong id="totalTrades">0</strong></div>
+    <div class="stat-card"><small>Win rate</small><strong id="winRate">—</strong></div>
+    <div class="stat-card"><small>Beneficio neto</small><strong id="netProfit">$0.00</strong></div>
+    <div class="stat-card"><small>Media por operación</small><strong id="averageTrade">$0.00</strong></div>
+    <div class="stat-card"><small>Ganadoras</small><strong id="winningTrades">0</strong></div>
+    <div class="stat-card"><small>Perdedoras</small><strong id="losingTrades">0</strong></div>
+    <div class="stat-card"><small>Break even</small><strong id="breakevenTrades">0</strong></div>
+    <div class="stat-card"><small>Drawdown máximo</small><strong id="maxDrawdown">$0.00</strong></div>
+  </div>
+  <div class="strategy-grid">
+    <div class="strategy-card put-wall">
+      <div class="strategy-title">PUT WALL</div>
+      <div class="strategy-stats">
+        <div><small>Operaciones</small><strong id="pwTotal">0</strong></div>
+        <div><small>Win rate</small><strong id="pwRate">—</strong></div>
+        <div><small>Beneficio neto</small><strong id="pwNet">$0.00</strong></div>
+        <div><small>W / L / BE</small><strong id="pwRecord">0 / 0 / 0</strong></div>
+      </div>
+    </div>
+    <div class="strategy-card call-wall">
+      <div class="strategy-title">CALL WALL</div>
+      <div class="strategy-stats">
+        <div><small>Operaciones</small><strong id="cwTotal">0</strong></div>
+        <div><small>Win rate</small><strong id="cwRate">—</strong></div>
+        <div><small>Beneficio neto</small><strong id="cwNet">$0.00</strong></div>
+        <div><small>W / L / BE</small><strong id="cwRecord">0 / 0 / 0</strong></div>
+      </div>
+    </div>
+    <div class="strategy-card discretional">
+      <div class="strategy-title">DISCRECIONAL</div>
+      <div class="strategy-stats">
+        <div><small>Operaciones</small><strong id="disTotal">0</strong></div>
+        <div><small>Win rate</small><strong id="disRate">—</strong></div>
+        <div><small>Beneficio neto</small><strong id="disNet">$0.00</strong></div>
+        <div><small>W / L / BE</small><strong id="disRecord">0 / 0 / 0</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Historial de operaciones</h2>
+  <div class="note" id="tradeCount">0 operaciones registradas</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Fecha</th><th>Estrategia</th><th>Resultado</th><th>P&amp;L</th><th>Notas</th><th>Acción</th></tr>
+      </thead>
+      <tbody id="tradeRows"><tr><td colspan="6" class="empty">Todavía no hay operaciones registradas.</td></tr></tbody>
+    </table>
+  </div>
+  <div class="backup-actions">
+    <button id="exportTrades" type="button">Exportar CSV</button>
+    <button id="importTrades" type="button">Importar CSV</button>
+    <input id="importFile" type="file" accept=".csv,text/csv" hidden>
+  </div>
+  <div class="note">Los datos se guardan en este navegador. Exporta periódicamente una copia de seguridad.</div>
+</div>
+
+<div class="error" id="error"></div>
+
+<!-- LA CALCULADORA SE INSERTA AL FINAL DE LA PÁGINA -->
+<section class="funding-page" id="fundingCalculator">
   <div class="funding-head">
     <div class="funding-kicker">STRIKE WALL ANALYTICS · FUTURES FUNDING</div>
-    <h2>¿CUÁNTAS CUENTAS PARA COBRAR $10,000 AL MES?</h2>
+    <h2>¿CUÁNTAS CUENTAS PARA COBRAR $5,000 AL MES?</h2>
     <div class="funding-sub">Fondeo de futuros · La cuenta fácil, la cuenta real y lo que cambia el número</div>
   </div>
-  <div class="funding-tabs" aria-label="Secciones de la calculadora">
-    <button type="button">1 · LA CUENTA FÁCIL</button>
-    <button type="button">2 · LO QUE CUESTA FONDEAR</button>
-    <button type="button" class="active">3 · LA CUENTA REAL</button>
-    <button type="button">4 · DÓNDE SALE LA RENTABILIDAD</button>
-  </div>
-  <div class="funding-grid">
-    <div class="funding-card funding-left">
-      <div>
-        <div class="funding-eyebrow">TUS NÚMEROS</div>
-        <div class="funding-field-top"><label>CÓMO ARRIESGAS</label></div>
-        <div class="funding-presets" id="fundingRisk">
-          <button type="button" data-risk="conservador">CONSERVADOR</button>
-          <button type="button" class="active" data-risk="realista">REALISTA</button>
-          <button type="button" data-risk="agresivo">AGRESIVO</button>
+  <nav class="funding-tabs" aria-label="Secciones de la calculadora">
+    <button type="button" class="active" data-funding-tab="0">1 · LA CUENTA FÁCIL</button>
+    <button type="button" data-funding-tab="1">2 · LO QUE CUESTA FONDEAR</button>
+    <button type="button" data-funding-tab="2">3 · LA CUENTA REAL</button>
+    <button type="button" data-funding-tab="3">4 · DÓNDE SALE LA RENTABILIDAD</button>
+  </nav>
+
+  <div class="funding-panel" data-funding-panel="0">
+    <div class="funding-grid">
+      <div class="funding-card">
+        <div class="funding-eyebrow">LA QUE HACE TODO EL MUNDO</div>
+        <div class="funding-big dark" style="margin-top:14px">
+          <strong id="easyAccounts">4</strong>
+          <span>CUENTAS</span>
         </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="easyGoal">Objetivo mensual</label><output id="easyGoalOut">$5,000</output></div>
+          <input class="funding-range" id="easyGoal" type="range" min="500" max="30000" step="100" value="5000">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="easyPayout">Retiro por cuenta</label><output id="easyPayoutOut">$1,500</output></div>
+          <input class="funding-range" id="easyPayout" type="range" min="250" max="5000" step="50" value="1500">
+        </div>
+        <div class="funding-total" id="easyFormula">$5,000 ÷ $1,500 = 3.3</div>
+        <p class="funding-sub">Objetivo entre lo que te paga una cuenta. Sale un número bonito. Y es mentira.</p>
       </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundGoal">Objetivo mensual</label><output id="fundGoalOut">$10,000</output></div>
-        <input class="funding-range" id="fundGoal" type="range" min="1000" max="30000" step="500" value="10000">
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundPayout">Retiro por cuenta</label><output id="fundPayoutOut">$1,400</output></div>
-        <input class="funding-range" id="fundPayout" type="range" min="250" max="3000" step="50" value="1400">
-        <small>Lo que te llega cuando esa cuenta cobra, ya con el split.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundPass">Cuentas fondeadas que cobran</label><output id="fundPassOut">6 de cada 10</output></div>
-        <input class="funding-range" id="fundPass" type="range" min="1" max="10" step="1" value="6">
-        <small>De cada 10 que pasan a fondeo, cuántas llegan al retiro. El resto se pierde y se repone.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundCost">Coste de cada fondeada</label><output id="fundCostOut">$375</output></div>
-        <input class="funding-range" id="fundCost" type="range" min="50" max="1000" step="25" value="375">
-        <small>Sale de la lámina 2: precio de la cuenta y tu pass rate.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundWithdrawals">Retiros por cuenta antes de quemarla</label><output id="fundWithdrawalsOut">3</output></div>
-        <input class="funding-range" id="fundWithdrawals" type="range" min="1" max="8" step="1" value="3">
-        <small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live. Máximo 5.</small>
-      </div>
-      <div class="funding-field">
-        <div class="funding-field-top"><label for="fundDays">Cada cuánto retiras una cuenta</label><output id="fundDaysOut">7 días</output></div>
-        <input class="funding-range" id="fundDays" type="range" min="3" max="30" step="1" value="7">
-        <small>Días entre un retiro y el siguiente cuando la cuenta ya está cobrando.</small>
+      <div class="funding-card">
+        <div class="funding-eyebrow">LO QUE ESTA CUENTA DA POR HECHO</div>
+        <div class="funding-legend">
+          <p><strong>1. Que toda cuenta fondeada cobra</strong><br>De cada 10 que pasan a fondeo, al retiro llegan unas pocas. El resto se queda por el camino.</p>
+          <p><strong>2. Que reponerlas es gratis</strong><br>Evaluación, activación, resets. Cada cuenta perdida sale de lo que has cobrado.</p>
+          <p><strong>3. Que cobras lo mismo cada mes</strong><br>Hay meses que cobran cuatro y meses que no cobra ninguna. La media no paga al alquiler.</p>
+        </div>
+        <div class="funding-total">La división es fácil. Lo difícil es que lleguen al cobro.</div>
       </div>
     </div>
-    <div class="funding-card funding-right">
-      <div class="funding-eyebrow">LA FÁCIL CONTRA LA REAL</div>
-      <div class="funding-comparison">
-        <div class="funding-big"><span>CUENTA FÁCIL</span><strong id="fundEasy">2</strong><small>Si todas cobraran siempre</small></div>
-        <div class="funding-big dark"><span>CUENTA REAL</span><strong id="fundReal">4</strong><small>Fondeadas activas a la vez</small></div>
-      </div>
-      <div>
-        <div class="funding-eyebrow">LA VIDA DE UNA CUENTA QUE COBRA</div>
-        <div class="funding-timeline" id="fundTimeline">
-          <div class="funding-day"><strong>DÍA 0</strong><b>Fondeada</b></div><span class="funding-arrow">→</span>
-          <div class="funding-day"><strong>DÍA 7</strong><b>+$1,400</b></div><span class="funding-arrow">→</span>
-          <div class="funding-day"><strong>DÍA 14</strong><b>+$1,400</b></div><span class="funding-arrow">→</span>
-          <div class="funding-day"><strong>DÍA 21</strong><b>+$1,400</b></div><span class="funding-arrow">→</span>
+  </div>
+
+  <div class="funding-panel" data-funding-panel="1" hidden>
+    <div class="funding-grid">
+      <div class="funding-card">
+        <div class="funding-eyebrow">ANTES DE COBRAR, HAY QUE LLEGAR</div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="costPass">Evaluaciones que pasas</label><output id="costPassOut">3 de cada 10</output></div>
+          <input class="funding-range" id="costPass" type="range" min="1" max="10" step="1" value="3">
+          <small class="funding-sub">Tu pass rate: de cada 10 evaluaciones que compras, cuántas llegan a fondeo.</small>
         </div>
-        <div class="funding-total">TOTAL COBRADO <span id="fundTotal">$4,200</span></div>
-      </div>
-      <div>
-        <div class="funding-eyebrow">QUÉ PASA CON TUS <span id="fundActiveLabel">4</span> FONDEADAS</div>
-        <div class="funding-dots" id="fundDots">
-          <span class="funding-dot"></span><span class="funding-dot"></span><span class="funding-dot fail"></span><span class="funding-dot fail"></span>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="costPrice">Precio de la cuenta</label><output id="costPriceOut">$160</output></div>
+          <input class="funding-range" id="costPrice" type="range" min="50" max="500" step="5" value="160">
+          <small class="funding-sub">Lo que pagas por cada evaluación, con la activación si la hay.</small>
         </div>
-        <div class="funding-legend"><i></i><strong id="fundSurvivors">2</strong> llegan a retiro y cobran <strong id="fundPayoutCount">3 veces</strong>, <strong id="fundPayoutLegend">$1,400</strong> cada 7 días<br><i class="fail"></i><strong id="fundFailures">2</strong> se queman sin cobrar. Reponer cada una: <strong id="fundReplacement">$375</strong></div>
+        <div class="funding-total" id="costFormula">$160 ÷ 30% = $533</div>
+        <p class="funding-sub">Las evaluaciones que suspendes también las pagas.</p>
       </div>
-      <div>
-        <div class="funding-eyebrow">LO QUE ENTRA Y LO QUE SALE CADA MES</div>
+      <div class="funding-card">
+        <div class="funding-eyebrow">LO QUE TE CUESTA CADA FONDEADA</div>
+        <div class="funding-big dark"><strong id="costPerFunded">$533</strong><small>No pagas $160 por cuenta fondeada. Pagas $533.</small></div>
         <div class="funding-bars">
-          <div class="funding-bar-row"><span>Cobras</span><div class="funding-bar"><span id="fundIncomeBar" style="width:100%"></span></div><output id="fundIncome">$15,429</output></div>
-          <div class="funding-bar-row cost"><span>Repones cuentas</span><div class="funding-bar"><span id="fundCostBar" style="width:15%"></span></div><output id="fundMonthlyCost">-$2,296</output></div>
-          <div class="funding-bar-row net"><span>Te queda</span><div class="funding-bar"><span id="fundNetBar" style="width:85%"></span></div><output id="fundNet">$13,133</output></div>
+          <div class="funding-bar-row"><span>10 evaluaciones</span><div class="funding-bar"><span id="costAllBar"></span></div><output id="costAll">$1,600</output></div>
+          <div class="funding-bar-row"><span>Pasan a fondeo</span><div class="funding-bar"><span id="costPassBar"></span></div><output id="costPassed">3</output></div>
+          <div class="funding-bar-row"><span>Llegan a cobrar</span><div class="funding-bar"><span id="costCollectBar"></span></div><output id="costCollect">0.9</output></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="funding-bottom">
-    <div class="funding-card"><div class="funding-eyebrow">PARA EMPEZAR</div><strong id="fundStart">$1,500</strong><small id="fundStartNote">10 evaluaciones para tener 4 fondeadas</small></div>
-    <div class="funding-card"><div class="funding-eyebrow">MEDIA MENSUAL</div><strong id="fundAverage">$13,133</strong><small>Neto al mes, después de reponer cuentas</small></div>
+
+  <div class="funding-panel" data-funding-panel="2" hidden>
+    <div class="funding-grid">
+      <div class="funding-card funding-left">
+        <div>
+          <div class="funding-eyebrow">TUS NÚMEROS</div>
+          <div class="funding-field-top"><label>CÓMO ARRIESGAS</label></div>
+          <div class="funding-presets" id="fundingRisk">
+            <button type="button" data-risk="conservador">CONSERVADOR</button>
+            <button type="button" class="active" data-risk="realista">REALISTA</button>
+            <button type="button" data-risk="agresivo">AGRESIVO</button>
+          </div>
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="fundGoal">Objetivo mensual</label><output id="fundGoalOut">$5,000</output></div>
+          <input class="funding-range" id="fundGoal" type="range" min="1000" max="30000" step="500" value="5000">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="fundPayout">Retiro por cuenta</label><output id="fundPayoutOut">$1,200</output></div>
+          <input class="funding-range" id="fundPayout" type="range" min="250" max="3000" step="50" value="1200">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="fundPass">Cuentas fondeadas que cobran</label><output id="fundPassOut">3 de cada 10</output></div>
+          <input class="funding-range" id="fundPass" type="range" min="1" max="10" step="1" value="3">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="fundCost">Coste de cada fondeada</label><output id="fundCostOut">$533</output></div>
+          <input class="funding-range" id="fundCost" type="range" min="50" max="1000" step="25" value="533">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="fundWithdrawals">Retiros por cuenta antes de quemarla</label><output id="fundWithdrawalsOut">2</output></div>
+          <input class="funding-range" id="fundWithdrawals" type="range" min="1" max="5" step="1" value="2">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="fundDays">Cada cuánto retiras una cuenta</label><output id="fundDaysOut">7 días</output></div>
+          <input class="funding-range" id="fundDays" type="range" min="3" max="30" step="1" value="7">
+        </div>
+      </div>
+      <div class="funding-card funding-right">
+        <div class="funding-eyebrow">LA FÁCIL CONTRA LA REAL</div>
+        <div class="funding-comparison">
+          <div class="funding-big"><span>CUENTA FÁCIL</span><strong id="fundEasy">4</strong><small>Si todas cobraran siempre</small></div>
+          <div class="funding-big dark"><span>CUENTA REAL</span><strong id="fundReal">6</strong><small>Fondeadas activas a la vez</small></div>
+        </div>
+        <div>
+          <div class="funding-eyebrow">LA VIDA DE UNA CUENTA QUE COBRA</div>
+          <div class="funding-timeline" id="fundTimeline"></div>
+          <div class="funding-total">TOTAL COBRADO <span id="fundTotal">$2,400</span></div>
+        </div>
+        <div>
+          <div class="funding-eyebrow">QUÉ PASA CON TUS <span id="fundActiveLabel">6</span> FONDEADAS</div>
+          <div class="funding-dots" id="fundDots"></div>
+          <div class="funding-legend"><i></i><strong id="fundSurvivors">2</strong> llegan a retiro y cobran <strong id="fundPayoutCount">2 veces</strong>, <strong id="fundPayoutLegend">$1,200</strong> cada 7 días<br><i class="fail"></i><strong id="fundFailures">4</strong> se queman sin cobrar. Reponer cada una: <strong id="fundReplacement">$533</strong></div>
+        </div>
+        <div>
+          <div class="funding-eyebrow">LO QUE ENTRA Y LO QUE SALE CADA MES</div>
+          <div class="funding-bars">
+            <div class="funding-bar-row"><span>Cobras</span><div class="funding-bar"><span id="fundIncomeBar"></span></div><output id="fundIncome">$11,571</output></div>
+            <div class="funding-bar-row cost"><span>Repones cuentas</span><div class="funding-bar"><span id="fundCostBar"></span></div><output id="fundMonthlyCost">-$6,027</output></div>
+            <div class="funding-bar-row net"><span>Te queda</span><div class="funding-bar"><span id="fundNetBar"></span></div><output id="fundNet">$5,545</output></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="funding-bottom">
+      <div class="funding-card"><div class="funding-eyebrow">PARA EMPEZAR</div><strong id="fundStart">$2,250</strong><small id="fundStartNote">15 evaluaciones para tener 6 fondeadas</small></div>
+      <div class="funding-card"><div class="funding-eyebrow">MEDIA MENSUAL</div><strong id="fundAverage">$5,545</strong><small>Neto al mes, después de reponer cuentas</small></div>
+    </div>
+  </div>
+
+  <div class="funding-panel" data-funding-panel="3" hidden>
+    <div class="funding-grid">
+      <div class="funding-card">
+        <div class="funding-eyebrow">UNA TANDA DE 10 EVALUACIONES</div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="profitPass">Evaluaciones que pasas</label><output id="profitPassOut">5 de cada 10</output></div>
+          <input class="funding-range" id="profitPass" type="range" min="1" max="10" step="1" value="5">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="profitFunded">Fondeadas que llegan a retiro</label><output id="profitFundedOut">4 de cada 10</output></div>
+          <input class="funding-range" id="profitFunded" type="range" min="1" max="10" step="1" value="4">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="profitWithdrawals">Retiros por cuenta que cobra</label><output id="profitWithdrawalsOut">2</output></div>
+          <input class="funding-range" id="profitWithdrawals" type="range" min="1" max="5" step="1" value="2">
+          <small>Cuántas veces cobras de la misma cuenta antes de perderla.</small>
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="profitPayout">Retiro por cuenta</label><output id="profitPayoutOut">$1,200</output></div>
+          <input class="funding-range" id="profitPayout" type="range" min="250" max="3000" step="50" value="1200">
+        </div>
+        <div class="funding-field">
+          <div class="funding-field-top"><label for="profitPrice">Precio de la cuenta</label><output id="profitPriceOut">$150</output></div>
+          <input class="funding-range" id="profitPrice" type="range" min="50" max="500" step="5" value="150">
+        </div>
+      </div>
+      <div class="funding-card">
+        <div class="funding-eyebrow">LO QUE TE QUEDA DE ESAS 10</div>
+        <div class="funding-comparison">
+          <div class="funding-big"><span>PAGAS</span><strong id="profitPaid">$1,500</strong><small>10 evaluaciones</small></div>
+          <div class="funding-big dark"><span>TE QUEDA</span><strong id="profitNet">$3,300</strong><small id="profitCollected">Cobras $4,800 en 4 retiros</small></div>
+        </div>
+        <div class="funding-eyebrow">QUÉ PASA SI MEJORAS UNA SOLA COSA</div>
+        <div class="funding-comparison">
+          <div class="funding-big"><span>PASAR UNA EVALUACIÓN MÁS</span><strong id="profitMorePass">+$960</strong><small id="profitMorePassNote">De 5 a 6 de cada 10</small></div>
+          <div class="funding-big dark"><span>COBRAR UN RETIRO MÁS POR CUENTA</span><strong id="profitMoreWithdrawal">+$2,400</strong><small id="profitMoreWithdrawalNote">De 2 a 3 retiros</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="funding-bottom funding-profit-cards">
+      <div class="funding-card"><div class="funding-eyebrow">1 RETIRO POR CUENTA</div><strong id="profitScenario1">$900</strong><small>Neto de 10 evaluaciones</small></div>
+      <div class="funding-card"><div class="funding-eyebrow">2 RETIROS POR CUENTA</div><strong id="profitScenario2">$3,300</strong><small>Neto de 10 evaluaciones</small></div>
+      <div class="funding-card"><div class="funding-eyebrow">3 RETIROS POR CUENTA</div><strong id="profitScenario3">$5,700</strong><small>Neto de 10 evaluaciones</small></div>
+      <div class="funding-card"><div class="funding-eyebrow">4 RETIROS POR CUENTA</div><strong id="profitScenario4">$8,100</strong><small>Neto de 10 evaluaciones</small></div>
+      <div class="funding-card"><div class="funding-eyebrow">5 RETIROS POR CUENTA</div><strong id="profitScenario5">$10,500</strong><small>Neto de 10 evaluaciones</small></div>
+    </div>
+    <div class="funding-card" style="margin-top:14px">
+      <h2>LA RENTABILIDAD SALE DE COBRAR MUCHAS VECES DE LA MISMA CUENTA. NO DE PASAR MÁS EVALUACIONES.</h2>
+    </div>
   </div>
 </section>
-
-  <h1>S&P 500 ATR as Percent of Price</h1>
-  <div class="subtitle">Volatilidad diaria del índice S&P 500. ATR de 14 sesiones como porcentaje del precio de cierre.</div>
-  <div class="metadata" id="status">Cargando datos diarios...</div>
-
-  <div class="value-card">
-    <div>
-      <small class="status">Último valor · 14D ATR as % of Close</small><br>
-      <strong id="latestValue">—</strong>
-      <div class="status" id="latestDate">—</div>
-    </div>
-    <div>
-      <label>Referencia ATR %</label>
-      <input id="reference" type="number" value="1" step="0.05" style="width:110px">
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="toolbar">
-      <button data-period="10D">10D</button>
-      <button data-period="1M">1M</button>
-      <button data-period="3M">3M</button>
-      <button data-period="6M">6M</button>
-      <button data-period="YTD">YTD</button>
-      <button data-period="1Y">1Y</button>
-      <button data-period="5Y" class="active">5Y</button>
-      <button data-period="Max">Max</button>
-    </div>
-    <div class="toolbar">
-      <button id="valueMode" class="active">Value</button>
-      <button id="changeMode">% from view start</button>
-    </div>
-    <div class="chart-wrap" id="chartWrap">
-      <canvas id="chart"></canvas>
-      <div class="chart-tooltip" id="chartTooltip"></div>
-    </div>
-    <div class="chart-legend">
-      <span><i class="legend-line"></i>14D ATR as % of Close</span>
-      <span><i class="legend-ref"></i>Referencia</span>
-    </div>
-    <div class="note" id="chartDates"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Registro de operaciones</h2>
-    <p class="note">Registra cada operación de Put Wall, Call Wall o Discrecional. Introduce el importe sin signo negativo cuando sea un SL: el sistema lo convertirá automáticamente.</p>
-    <form id="tradeForm">
-      <div class="form-grid">
-        <div class="field">
-          <label for="tradeDate">Fecha de operación</label>
-          <input id="tradeDate" type="date" required>
-        </div>
-        <div class="field">
-          <label for="strategy">Estrategia</label>
-          <select id="strategy" required>
-            <option value="PW">Put Wall</option>
-            <option value="CW">Call Wall</option>
-            <option value="DIS">Discrecional</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="result">Resultado</label>
-          <select id="result" required>
-            <option value="TP">TP · Ganadora</option>
-            <option value="SL">SL · Perdida</option>
-            <option value="BE">BE · Break Even</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="pnl">Beneficio / pérdida ($)</label>
-          <input id="pnl" type="number" step="0.01" placeholder="Ej. 500 o 250" required>
-        </div>
-        <div class="field full">
-          <label for="notes">Observaciones (opcional)</label>
-          <textarea id="notes" placeholder="Notas de la operación..."></textarea>
-        </div>
-      </div>
-      <div class="form-actions">
-        <button class="primary" type="submit" id="saveTrade">Registrar operación</button>
-        <button type="reset">Limpiar</button>
-      </div>
-    </form>
-    <div class="note" id="formMessage" style="margin-top:12px"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Estadísticas generales</h2>
-    <div class="stats-grid">
-      <div class="stat-card"><small>Total operaciones</small><strong id="totalTrades">0</strong></div>
-      <div class="stat-card"><small>Win rate (sin BE)</small><strong id="winRate">—</strong></div>
-      <div class="stat-card"><small>Beneficio neto</small><strong id="netProfit">$0.00</strong></div>
-      <div class="stat-card"><small>Promedio por operación</small><strong id="averageTrade">$0.00</strong></div>
-      <div class="stat-card"><small>Ganadoras</small><strong id="winningTrades">0</strong></div>
-      <div class="stat-card"><small>Perdedoras</small><strong id="losingTrades">0</strong></div>
-      <div class="stat-card"><small>Break Even</small><strong id="breakevenTrades">0</strong></div>
-      <div class="stat-card"><small>Drawdown máximo</small><strong id="maxDrawdown">$0.00</strong></div>
-    </div>
-
-    <div class="strategy-grid">
-      <div class="strategy-card put-wall">
-        <div class="strategy-title">PUT WALL</div>
-        <div class="strategy-stats">
-          <div><small>Operaciones</small><strong id="pwTotal">0</strong></div>
-          <div><small>Win rate</small><strong id="pwRate">—</strong></div>
-          <div><small>Balance neto</small><strong id="pwNet">$0.00</strong></div>
-          <div><small>Ganadoras / Perdedoras / BE</small><strong id="pwRecord">0 / 0 / 0</strong></div>
-        </div>
-      </div>
-      <div class="strategy-card call-wall">
-        <div class="strategy-title">CALL WALL</div>
-        <div class="strategy-stats">
-          <div><small>Operaciones</small><strong id="cwTotal">0</strong></div>
-          <div><small>Win rate</small><strong id="cwRate">—</strong></div>
-          <div><small>Balance neto</small><strong id="cwNet">$0.00</strong></div>
-          <div><small>Ganadoras / Perdedoras / BE</small><strong id="cwRecord">0 / 0 / 0</strong></div>
-        </div>
-      </div>
-      <div class="strategy-card discretional">
-        <div class="strategy-title">DISCRECIONAL</div>
-        <div class="strategy-stats">
-          <div><small>Operaciones</small><strong id="disTotal">0</strong></div>
-          <div><small>Win rate</small><strong id="disRate">—</strong></div>
-          <div><small>Balance neto</small><strong id="disNet">$0.00</strong></div>
-          <div><small>Ganadoras / Perdedoras / BE</small><strong id="disRecord">0 / 0 / 0</strong></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>Historial de operaciones</h2>
-    <div class="note" id="tradeCount">0 operaciones registradas</div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Fecha</th><th>Estrategia</th><th>Resultado</th>
-            <th>Beneficio / pérdida</th><th>Observaciones</th><th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tradeRows">
-          <tr><td colspan="6" class="empty">Todavía no hay operaciones registradas.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="backup-actions">
-      <button id="exportTrades">Exportar operaciones CSV</button>
-      <button id="importTrades">Importar copia CSV</button>
-      <input id="importFile" type="file" accept=".csv,text/csv" hidden>
-    </div>
-    <p class="note">Las operaciones se guardan en este navegador. Exporta una copia CSV periódicamente para conservar un respaldo.</p>
-  </div>
-
-  <div id="error" class="error"></div>
-  <p class="note">
-    Fuente: histórico diario del índice S&P 500 (^GSPC).
-    ATR(14) calculado mediante media simple de los últimos 14 True Range.
-    Los datos se actualizan mediante GitHub Actions.
-  </p>
-</main>
-
-<script>
-
-/* CALCULADORA DE FONDEOS */
-(()=>{
- const $f=id=>document.getElementById(id);
- const ids=["fundGoal","fundPayout","fundPass","fundCost","fundWithdrawals","fundDays"];
- const money=n=>"$"+Math.round(n).toLocaleString("en-US");
- const state={risk:"realista"};
- const values=()=>Object.fromEntries(ids.map(id=>[id,Number($f(id).value)]));
- function update(){
-   const v=values();
-   const goal=v.fundGoal,payout=v.fundPayout,pass=v.fundPass/10,cost=v.fundCost,n=v.fundWithdrawals,days=v.fundDays;
-   const perAccount=payout*n;
-   const easy=Math.max(1,Math.ceil(goal/(perAccount*1.2)));
-   const real=Math.max(1,Math.ceil(easy/pass));
-   const survivors=Math.max(1,Math.round(real*pass));
-   const failures=Math.max(0,real-survivors);
-   const total=payout*n;
-   const monthlyPayouts=30/days;
-   const income=survivors*payout*Math.min(n,monthlyPayouts);
-   const replacementRate=failures/(n*days/30||1);
-   const monthlyCost=failures*cost*Math.max(1,30/(days*n));
-   const net=income-monthlyCost;
-   let evals=Math.ceil(real/pass);
-   let shownIncome=income,shownCost=monthlyCost,shownNet=net,shownStart=evals*cost;
-   if(goal===10000&&payout===1400&&v.fundPass===6&&cost===375&&n===3&&days===7){
-     shownIncome=15429;shownCost=2296;shownNet=13133;shownStart=1500;evals=10;
-   }
-   const easyValue=easy;
-   $f("fundGoalOut").textContent=money(goal);
-   $f("fundPayoutOut").textContent=money(payout);
-   $f("fundPassOut").textContent=v.fundPass+" de cada 10";
-   $f("fundCostOut").textContent=money(cost);
-   $f("fundWithdrawalsOut").textContent=n;
-   $f("fundDaysOut").textContent=days+" días";
-   $f("fundEasy").textContent=easyValue;
-   $f("fundReal").textContent=real;
-   $f("fundActiveLabel").textContent=real;
-   $f("fundTotal").textContent=money(total);
-   $f("fundSurvivors").textContent=survivors;
-   $f("fundPayoutCount").textContent=n+" veces";
-   $f("fundPayoutLegend").textContent=money(payout);
-   $f("fundFailures").textContent=failures;
-   $f("fundReplacement").textContent=money(cost);
-   $f("fundIncome").textContent=money(shownIncome);
-   $f("fundMonthlyCost").textContent="-"+money(shownCost);
-   $f("fundNet").textContent=money(shownNet);
-   $f("fundStart").textContent=money(shownStart);
-   $f("fundStartNote").textContent=evals+" evaluaciones para tener "+real+" fondeadas";
-   $f("fundAverage").textContent=money(shownNet);
-   const max=Math.max(shownIncome,shownCost,shownNet,1);
-   $f("fundIncomeBar").style.width=(shownIncome/max*100)+"%";
-   $f("fundCostBar").style.width=(shownCost/max*100)+"%";
-   $f("fundNetBar").style.width=(Math.max(0,shownNet)/max*100)+"%";
-   const dots=$f("fundDots");dots.innerHTML="";
-   for(let i=0;i<real;i++){const d=document.createElement("span");d.className="funding-dot"+(i>=survivors?" fail":"");dots.appendChild(d);}
-   const timeline=$f("fundTimeline");timeline.innerHTML="";
-   const first=document.createElement("div");first.className="funding-day";first.innerHTML="<strong>DÍA 0</strong><b>Fondeada</b>";timeline.append(first);
-   for(let i=1;i<=n;i++){
-     const arrow=document.createElement("span");arrow.className="funding-arrow";arrow.textContent="→";timeline.append(arrow);
-     const day=document.createElement("div");day.className="funding-day";day.innerHTML="<strong>DÍA "+(i*days)+"</strong><b>+"+money(payout)+"</b>";timeline.append(day);
-   }
-   const arrow=document.createElement("span");arrow.className="funding-arrow";arrow.textContent="→";timeline.append(arrow);
- }
- ids.forEach(id=>$f(id).addEventListener("input",update));
- document.querySelectorAll("#fundingRisk button").forEach(b=>b.addEventListener("click",()=>{
-   document.querySelectorAll("#fundingRisk button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-   const presets={conservador:{fundPass:5,fundWithdrawals:2,fundDays:10},realista:{fundPass:6,fundWithdrawals:3,fundDays:7},agresivo:{fundPass:8,fundWithdrawals:4,fundDays:5}};
-   Object.entries(presets[b.dataset.risk]).forEach(([id,val])=>$f(id).value=val);update();
- }));
- update();
-})();
-
-</script>
-
-<script>
-const DATA_URL="./data/spx_daily.csv";
-const STORAGE_KEY="strikeWallTradesV1";
-
-let market=[];
-let visible=[];
-let mode="value";
-let hoverIndex=null;
-let chartGeometry=null;
-let trades=[];
-
-const $=id=>document.getElementById(id);
-
-const number=n=>Number(n).toLocaleString("en-US",{
-  minimumFractionDigits:2,maximumFractionDigits:2
-});
-
-const money=n=>(n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{
-  minimumFractionDigits:2,maximumFractionDigits:2
-});
-
-function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[char]);
-}
-
-/* CARGA Y CÁLCULO DEL ATR */
-
-function parseCSV(text){
-  const lines=text.trim().replace(/^\uFEFF/,"").split(/\r?\n/);
-  const headers=lines.shift().split(",").map(x=>x.trim().toLowerCase());
-  const index=key=>headers.indexOf(key);
-
-  return lines.map(line=>{
-    const c=line.split(",");
-    return {
-      date:c[index("date")],
-      open:+c[index("open")],
-      high:+c[index("high")],
-      low:+c[index("low")],
-      close:+c[index("close")]
-    };
-  }).filter(d=>
-    /^\d{4}-\d{2}-\d{2}$/.test(d.date)&&
-    [d.open,d.high,d.low,d.close].every(Number.isFinite)
-  ).sort((a,b)=>a.date.localeCompare(b.date));
-}
-
-function calculate(data){
-  data.forEach((d,i)=>{
-    const previous=data[i-1];
-    d.range=d.high-d.low;
-    d.tr=previous?Math.max(
-      d.high-d.low,
-      Math.abs(d.high-previous.close),
-      Math.abs(d.low-previous.close)
-    ):d.range;
-
-    if(i>=13){
-      const last14=data.slice(i-13,i+1);
-      d.atr=last14.reduce((sum,x)=>sum+x.tr,0)/14;
-      d.atrPct=d.atr/d.close*100;
-    }else{
-      d.atr=null;
-      d.atrPct=null;
-    }
-  });
-}
-
-async function loadMarket(){
-  $("status").textContent="Cargando histórico SPX...";
-  $("error").textContent="";
-  try{
-    const response=await fetch(DATA_URL+"?v="+Date.now(),{cache:"no-store"});
-    if(!response.ok)throw new Error("No se pudo cargar data/spx_daily.csv");
-    market=parseCSV(await response.text());
-    if(market.length<900)throw new Error("El histórico tiene menos de 900 sesiones.");
-    calculate(market);
-    const last=market.at(-1);
-    $("status").textContent="Daily · "+market.length+" sesiones · Última sesión "+last.date;
-    $("latestValue").textContent=last.atrPct.toFixed(2)+"%";
-    $("latestDate").textContent=last.date;
-    setPeriod("5Y");
-  }catch(error){
-    $("status").textContent="Error al cargar datos";
-    $("error").textContent=error.message;
-  }
-}
-
-function setPeriod(period){
-  hoverIndex=null;
-  hideTooltip();
-  document.querySelectorAll("[data-period]").forEach(button=>{
-    button.classList.toggle("active",button.dataset.period===period);
-  });
-  if(!market.length)return;
-
-  const lastDate=new Date(market.at(-1).date+"T12:00:00");
-  let start=new Date(lastDate);
-  if(period==="10D")start.setDate(start.getDate()-14);
-  if(period==="1M")start.setMonth(start.getMonth()-1);
-  if(period==="3M")start.setMonth(start.getMonth()-3);
-  if(period==="6M")start.setMonth(start.getMonth()-6);
-  if(period==="YTD")start=new Date(lastDate.getFullYear(),0,1,12);
-  if(period==="1Y")start.setFullYear(start.getFullYear()-1);
-  if(period==="5Y")start.setFullYear(start.getFullYear()-5);
-  if(period==="Max")start=new Date(market[0].date+"T12:00:00");
-
-  const date=start.toISOString().slice(0,10);
-  visible=market.filter(d=>d.date>=date&&d.date<=market.at(-1).date);
-  renderChart(period);
-}
-
-function getValues(){
-  const first=visible.find(x=>x.atrPct!==null);
-  return visible.map(d=>{
-    if(d.atrPct===null)return null;
-    return mode==="change"?d.atrPct-first.atrPct:d.atrPct;
-  });
-}
-
-function renderChart(period){
-  if(!visible.length)return;
-  drawChart(Number($("reference").value));
-  $("chartDates").textContent=period+" · "+visible[0].date+" a "+visible.at(-1).date;
-}
-
-function drawChart(reference){
-  const canvas=$("chart");
-  const ctx=canvas.getContext("2d");
-  const width=canvas.clientWidth;
-  const height=canvas.clientHeight;
-  const ratio=window.devicePixelRatio||1;
-  canvas.width=width*ratio;
-  canvas.height=height*ratio;
-  ctx.setTransform(ratio,0,0,ratio,0,0);
-
-  const values=getValues();
-  const valid=values.filter(Number.isFinite);
-  if(!valid.length)return;
-
-  let min=Math.min(...valid);
-  let max=Math.max(...valid);
-  const ref=mode==="value"?reference:0;
-  min=Math.min(min,ref);
-  max=Math.max(max,ref);
-  const padding=(max-min)*0.12||0.2;
-  min-=padding;
-  max+=padding;
-
-  const left=55,right=18,top=20,bottom=30;
-  const plotWidth=width-left-right;
-  const plotHeight=height-top-bottom;
-  const x=i=>left+i/Math.max(1,values.length-1)*plotWidth;
-  const y=v=>top+(max-v)/(max-min)*plotHeight;
-  chartGeometry={left,right,top,bottom,plotWidth,plotHeight,x,y};
-
-  ctx.font="11px Arial";
-  ctx.lineWidth=1;
-  ctx.strokeStyle="#263447";
-  ctx.fillStyle="#91a0b5";
-
-  for(let i=0;i<=5;i++){
-    const value=max-(max-min)*i/5;
-    const py=y(value);
-    ctx.beginPath();
-    ctx.moveTo(left,py);
-    ctx.lineTo(width-right,py);
-    ctx.stroke();
-    ctx.fillText(value.toFixed(2)+"%",5,py+4);
-  }
-
-  ctx.save();
-  ctx.strokeStyle="#f2bd55";
-  ctx.setLineDash([5,5]);
-  ctx.beginPath();
-  ctx.moveTo(left,y(ref));
-  ctx.lineTo(width-right,y(ref));
-  ctx.stroke();
-  ctx.restore();
-
-  ctx.strokeStyle="#65b5ff";
-  ctx.lineWidth=2;
-  ctx.beginPath();
-  let started=false;
-  values.forEach((value,i)=>{
-    if(!Number.isFinite(value)){started=false;return;}
-    if(!started){ctx.moveTo(x(i),y(value));started=true;}
-    else ctx.lineTo(x(i),y(value));
-  });
-  ctx.stroke();
-
-  if(hoverIndex!==null&&Number.isFinite(values[hoverIndex])){
-    const px=x(hoverIndex),py=y(values[hoverIndex]);
-    ctx.save();
-    ctx.strokeStyle="#f2bd55";
-    ctx.lineWidth=1;
-    ctx.setLineDash([4,4]);
-    ctx.beginPath();
-    ctx.moveTo(px,top);
-    ctx.lineTo(px,height-bottom);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle="#65b5ff";
-    ctx.beginPath();
-    ctx.arc(px,py,5,0,Math.PI*2);
-    ctx.fill();
-    ctx.strokeStyle="#ffffff";
-    ctx.lineWidth=2;
-    ctx.stroke();
-    ctx.restore();
-  }
-  ctx.fillStyle="#91a0b5";
-  ctx.fillText(visible[0].date,left,height-7);
-  ctx.fillText(visible.at(-1).date,width-right-80,height-7);
-}
-
-function handleChartPointer(event){
-  if(!chartGeometry||!visible.length)return;
-  const canvas=$("chart");
-  const rect=canvas.getBoundingClientRect();
-  const mouseX=event.clientX-rect.left;
-  const mouseY=event.clientY-rect.top;
-  const g=chartGeometry;
-
-  if(mouseX<g.left||mouseX>rect.width-g.right||
-     mouseY<g.top||mouseY>rect.height-g.bottom){
-    hideTooltip();return;
-  }
-
-  const ratio=(mouseX-g.left)/g.plotWidth;
-  const index=Math.max(0,Math.min(
-    visible.length-1,
-    Math.round(ratio*(visible.length-1))
-  ));
-  const d=visible[index];
-  if(!d||!Number.isFinite(d.atrPct)){hideTooltip();return;}
-  hoverIndex=index;
-  drawChart(Number($("reference").value));
-  showTooltip(d,mouseX,mouseY);
-}
-
-function showTooltip(d,mouseX,mouseY){
-  const tooltip=$("chartTooltip");
-  tooltip.innerHTML=`
-    <div class="tooltip-date">${d.date}</div>
-    <div>SPX Close: <strong>${number(d.close)}</strong></div>
-    <div>ATR(14): <strong>${number(d.atr)} puntos</strong></div>
-    <div>ATR %: <strong>${d.atrPct.toFixed(3)}%</strong></div>
-    <div class="tooltip-value">${d.atrPct.toFixed(2)}%</div>
-  `;
-  tooltip.style.display="block";
-  const wrap=$("chartWrap");
-  const maxX=wrap.clientWidth-tooltip.offsetWidth-8;
-  const maxY=wrap.clientHeight-tooltip.offsetHeight-8;
-  let left=mouseX+15,top=mouseY+15;
-  if(left>maxX)left=mouseX-tooltip.offsetWidth-15;
-  if(top>maxY)top=mouseY-tooltip.offsetHeight-15;
-  tooltip.style.left=Math.max(5,left)+"px";
-  tooltip.style.top=Math.max(5,top)+"px";
-}
-
-function hideTooltip(){
-  if(!$("chartTooltip"))return;
-  $("chartTooltip").style.display="none";
-  hoverIndex=null;
-  if(visible.length)drawChart(Number($("reference").value));
-}
-
-/* REGISTRO DE OPERACIONES */
-
-function loadTrades(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-    trades=Array.isArray(saved)?saved.filter(t=>
-      t&&typeof t.id==="string"&&
-      ["PW","CW","DIS"].includes(t.strategy)&&
-      ["TP","SL","BE"].includes(t.result)&&
-      Number.isFinite(Number(t.pnl))
-    ).map(t=>({
-      ...t,
-      pnl:t.result==="SL"?-Math.abs(Number(t.pnl)):Number(t.pnl)
-    })):[];
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(trades));
-  }catch{
-    trades=[];
-  }
-}
-
-function saveTrades(){
-  try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(trades));
-    return true;
-  }catch(error){
-    $("formMessage").textContent="No se pudieron guardar los datos en este navegador.";
-    return false;
-  }
-}
-
-/* ESTADÍSTICAS Y DRAWDOWN */
-
-function calculateMaxDrawdown(list){
-  const chronological=[...list].sort((a,b)=>
-    a.date.localeCompare(b.date)||a.id.localeCompare(b.id)
-  );
-
-  let balance=0;
-  let peak=0;
-  let maxDrawdown=0;
-
-  chronological.forEach(trade=>{
-    balance+=Number(trade.pnl);
-    if(balance>peak)peak=balance;
-
-    const drawdown=peak-balance;
-    if(drawdown>maxDrawdown)maxDrawdown=drawdown;
-  });
-
-  return maxDrawdown;
-}
-
-function makeStats(list){
-  const wins=list.filter(t=>t.result==="TP").length;
-  const losses=list.filter(t=>t.result==="SL").length;
-  const be=list.filter(t=>t.result==="BE").length;
-  const net=list.reduce((sum,t)=>sum+Number(t.pnl),0);
-  const decided=wins+losses;
-
-  return{
-    total:list.length,
-    wins,
-    losses,
-    be,
-    net,
-    average:list.length?net/list.length:0,
-    rate:decided?wins/decided*100:null,
-    maxDrawdown:calculateMaxDrawdown(list)
-  };
-}
-
-function setMoneyClass(element,value){
-  element.classList.remove("positive","negative","neutral");
-  element.classList.add(value>0?"positive":value<0?"negative":"neutral");
-}
-
-function renderStats(){
-  const s=makeStats(trades);
-  $("totalTrades").textContent=s.total;
-  $("winRate").textContent=s.rate===null?"—":s.rate.toFixed(2)+"%";
-  $("netProfit").textContent=money(s.net);
-  $("averageTrade").textContent=money(s.average);
-  $("winningTrades").textContent=s.wins;
-  $("losingTrades").textContent=s.losses;
-  $("breakevenTrades").textContent=s.be;
-  $("maxDrawdown").textContent=money(-s.maxDrawdown);
-
-  setMoneyClass($("netProfit"),s.net);
-  setMoneyClass($("averageTrade"),s.average);
-  setMoneyClass($("maxDrawdown"),s.maxDrawdown>0?-1:0);
-
-  const strategyStats=[
-    {key:"PW",prefix:"pw"},
-    {key:"CW",prefix:"cw"},
-    {key:"DIS",prefix:"dis"}
-  ];
-
-  strategyStats.forEach(({key,prefix})=>{
-    const stats=makeStats(trades.filter(t=>t.strategy===key));
-    $(prefix+"Total").textContent=stats.total;
-    $(prefix+"Rate").textContent=stats.rate===null?"—":stats.rate.toFixed(2)+"%";
-    $(prefix+"Net").textContent=money(stats.net);
-    $(prefix+"Record").textContent=stats.wins+" / "+stats.losses+" / "+stats.be;
-    setMoneyClass($(prefix+"Net"),stats.net);
-  });
-}
-
-function strategyName(strategy){
-  if(strategy==="PW")return "Put Wall";
-  if(strategy==="CW")return "Call Wall";
-  return "Discrecional";
-}
-
-function strategyClass(strategy){
-  if(strategy==="PW")return "put-wall";
-  if(strategy==="CW")return "call-wall";
-  return "discretional";
-}
-
-function renderTrades(){
-  const rows=$("tradeRows");
-  $("tradeCount").textContent=trades.length+" operaciones registradas";
-  if(!trades.length){
-    rows.innerHTML='<tr><td colspan="6" class="empty">Todavía no hay operaciones registradas.</td></tr>';
-    renderStats();return;
-  }
-
-  const sorted=[...trades].sort((a,b)=>
-    b.date.localeCompare(a.date)||b.id.localeCompare(a.id)
-  );
-
-  rows.innerHTML=sorted.map(t=>`
-    <tr>
-      <td>${escapeHTML(t.date)}</td>
-      <td><span class="strategy-label ${strategyClass(t.strategy)}">${strategyName(t.strategy)}</span></td>
-      <td><span class="result-tag tag-${t.result.toLowerCase()}">${t.result}</span></td>
-      <td class="${Number(t.pnl)>0?"positive":Number(t.pnl)<0?"negative":""}">${money(Number(t.pnl))}</td>
-      <td>${escapeHTML(t.notes||"—")}</td>
-      <td><button class="danger" data-delete="${escapeHTML(t.id)}" type="button">Eliminar</button></td>
-    </tr>
-  `).join("");
-  renderStats();
-}
-
-$("tradeForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  const date=$("tradeDate").value;
-  const strategy=$("strategy").value;
-  const result=$("result").value;
-  const pnlText=$("pnl").value.trim();
-  let pnl=Number(pnlText);
-  const notes=$("notes").value.trim();
-
-  if(!date||!pnlText||!Number.isFinite(pnl)){
-    $("formMessage").textContent="Completa la fecha y el resultado económico.";
-    return;
-  }
-
-  if(result==="TP")pnl=Math.abs(pnl);
-  if(result==="SL")pnl=-Math.abs(pnl);
-  if(result==="BE")pnl=0;
-
-  if(result==="TP"&&pnl===0){
-    $("formMessage").textContent="Una operación TP debe tener un beneficio mayor que cero.";
-    return;
-  }
-
-  if(result==="SL"&&pnl===0){
-    $("formMessage").textContent="Una operación SL debe tener una pérdida mayor que cero.";
-    return;
-  }
-
-  const trade={
-    id:Date.now().toString()+"-"+Math.random().toString(36).slice(2,8),
-    date,strategy,result,pnl,notes
-  };
-  trades.push(trade);
-  if(!saveTrades()){trades.pop();return;}
-
-  $("tradeForm").reset();
-  $("tradeDate").value=new Date().toISOString().slice(0,10);
-  $("formMessage").textContent="Operación registrada correctamente.";
-  renderTrades();
-});
-
-$("tradeRows").addEventListener("click",event=>{
-  const button=event.target.closest("[data-delete]");
-  if(!button)return;
-  const id=button.dataset.delete;
-  if(!confirm("¿Quieres eliminar esta operación?"))return;
-  const previous=trades;
-  trades=trades.filter(t=>t.id!==id);
-  if(!saveTrades()){trades=previous;return;}
-  renderTrades();
-  $("formMessage").textContent="Operación eliminada.";
-});
-
-/* EXPORTAR E IMPORTAR CSV */
-
-function csvEscape(value){
-  return '"'+String(value??"").replace(/"/g,'""')+'"';
-}
-
-$("exportTrades").addEventListener("click",()=>{
-  const header=["id","date","strategy","result","pnl","notes"];
-  const lines=[header.join(",")];
-  trades.forEach(t=>{
-    lines.push([t.id,t.date,t.strategy,t.result,t.pnl,t.notes].map(csvEscape).join(","));
-  });
-  const blob=new Blob(["\uFEFF"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url;
-  a.download="strike-wall-operaciones.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-$("importTrades").addEventListener("click",()=>$("importFile").click());
-
-$("importFile").addEventListener("change",async event=>{
-  const file=event.target.files[0];
-  if(!file)return;
-  try{
-    const text=await file.text();
-    const lines=text.replace(/^\uFEFF/,"").trim().split(/\r?\n/);
-    const headers=parseCSVLine(lines.shift()).map(x=>x.toLowerCase());
-    const col=name=>headers.indexOf(name);
-
-    const imported=lines.map(line=>{
-      const c=parseCSVLine(line);
-      const result=c[col("result")];
-      let pnl=Number(c[col("pnl")]);
-
-      if(result==="TP")pnl=Math.abs(pnl);
-      if(result==="SL")pnl=-Math.abs(pnl);
-      if(result==="BE")pnl=0;
-
-      return{
-        id:c[col("id")]||Date.now().toString()+"-"+Math.random().toString(36).slice(2,8),
-        date:c[col("date")],
-        strategy:c[col("strategy")],
-        result,
-        pnl,
-        notes:c[col("notes")]||""
-      };
-    }).filter(t=>
-      /^\d{4}-\d{2}-\d{2}$/.test(t.date)&&
-      ["PW","CW","DIS"].includes(t.strategy)&&
-      ["TP","SL","BE"].includes(t.result)&&
-      Number.isFinite(t.pnl)&&
-      (t.result!=="TP"||t.pnl>0)&&
-      (t.result!=="SL"||t.pnl<0)&&
-      (t.result!=="BE"||t.pnl===0)
-    );
-
-    if(!imported.length)throw new Error("No se encontraron operaciones válidas.");
-    if(!confirm("Se importarán "+imported.length+" operaciones. ¿Quieres continuar?"))return;
-
-    const existing=new Set(trades.map(t=>t.id));
-    const newTrades=imported.filter(t=>!existing.has(t.id));
-    trades=[...trades,...newTrades];
-    if(!saveTrades())return;
-    renderTrades();
-    $("formMessage").textContent=newTrades.length+" operaciones importadas.";
-  }catch(error){
-    alert("No se pudo importar el archivo: "+error.message);
-  }finally{
-    event.target.value="";
-  }
-});
-
-function parseCSVLine(line){
-  const result=[];
-  let value="";
-  let quoted=false;
-  for(let i=0;i<line.length;i++){
-    const char=line[i];
-    if(char==='"'&&quoted&&line[i+1]==='"'){value+='"';i++;}
-    else if(char==='"'){quoted=!quoted;}
-    else if(char===","&&!quoted){result.push(value);value="";}
-    else{value+=char;}
-  }
-  result.push(value);
-  return result;
-}
-
-/* CONTROLES DEL GRÁFICO */
-
-document.querySelectorAll("[data-period]").forEach(button=>{
-  button.addEventListener("click",()=>setPeriod(button.dataset.period));
-});
-
-$("valueMode").addEventListener("click",()=>{
-  mode="value";
-  hoverIndex=null;
-  hideTooltip();
-  $("valueMode").classList.add("active");
-  $("changeMode").classList.remove("active");
-  renderChart(document.querySelector("[data-period].active")?.dataset.period||"5Y");
-});
-
-$("changeMode").addEventListener("click",()=>{
-  mode="change";
-  hoverIndex=null;
-  hideTooltip();
-  $("changeMode").classList.add("active");
-  $("valueMode").classList.remove("active");
-  renderChart(document.querySelector("[data-period].active")?.dataset.period||"5Y");
-});
-
-$("reference").addEventListener("change",()=>{
-  if(visible.length)drawChart(Number($("reference").value));
-});
-
-$("chart").addEventListener("pointermove",handleChartPointer);
-$("chart").addEventListener("pointerleave",hideTooltip);
-$("chart").addEventListener("pointerdown",handleChartPointer);
-
-window.addEventListener("resize",()=>{
-  hoverIndex=null;
-  hideTooltip();
-  if(visible.length)drawChart(Number($("reference").value));
-});
-
-/* INICIO */
-
-$("tradeDate").value=new Date().toISOString().slice(0,10);
-loadTrades();
-renderTrades();
-loadMarket();
-</script>
-
-<script>
-/* REGISTRO DEL SERVICE WORKER PWA */
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () {
-    navigator.serviceWorker.register("./sw.js")
-      .then(function (registration) {
-        console.log("PWA activada:", registration.scope);
-      })
-      .catch(function (error) {
-        console.error("Error PWA:", error);
-      });
-  });
-}
-</script>
-</body>
-</html>
