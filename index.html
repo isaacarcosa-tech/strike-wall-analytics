@@ -558,110 +558,130 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 
 
 
+
 <script>
 /* CALCULADORA DE FONDEOS: MODELO INTERCONECTADO */
 (()=>{
- const $=id=>document.getElementById(id);
- const val=id=>Number($(id).value);
- const money=n=> (n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
- const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:1});
- const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
- const tabs=[...document.querySelectorAll("[data-fund-tab]")];
- tabs.forEach(btn=>btn.addEventListener("click",()=>{
-   tabs.forEach(x=>x.classList.toggle("active",x===btn));
-   document.querySelectorAll("[data-fund-panel]").forEach(panel=>panel.classList.toggle("active",panel.dataset.fundPanel===btn.dataset.fundTab));
- }));
- const easyCount=()=>Math.ceil(val("frGoal")/(val("frPayout")*val("frWithdrawals")));
- function updateEasy(){
-   const goal=5000, payout=1500;
-   const exact=goal/payout;
-   $("feEasyCount").textContent=Math.ceil(exact);
-   $("feEasyEquation").textContent=money(goal)+" ÷ "+money(payout)+" = "+fmt(exact);
- }
- function updateCost(){
-   const pass=val("fcPass")/10, price=val("fcPrice"), cost=price/pass;
-   const survival=val("frSurvival")/10;
-   $("fcPassOut").textContent=val("fcPass")+" de cada 10";
-   $("fcPriceOut").textContent=money(price);
-   $("fcFundedCost").textContent=money(cost);
-   $("fcEquation").textContent=money(price)+" ÷ "+Math.round(pass*100)+"% = "+money(cost);
-   $("fcCostDesc").textContent="No pagas "+money(price)+" por cada cuenta fondeada. Pagas "+money(cost)+", contando las evaluaciones que no pasan.";
-   $("fcEvalTotal").textContent=money(price*10);
-   
-   $("fcPayoutTotal").textContent=fmt(10*pass*survival);
-   $("fcEvalBar").style.width="100%";
-   $("fcPassBar").style.width=(pass*100)+"%";
-   $("fcPayoutBar").style.width=(pass*survival*100)+"%";
-   $("frCostOut").textContent=money(cost);
- }
-   function updateReal(){
-    const cost=val("frManualCost");
-    const payout=val("frPayout");
-    const survival=val("frSurvival")/10;
-    const withdrawals=val("frWithdrawals");
-    const days=val("frDays");
-    const cost=val("fcPrice")/(val("fcPass")/10);
+  const $ = id => document.getElementById(id);
+  const val = id => Number($(id).value);
+  const money = n => (n < 0 ? "-$" : "$") +
+    Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
+  const fmt = n => Number(n).toLocaleString("en-US",{maximumFractionDigits:1});
+  const clamp = (n,min,max) => Math.max(min,Math.min(max,n));
 
-    // Cuentas necesarias para alcanzar el objetivo por ciclo.
-    const easy=Math.ceil(goal/(payout*withdrawals));
-    const real=Math.ceil(easy/survival);
+  const tabs = [...document.querySelectorAll("[data-fund-tab]")];
 
-    // Cuentas que cobran y cuentas que fallan en cada ciclo.
-    const survivors=real*survival;
-    const failures=real-survivors;
+  tabs.forEach(btn => btn.addEventListener("click",()=>{
+    tabs.forEach(x=>x.classList.toggle("active",x===btn));
+    document.querySelectorAll("[data-fund-panel]").forEach(panel=>{
+      panel.classList.toggle("active",panel.dataset.fundPanel===btn.dataset.fundTab);
+    });
+  }));
 
-    // Ciclos de 30 días.
-    const cyclesPerMonth=30/days;
+  function updateEasy(){
+    const goal = val("frGoal");
+    const payout = val("frPayout");
+    const withdrawals = val("frWithdrawals");
+    const totalPerAccount = payout * withdrawals;
+    const exact = goal / totalPerAccount;
+    const count = Math.ceil(exact);
 
-    // Ingresos: los supervivientes cobran cada "days" días.
-    const income=survivors*payout*cyclesPerMonth;
+    $("feEasyCount").textContent = count;
+    $("feEasyEquation").textContent =
+      money(goal)+" ÷ "+money(totalPerAccount)+" = "+fmt(exact);
+  }
 
-    // Reposición de cuentas que fallan antes de cobrar.
-    const failedReplacementCost=failures*cost*cyclesPerMonth;
+  function updateCost(){
+    const pass = val("fcPass") / 10;
+    const price = val("fcPrice");
+    const survival = val("frSurvival") / 10;
+    const fundedCost = pass > 0 ? price / pass : 0;
 
-    // Reposición de cuentas que agotan sus retiros y se queman.
-    const successfulReplacementCost=survivors*cost*(30/(withdrawals*days));
+    $("fcPassOut").textContent = val("fcPass")+" de cada 10";
+    $("fcPriceOut").textContent = money(price);
+    $("fcFundedCost").textContent = money(fundedCost);
+    $("fcEquation").textContent =
+      money(price)+" ÷ "+Math.round(pass*100)+"% = "+money(fundedCost);
 
-    // Coste mensual total y beneficio neto.
-    const replacementCost=failedReplacementCost+successfulReplacementCost;
-    const net=income-replacementCost;
+    $("fcCostDesc").textContent =
+      "No pagas "+money(price)+" por cada cuenta fondeada. Pagas "+
+      money(fundedCost)+", contando las evaluaciones que no pasan.";
 
-    $("frGoalOut").textContent=money(goal);
-    $("frPayoutOut").textContent=money(payout);
-    $("frSurvivalOut").textContent=val("frSurvival")+" de cada 10";
-    $("frWithdrawalsOut").textContent=withdrawals;
-    $("frDaysOut").textContent=days+" días";
+    $("fcEvalTotal").textContent = money(price*10);
+    $("fcPassTotal").textContent = fmt(10*pass);
+    $("fcPayoutTotal").textContent = fmt(10*pass*survival);
 
-    $("frEasy").textContent=easy;
-    $("frReal").textContent=real;
-    $("frTotal").textContent=money(payout*withdrawals);
+    $("fcEvalBar").style.width = "100%";
+    $("fcPassBar").style.width = (pass*100)+"%";
+    $("fcPayoutBar").style.width = (pass*survival*100)+"%";
+  }
 
-    $("frPopulation").textContent=
+  function updateReal(){
+    const goal = val("frGoal");
+    const payout = val("frPayout");
+    const survival = val("frSurvival") / 10;
+    const withdrawals = val("frWithdrawals");
+    const days = val("frDays");
+    const cost = val("frManualCost");
+
+    const easy = Math.ceil(goal/(payout*withdrawals));
+    const real = survival > 0 ? Math.ceil(easy/survival) : 0;
+
+    const survivors = real*survival;
+    const failures = real-survivors;
+    const cyclesPerMonth = 30/days;
+
+    const income = survivors*payout*cyclesPerMonth;
+
+    const failedReplacementCost =
+      failures*cost*cyclesPerMonth;
+
+    const successfulReplacementCost =
+      survivors*cost*(30/(withdrawals*days));
+
+    const replacementCost =
+      failedReplacementCost+successfulReplacementCost;
+
+    const net = income-replacementCost;
+
+    $("frGoalOut").textContent = money(goal);
+    $("frPayoutOut").textContent = money(payout);
+    $("frSurvivalOut").textContent =
+      val("frSurvival")+" de cada 10";
+    $("frWithdrawalsOut").textContent = withdrawals;
+    $("frDaysOut").textContent = days+" días";
+
+    $("frEasy").textContent = easy;
+    $("frReal").textContent = real;
+    $("frTotal").textContent = money(payout*withdrawals);
+
+    $("frPopulation").textContent =
       "De cada "+real+" cuentas: aproximadamente "+
       fmt(survivors)+" llegan al primer retiro y "+
       fmt(failures)+" se pierden antes de cobrar. "+
-      "Las que cobran se reponen al agotar sus "+withdrawals+" retiros.";
+      "Las que cobran se reponen al agotar sus "+
+      withdrawals+" retiros.";
 
-    $("frIncome").textContent=money(income);
-    $("frMonthlyCost").textContent="-"+money(replacementCost);
-    $("frNet").textContent=money(net);
+    $("frIncome").textContent = money(income);
+    $("frMonthlyCost").textContent = "-"+money(replacementCost);
+    $("frNet").textContent = money(net);
 
-    const scale=Math.max(income,replacementCost,Math.abs(net),1);
-    $("frIncomeBar").style.width=(income/scale*100)+"%";
-    $("frCostBar").style.width=(replacementCost/scale*100)+"%";
-    $("frNetBar").style.width=(Math.max(0,net)/scale*100)+"%";
+    const scale = Math.max(income,replacementCost,Math.abs(net),1);
+    $("frIncomeBar").style.width = (income/scale*100)+"%";
+    $("frCostBar").style.width = (replacementCost/scale*100)+"%";
+    $("frNetBar").style.width = (Math.max(0,net)/scale*100)+"%";
 
-    $("frStart").textContent=money(real*cost);
-    $("frStartNote").textContent=
-      "Coste estimado para conseguir "+real+
-      " cuentas fondeadas, según tu pass rate.";
+    $("frStart").textContent = money(real*cost);
+    $("frStartNote").textContent =
+      "Capital estimado para conseguir "+real+
+      " cuentas fondeadas a "+money(cost)+" cada una.";
 
-    $("frAverage").textContent=money(net);
+    $("frAverage").textContent = money(net);
 
-    const timeline=$("frTimeline");
-    timeline.innerHTML="";
+    const timeline = $("frTimeline");
+    timeline.innerHTML = "";
 
-    const entries=[{label:"DÍA 0",value:"Fondeada"}];
+    const entries = [{label:"DÍA 0",value:"Fondeada"}];
 
     for(let i=1;i<=withdrawals;i++){
       entries.push({
@@ -670,50 +690,122 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
       });
     }
 
-    entries.forEach(e=>{
-      const row=document.createElement("div");
-      row.className="funding-bar-row";
-      row.style.gridTemplateColumns="72px 1fr";
-      row.innerHTML=
-        "<span>"+e.label+"</span>"+
-        "<strong style='font-size:12px'>"+e.value+"</strong>";
+    entries.forEach(entry=>{
+      const row = document.createElement("div");
+      row.className = "funding-bar-row";
+      row.style.gridTemplateColumns = "72px 1fr";
+      row.innerHTML =
+        "<span>"+entry.label+"</span>"+
+        "<strong style='font-size:12px'>"+entry.value+"</strong>";
       timeline.append(row);
     });
+
+    return {income,replacementCost,net,real,easy};
   }
- function updateProfit(){
-   const pass=val("fcPass")/10, success=val("frSurvival")/10, withdrawals=val("frWithdrawals"), payout=val("frPayout"), price=val("fcPrice");
-   const evaluations=10, passed=evaluations*pass, payoutAccounts=passed*success;
-   const payoutCount=payoutAccounts*withdrawals, gross=payoutCount*payout, spend=evaluations*price, net=gross-spend;
-   const extraPass=success*withdrawals*payout;
-   const extraWithdrawal=payoutAccounts*payout;
-   $("fpPassOut").textContent=val("fcPass")+" de cada 10";$("fpSuccessOut").textContent=val("frSurvival")+" de cada 10";
-   $("fpWithdrawalsOut").textContent=withdrawals;$("fpPayoutOut").textContent=money(payout);$("fpPriceOut").textContent=money(price);
-   $("fpSpend").textContent=money(spend);$("fpNet").textContent=money(net);
-   $("fpGrossCaption").textContent="Cobras "+money(gross)+" en "+fmt(payoutCount)+" retiros";
-   $("fpExtraPass").textContent="+"+money(extraPass);$("fpPassBase").textContent=val("fcPass");$("fpPassNext").textContent=clamp(val("fcPass")+1,1,10);
-   $("fpExtraWithdrawal").textContent="+"+money(extraWithdrawal);$("fpWBase").textContent=withdrawals;$("fpWNext").textContent=Math.min(5,withdrawals+1);
-   const scenarios=$("fpScenarios");scenarios.innerHTML="";
-   for(let n=1;n<=5;n++){
-     const scenarioNet=payoutAccounts*n*payout-spend;
-     const card=document.createElement("div");card.className="funding-mini"+(n===withdrawals?" active":"");
-     ["fcPass","fcPrice","frGoal","frPayout","frSurvival","frWithdrawals","frDays","frManualCost"].forEach(id=>$(id).addEventListener("input",updateAll));
-     scenarios.append(card);
-   }
+
+  function updateProfit(){
+    const pass = val("fcPass")/10;
+    const success = val("frSurvival")/10;
+    const withdrawals = val("frWithdrawals");
+    const payout = val("frPayout");
+    const price = val("fcPrice");
+
+    const evaluations = 10;
+    const passed = evaluations*pass;
+    const payoutAccounts = passed*success;
+    const payoutCount = payoutAccounts*withdrawals;
+    const gross = payoutCount*payout;
+    const spend = evaluations*price;
+    const net = gross-spend;
+
+    const extraPass = success*withdrawals*payout;
+    const extraWithdrawal = payoutAccounts*payout;
+
+    $("fpPassOut").textContent = val("fcPass")+" de cada 10";
+    $("fpSuccessOut").textContent = val("frSurvival")+" de cada 10";
+    $("fpWithdrawalsOut").textContent = withdrawals;
+    $("fpPayoutOut").textContent = money(payout);
+    $("fpPriceOut").textContent = money(price);
+
+    $("fpSpend").textContent = money(spend);
+    $("fpNet").textContent = money(net);
+    $("fpGrossCaption").textContent =
+      "Cobras "+money(gross)+" en "+fmt(payoutCount)+" retiros";
+
+    $("fpExtraPass").textContent = "+"+money(extraPass);
+    $("fpPassBase").textContent = val("fcPass");
+    $("fpPassNext").textContent = clamp(val("fcPass")+1,1,10);
+
+    $("fpExtraWithdrawal").textContent = "+"+money(extraWithdrawal);
+    $("fpWBase").textContent = withdrawals;
+    $("fpWNext").textContent = Math.min(5,withdrawals+1);
+
+    const scenarios = $("fpScenarios");
+    scenarios.innerHTML = "";
+
+    for(let n=1;n<=5;n++){
+      const scenarioGross = payoutAccounts*n*payout;
+      const scenarioNet = scenarioGross-spend;
+      const card = document.createElement("div");
+
+      card.className =
+        "funding-mini"+(n===withdrawals?" active":"");
+
+      card.innerHTML =
+        "<div class='funding-eyebrow'>"+n+
+        (n===1?" RETIRO":" RETIROS")+"</div>"+
+        "<strong>"+money(scenarioNet)+"</strong>"+
+        "<small>Ingresos: "+money(scenarioGross)+
+        " · Coste: "+money(spend)+"</small>";
+
+      scenarios.append(card);
     }
- function updateAll(){updateEasy();updateCost();updateReal();updateProfit();}
- ["fcPass","fcPrice","frGoal","frPayout","frSurvival","frWithdrawals","frDays"].forEach(id=>$(id).addEventListener("input",updateAll));
- const riskPresets={
-   conservador:{survival:2,withdrawals:2,days:10},
-   realista:{survival:3,withdrawals:2,days:7},
-   agresivo:{survival:5,withdrawals:3,days:5}
- };
- document.querySelectorAll("#frRisk [data-risk]").forEach(btn=>btn.addEventListener("click",()=>{
-   document.querySelectorAll("#frRisk [data-risk]").forEach(x=>x.classList.toggle("active",x===btn));
-   const preset=riskPresets[btn.dataset.risk];
-   $("frSurvival").value=preset.survival;$("frWithdrawals").value=preset.withdrawals;$("frDays").value=preset.days;
-   updateAll();
- }));
- updateAll();
+  }
+
+  function updateAll(){
+    updateEasy();
+    updateCost();
+    updateReal();
+    updateProfit();
+  }
+
+  [
+    "fcPass",
+    "fcPrice",
+    "frGoal",
+    "frPayout",
+    "frSurvival",
+    "frManualCost",
+    "frWithdrawals",
+    "frDays"
+  ].forEach(id=>{
+    $(id).addEventListener("input",updateAll);
+    $(id).addEventListener("change",updateAll);
+  });
+
+  const riskPresets = {
+    conservador:{survival:2,withdrawals:2,days:10},
+    realista:{survival:3,withdrawals:2,days:7},
+    agresivo:{survival:5,withdrawals:3,days:5}
+  };
+
+  document.querySelectorAll("#frRisk [data-risk]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll("#frRisk [data-risk]").forEach(x=>{
+        x.classList.toggle("active",x===btn);
+      });
+
+      const preset = riskPresets[btn.dataset.risk];
+
+      $("frSurvival").value = preset.survival;
+      $("frWithdrawals").value = preset.withdrawals;
+      $("frDays").value = preset.days;
+
+      updateAll();
+    });
+  });
+
+  updateAll();
 })();
 </script>
 
