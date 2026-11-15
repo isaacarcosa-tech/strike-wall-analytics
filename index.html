@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b1019">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Strike Wall">
@@ -143,64 +144,10 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
   .stat-card strong{font-size:20px}
 }
 
-/* CALCULADORA DE FONDEOS */
-.funding-calc{font-family:Inter,system-ui,Arial,sans-serif;color:#202735;margin:0 0 24px}
-.funding-calc *{box-sizing:border-box}
-.funding-head{margin:8px 0 16px}
-.funding-kicker,.funding-eyebrow{font-size:10px;font-weight:800;letter-spacing:2px;color:#687080;text-transform:uppercase}
-.funding-head h2{font-size:clamp(22px,3vw,31px);font-weight:900;letter-spacing:-1px;margin:5px 0;color:#202735}
-.funding-sub{font-size:12px;color:#606978}
-.funding-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:5px;background:#e8ebef;border:1px solid #d4d9df;border-radius:12px;margin:14px 0}
-.funding-tabs button{border:0;background:transparent;color:#515b69;padding:10px 6px;font-size:10px;font-weight:800;letter-spacing:.4px;border-radius:8px}
-.funding-tabs button.active{background:#20283c;color:white}
-.funding-grid{display:grid;grid-template-columns:minmax(320px,.85fr) minmax(440px,1.15fr);gap:14px}
-.funding-card{background:#f2f3f4;border:1px solid #d6d9dd;border-radius:16px;padding:17px 18px;box-shadow:0 2px 8px #1018280b;min-width:0}
-.funding-left{display:flex;flex-direction:column;gap:14px}
-.funding-field{min-width:0}
-.funding-field-top{display:flex;justify-content:space-between;gap:10px;align-items:end;margin:8px 0}
-.funding-field-top label{color:#303846;font-size:12px;font-weight:750;margin:0}
-.funding-field-top output{font-size:15px;font-weight:900;color:#202735;white-space:nowrap}
-.funding-field small{display:block;font-size:10px;line-height:1.4;color:#697281;margin-top:5px}
-.funding-range{width:100%;padding:0;margin:0;accent-color:#20283c;height:6px;cursor:pointer;background:#cfd3d8;border:0}
-.funding-presets{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #cbd0d6;border-radius:10px;overflow:hidden;margin-top:7px}
-.funding-presets button{border:0;border-radius:0;background:transparent;color:#515b69;font-size:10px;font-weight:800;padding:10px 3px}
-.funding-presets button.active{background:#20283c;color:white}
-.funding-right{display:flex;flex-direction:column;gap:15px}
-.funding-comparison{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.funding-big{border:1px solid #d1d5da;border-radius:12px;padding:13px;background:#f6f6f6;min-width:0}
-.funding-big.dark{background:#20283c;color:#fff;border-color:#20283c}
-.funding-big span{display:block;font-size:9px;font-weight:800;letter-spacing:1.5px}
-.funding-big strong{display:block;font-size:48px;line-height:1.15;font-weight:900;margin:4px 0}
-.funding-big small{font-size:10px;line-height:1.4}
-.funding-timeline{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
-.funding-day{background:#d7e9e1;border:1px solid #8db9a6;border-radius:9px;padding:8px 10px;color:#202735;min-width:70px}
-.funding-day strong{display:block;font-size:9px;letter-spacing:.5px}
-.funding-day b{display:block;font-size:13px}
-.funding-arrow{font-size:14px;color:#687080}
-.funding-total{display:inline-block;background:#20283c;color:#fff;padding:8px 12px;border-radius:8px;font-size:11px;font-weight:800;margin-top:8px}
-.funding-dots{display:flex;gap:6px;margin:8px 0}
-.funding-dot{width:20px;height:20px;border-radius:6px;border:1px solid #779f90;background:#b5d7c8}
-.funding-dot.fail{background:#e6a7a7;border-color:#bb7777}
-.funding-legend{font-size:11px;line-height:1.8;color:#343d4b}
-.funding-legend i{display:inline-block;width:14px;height:14px;border-radius:5px;vertical-align:middle;margin-right:7px;background:#b5d7c8;border:1px solid #779f90}
-.funding-legend i.fail{background:#e6a7a7;border-color:#bb7777}
-.funding-bars{display:grid;gap:8px;margin-top:8px}
-.funding-bar-row{display:grid;grid-template-columns:105px minmax(40px,1fr) 76px;gap:8px;align-items:center;font-size:11px;font-weight:750}
-.funding-bar{height:14px;background:#e1e4e7;border:1px solid #cbd0d6;border-radius:5px;overflow:hidden}
-.funding-bar span{display:block;height:100%;border-radius:4px;background:#8db9a6}
-.funding-bar-row.cost .funding-bar span{background:#d98d8d}
-.funding-bar-row.net .funding-bar span{background:#20283c}
-.funding-bar-row output{text-align:right;font-size:14px;font-weight:900;white-space:nowrap}
-.funding-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-.funding-bottom .funding-card{padding:14px 17px}
-.funding-bottom strong{display:block;font-size:25px;margin:3px 0}
-.funding-bottom small{font-size:10px;color:#687080}
-@media(max-width:850px){.funding-grid{grid-template-columns:1fr}.funding-tabs{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.funding-card{padding:14px}.funding-comparison{gap:7px}.funding-big strong{font-size:39px}.funding-day{min-width:62px;padding:7px}.funding-bar-row{grid-template-columns:88px minmax(30px,1fr) 68px}.funding-bar-row output{font-size:12px}.funding-bottom{grid-template-columns:1fr}}
-
-
 /* CALCULADORA DE FONDEOS - CUATRO PESTAÑAS */
-.funding-calc{margin:34px 0 8px;color:#202735;font-family:Inter,system-ui,Arial,sans-serif}
+.funding-calc{margin:34px 0 8px;color:#202735;font-family:Inter,system-ui,Arial,sans-serif;background:#eceef1;border:1px solid #d4d9df;border-radius:18px;padding:24px}
+.funding-warning{background:#f6dede;border:1px solid #d9a3a3;color:#7a2e2e;border-radius:9px;padding:10px 12px;font-size:11px;line-height:1.5;margin-top:12px;display:none}
+.funding-warning.show{display:block}
 .funding-calc *{box-sizing:border-box}
 .funding-head{margin:0 0 14px}
 .funding-kicker,.funding-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.8px;color:#687080;text-transform:uppercase}
@@ -210,6 +157,10 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .funding-tabs button{border:0;background:transparent;color:#515b69;padding:10px 6px;font-size:10px;font-weight:800;letter-spacing:.3px;border-radius:8px}
 .funding-tabs button.active{background:#20283c;color:white}
 .funding-panel{display:none}.funding-panel.active{display:block}
+.funding-presets{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #cbd0d6;border-radius:10px;overflow:hidden;margin-top:7px}
+.funding-presets button{border:0;border-radius:0;background:transparent;color:#515b69;font-size:10px;font-weight:800;padding:10px 3px}
+.funding-presets button.active{background:#20283c;color:white}
+.funding-card .big{font-weight:900;color:#20283c}
 .funding-grid{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(320px,1.1fr);gap:14px}
 .funding-card{background:#f2f3f4;border:1px solid #d6d9dd;border-radius:16px;padding:18px;box-shadow:0 2px 8px #1018280b;min-width:0;color:#202735}
 .funding-card h3{font-size:13px;margin:0 0 14px;color:#202735}
@@ -254,7 +205,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .funding-box span{font-size:10px}
 .funding-note{font-size:10px;line-height:1.5;color:#687080;margin-top:9px}
 @media(max-width:800px){.funding-grid{grid-template-columns:1fr}.funding-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.funding-bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.funding-card{padding:14px}.funding-bar-row{grid-template-columns:95px minmax(25px,1fr) 72px}.funding-bar-row output{font-size:12px}.funding-bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.funding-two-results{grid-template-columns:1fr}}
+@media(max-width:520px){.funding-calc{padding:14px}.funding-card{padding:14px}.funding-bar-row{grid-template-columns:95px minmax(25px,1fr) 72px}.funding-bar-row output{font-size:12px}.funding-bottom-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.funding-two-results{grid-template-columns:1fr}}
 
 </style>
 </head>
@@ -292,7 +243,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
     </div>
     <div class="toolbar">
       <button id="valueMode" class="active">Value</button>
-      <button id="changeMode">% from view start</button>
+      <button id="changeMode">Cambio vs. inicio (pp)</button>
     </div>
     <div class="chart-wrap" id="chartWrap">
       <canvas id="chart"></canvas>
@@ -441,12 +392,12 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
         <div class="funding-eyebrow">LA DIVISIÓN ES FÁCIL</div>
         <div class="big"><span id="feEasyCount">4</span> <span style="font-size:25px">CUENTAS</span></div>
         <div class="funding-equation" id="feEasyEquation">$5,000 ÷ $1,500 = 3.3</div>
-        <div class="desc">Objetivo mensual dividido entre lo que te paga una cuenta. El resultado se redondea hacia arriba.</div>
+        <div class="desc">Objetivo mensual dividido entre lo que cobras de una cuenta (retiro × retiros por cuenta). Sale un número bonito. <strong>Y es mentira.</strong></div>
       </div>
       <div class="funding-card">
         <div class="funding-eyebrow">LO QUE ESTA CUENTA DA POR HECHO</div>
         <div class="funding-assumptions">
-          <div class="funding-assumption"><b class="num">1</b><div><strong>Que toda cuenta fondeada cobra</strong><small>De cada 10 que pasan a fondeo, al retiro llegan todas. El resto se queda por el camino.</small></div></div>
+          <div class="funding-assumption"><b class="num">1</b><div><strong>Que toda cuenta fondeada cobra</strong><small>De cada 10 que pasan a fondeo, al retiro llegan unas pocas. El resto se queda por el camino.</small></div></div>
           <div class="funding-assumption"><b class="num">2</b><div><strong>Que reponerlas es gratis</strong><small>Evaluación, activación y resets. Cada cuenta perdida sale de lo que has cobrado.</small></div></div>
           <div class="funding-assumption"><b class="num">3</b><div><strong>Que cobras lo mismo cada mes</strong><small>Hay meses que cobran cuatro y meses que no cobra ninguna. La media no paga las facturas.</small></div></div>
         </div>
@@ -460,7 +411,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
       <div class="funding-card">
         <div class="funding-eyebrow">ANTES DE COBRAR, HAY QUE LLEGAR</div>
         <div class="funding-field"><div class="funding-field-top"><label for="fcPass">Evaluaciones que pasas</label><output id="fcPassOut">3 de cada 10</output></div><input class="funding-range" id="fcPass" type="range" min="1" max="10" value="3" step="1"><small>Tu pass rate: de cada 10 evaluaciones que compras, cuántas llegan a fondeo.</small></div>
-        <div class="funding-field"><div class="funding-field-top"><label for="fcPrice">Precio de la cuenta</label><output id="fcPriceOut">$160</output></div><input class="funding-range" id="fcPrice" type="range" min="50" max="300" value="160" step="5"><small>Lo que pagas por cada evaluación, con la activación si la hay.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="fcPrice">Precio de la cuenta</label><output id="fcPriceOut">$160</output></div><input class="funding-range" id="fcPrice" type="range" min="50" max="300" value="150" step="5"><small>Lo que pagas por cada evaluación, con la activación si la hay.</small></div>
         <div class="funding-equation" id="fcEquation">$160 ÷ 30% = $533</div>
         <div class="funding-note">Las evaluaciones que suspendes también las pagas.</div>
       </div>
@@ -491,20 +442,15 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
         <div class="funding-field"><div class="funding-field-top"><label for="frGoal">Objetivo mensual</label><output id="frGoalOut">$5,000</output></div><input class="funding-range" id="frGoal" type="range" min="1000" max="30000" value="5000" step="250"></div>
         <div class="funding-field"><div class="funding-field-top"><label for="frPayout">Retiro por cuenta</label><output id="frPayoutOut">$1,200</output></div><input class="funding-range" id="frPayout" type="range" min="250" max="3000" value="1200" step="50"><small>Lo que te llega cuando esa cuenta cobra, ya con el split.</small></div>
         <div class="funding-field"><div class="funding-field-top"><label for="frSurvival">Fondeadas que llegan a retiro</label><output id="frSurvivalOut">3 de cada 10</output></div><input class="funding-range" id="frSurvival" type="range" min="1" max="10" value="3" step="1"><small>De cada 10 cuentas fondeadas, cuántas llegan al primer retiro. El resto se pierde y se repone.</small></div>
-        <div class="funding-field">
-  <div class="funding-field-top">
-    <label for="frManualCost">Coste de cada fondeada ($)</label>
-  </div>
-  <input id="frManualCost" type="number" min="0" max="10000" step="1" value="375" style="width:100%">
-  <small>Introduce manualmente cuánto te cuesta conseguir cada cuenta fondeada.</small>
-</div>        <div class="funding-field"><div class="funding-field-top"><label for="frWithdrawals">Retiros por cuenta antes de quemarla</label><output id="frWithdrawalsOut">2</output></div><input class="funding-range" id="frWithdrawals" type="range" min="1" max="5" value="2" step="1"><small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label>Coste de cada fondeada</label><output id="frCostOut">$375</output></div><small>Sale de la pestaña 2: precio de la evaluación ÷ tu pass rate.</small></div>
+        <div class="funding-field"><div class="funding-field-top"><label for="frWithdrawals">Retiros por cuenta antes de quemarla</label><output id="frWithdrawalsOut">2</output></div><input class="funding-range" id="frWithdrawals" type="range" min="1" max="5" value="2" step="1"><small>Cuántas veces cobras de la misma cuenta antes de perderla o de que pase a live.</small></div>
         <div class="funding-field"><div class="funding-field-top"><label for="frDays">Cada cuánto retiras una cuenta</label><output id="frDaysOut">7 días</output></div><input class="funding-range" id="frDays" type="range" min="3" max="30" value="7" step="1"><small>Días entre un retiro y el siguiente cuando la cuenta ya está cobrando.</small></div>
       </div>
       <div class="funding-card">
         <div class="funding-eyebrow">LA FÁCIL CONTRA LA REAL</div>
         <div class="funding-two-results" style="margin-top:10px">
-          <div class="funding-box"><small>CUENTA FÁCIL</small><strong id="frEasy">3</strong><span>Cuentas si todas cobraran los retiros previstos</span></div>
-          <div class="funding-box dark"><small>CUENTA REAL</small><strong id="frReal">10</strong><span>Cuentas fondeadas necesarias para compensar las que se pierden</span></div>
+          <div class="funding-box"><small>CUENTA FÁCIL</small><strong id="frEasy">3</strong><span>Cuentas si todas cobraran siempre</span></div>
+          <div class="funding-box dark"><small>CUENTA REAL</small><strong id="frReal">10</strong><span>Fondeadas activas a la vez para llegar al objetivo neto</span></div>
         </div>
         <div class="funding-eyebrow" style="margin-top:17px">LA VIDA DE UNA CUENTA QUE COBRA</div>
         <div class="funding-bars" id="frTimeline"></div>
@@ -516,7 +462,8 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div class="funding-bar-row cost"><span>Repones cuentas</span><div class="funding-bar"><span id="frCostBar"></span></div><output id="frMonthlyCost">—</output></div>
           <div class="funding-bar-row net"><span>Te queda</span><div class="funding-bar"><span id="frNetBar"></span></div><output id="frNet">—</output></div>
         </div>
-        <div class="funding-note">Estimación mensual: se prorratean los retiros por los días entre cobros y se repone el flujo de cuentas perdidas. Los resultados son promedios, no una garantía de cobro.</div>
+        <div class="funding-warning" id="frWarning"></div>
+        <div class="funding-note">Estimación mensual en régimen estable: cada cuenta que cobra genera sus retiros a lo largo de su vida (retiros × días) y, por cada una, se reponen también las fondeadas que se quemaron sin cobrar. Son promedios, no una garantía de cobro.</div>
       </div>
     </div>
     <div class="funding-two-results" style="margin-top:12px">
@@ -549,7 +496,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
       </div>
     </div>
     <div class="funding-bottom-grid" id="fpScenarios"></div>
-    <div class="funding-highlight">LA RENTABILIDAD SALE DE COBRAR MUCHAS VECES DE LA MISMA CUENTA. NO DE PASAR MÁS EVALUACIONES.</div>
+    <div class="funding-highlight" id="fpHighlight">LA RENTABILIDAD SALE DE COBRAR MUCHAS VECES DE LA MISMA CUENTA. NO DE PASAR MÁS EVALUACIONES.</div>
   </section>
   <div class="funding-note">Calculadora orientativa. Los porcentajes representan promedios introducidos por el usuario; las firmas de fondeo pueden aplicar reglas, límites, activaciones, splits y condiciones distintas.</div>
 </section>
@@ -567,7 +514,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
   const money = n => (n < 0 ? "-$" : "$") +
     Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:0});
   const fmt = n => Number(n).toLocaleString("en-US",{maximumFractionDigits:1});
-  const clamp = (n,min,max) => Math.max(min,Math.min(max,n));
+  const pct = (part,total) => (total > 0 ? Math.max(0,part/total*100) : 0) + "%";
 
   const tabs = [...document.querySelectorAll("[data-fund-tab]")];
 
@@ -578,230 +525,244 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
     });
   }));
 
-  function updateEasy(){
-    const goal = val("frGoal");
-    const payout = val("frPayout");
-    const withdrawals = val("frWithdrawals");
-    const totalPerAccount = payout * withdrawals;
-    const exact = goal / totalPerAccount;
-    const count = Math.ceil(exact);
-
-    $("feEasyCount").textContent = count;
-    $("feEasyEquation").textContent =
-      money(goal)+" ÷ "+money(totalPerAccount)+" = "+fmt(exact);
+  /* Valores compartidos entre pestañas */
+  function inputs(){
+    const pass = val("fcPass") / 10;          // evaluaciones que pasan a fondeo
+    const price = val("fcPrice");             // precio de cada evaluación
+    return {
+      pass,
+      price,
+      fundedCost: pass > 0 ? price / pass : 0, // coste real de cada fondeada
+      goal: val("frGoal"),
+      payout: val("frPayout"),
+      survival: val("frSurvival") / 10,        // fondeadas que llegan a retiro
+      withdrawals: val("frWithdrawals"),
+      days: val("frDays")
+    };
   }
 
-  function updateCost(){
-    const pass = val("fcPass") / 10;
-    const price = val("fcPrice");
-    const survival = val("frSurvival") / 10;
-    const fundedCost = pass > 0 ? price / pass : 0;
+  /* 1 · LA CUENTA FÁCIL */
+  function updateEasy(v){
+    const totalPerAccount = v.payout * v.withdrawals;
+    const exact = v.goal / totalPerAccount;
+    $("feEasyCount").textContent = Math.ceil(exact);
+    $("feEasyEquation").textContent =
+      money(v.goal)+" ÷ "+money(totalPerAccount)+" = "+fmt(exact);
+  }
 
+  /* 2 · LO QUE CUESTA FONDEAR */
+  function updateCost(v){
     $("fcPassOut").textContent = val("fcPass")+" de cada 10";
-    $("fcPriceOut").textContent = money(price);
-    $("fcFundedCost").textContent = money(fundedCost);
+    $("fcPriceOut").textContent = money(v.price);
+    $("fcFundedCost").textContent = money(v.fundedCost);
     $("fcEquation").textContent =
-      money(price)+" ÷ "+Math.round(pass*100)+"% = "+money(fundedCost);
-
+      money(v.price)+" ÷ "+Math.round(v.pass*100)+"% = "+money(v.fundedCost);
     $("fcCostDesc").textContent =
-      "No pagas "+money(price)+" por cada cuenta fondeada. Pagas "+
-      money(fundedCost)+", contando las evaluaciones que no pasan.";
+      "No pagas "+money(v.price)+" por cada cuenta fondeada. Pagas "+
+      money(v.fundedCost)+", contando las evaluaciones que no pasan.";
 
-    $("fcEvalTotal").textContent = money(price*10);
-    $("fcPassTotal").textContent = fmt(10*pass);
-    $("fcPayoutTotal").textContent = fmt(10*pass*survival);
+    $("fcEvalTotal").textContent = money(v.price*10);
+    $("fcPassTotal").textContent = fmt(10*v.pass);
+    $("fcPayoutTotal").textContent = fmt(10*v.pass*v.survival);
 
     $("fcEvalBar").style.width = "100%";
-    $("fcPassBar").style.width = (pass*100)+"%";
-    $("fcPayoutBar").style.width = (pass*survival*100)+"%";
+    $("fcPassBar").style.width = (v.pass*100)+"%";
+    $("fcPayoutBar").style.width = (v.pass*v.survival*100)+"%";
   }
 
-  function updateReal(){
-    const goal = val("frGoal");
-    const payout = val("frPayout");
-    const survival = val("frSurvival") / 10;
-    const withdrawals = val("frWithdrawals");
-    const days = val("frDays");
-    const cost = val("frManualCost");
+  /* 3 · LA CUENTA REAL
+     Régimen estable:
+     - Una cuenta que cobra vive (retiros × días) y cobra (retiros × retiro).
+     - Para tener una cuenta que cobra hay que fondear 1/supervivencia cuentas,
+       así que cada ciclo cuesta (coste fondeada ÷ supervivencia).
+     - Se buscan las cuentas que cobran necesarias para que el NETO llegue al objetivo. */
+  function updateReal(v){
+    const easy = Math.ceil(v.goal/(v.payout*v.withdrawals));
+    const cycleDays = v.withdrawals*v.days;
+    const cyclesPerMonth = 30/cycleDays;
 
-    const easy = Math.ceil(goal/(payout*withdrawals));
-    const real = survival > 0 ? Math.ceil(easy/survival) : 0;
+    const costPerPaying = v.survival > 0 ? v.fundedCost/v.survival : Infinity;
+    const grossPerPayingMonth = v.withdrawals*v.payout*cyclesPerMonth;
+    const costPerPayingMonth = costPerPaying*cyclesPerMonth;
+    const netPerPayingMonth = grossPerPayingMonth-costPerPayingMonth;
+    const profitable = Number.isFinite(netPerPayingMonth) && netPerPayingMonth > 0;
 
-    const survivors = real*survival;
-    const failures = real-survivors;
-    const cyclesPerMonth = 30/days;
+    $("frGoalOut").textContent = money(v.goal);
+    $("frPayoutOut").textContent = money(v.payout);
+    $("frSurvivalOut").textContent = val("frSurvival")+" de cada 10";
+    $("frCostOut").textContent = money(v.fundedCost);
+    $("frWithdrawalsOut").textContent = v.withdrawals;
+    $("frDaysOut").textContent = v.days+" días";
+    $("frEasy").textContent = easy;
+    $("frTotal").textContent = money(v.payout*v.withdrawals);
 
-    const income = survivors*payout*cyclesPerMonth;
+    /* Vida de una cuenta que cobra */
+    const timeline = $("frTimeline");
+    timeline.innerHTML = "";
+    const entries = [{label:"DÍA 0",value:"Fondeada"}];
+    for(let i=1;i<=v.withdrawals;i++){
+      entries.push({label:"DÍA "+(i*v.days),value:"+"+money(v.payout)});
+    }
+    entries.forEach(entry=>{
+      const row = document.createElement("div");
+      row.className = "funding-bar-row";
+      row.style.gridTemplateColumns = "72px 1fr";
+      row.innerHTML = "<span>"+entry.label+"</span>"+
+        "<strong style='font-size:12px'>"+entry.value+"</strong>";
+      timeline.append(row);
+    });
 
-    const failedReplacementCost =
-      failures*cost*cyclesPerMonth;
+    const warning = $("frWarning");
+    if(!profitable){
+      ["frReal","frIncome","frMonthlyCost","frNet","frStart","frAverage"]
+        .forEach(id=>$(id).textContent="—");
+      ["frIncomeBar","frCostBar","frNetBar"].forEach(id=>$(id).style.width="0%");
+      $("frPopulation").textContent =
+        "Cada cuenta que cobra genera "+money(v.payout*v.withdrawals)+
+        " pero conseguirla cuesta "+money(costPerPaying)+".";
+      $("frStartNote").textContent = "Con estos números no hay capital que llegue al objetivo.";
+      warning.textContent = "Con estos números pierdes dinero en cada cuenta: "+
+        "da igual cuántas tengas, nunca llegas al objetivo. Sube los retiros por cuenta "+
+        "o el porcentaje de fondeadas que cobran, o baja el coste de fondear.";
+      warning.classList.add("show");
+      return;
+    }
+    warning.classList.remove("show");
 
-    const successfulReplacementCost =
-      survivors*cost*(30/(withdrawals*days));
+    const paying = Math.ceil(v.goal/netPerPayingMonth);   // cuentas cobrando a la vez
+    const active = Math.ceil(paying/v.survival);          // fondeadas activas a la vez
+    const burned = active-paying;
 
-    const replacementCost =
-      failedReplacementCost+successfulReplacementCost;
-
+    const income = paying*grossPerPayingMonth;
+    const replacementCost = paying*costPerPayingMonth;
     const net = income-replacementCost;
 
-    $("frGoalOut").textContent = money(goal);
-    $("frPayoutOut").textContent = money(payout);
-    $("frSurvivalOut").textContent =
-      val("frSurvival")+" de cada 10";
-    $("frWithdrawalsOut").textContent = withdrawals;
-    $("frDaysOut").textContent = days+" días";
-
-    $("frEasy").textContent = easy;
-    $("frReal").textContent = real;
-    $("frTotal").textContent = money(payout*withdrawals);
-
+    $("frReal").textContent = active;
     $("frPopulation").textContent =
-      "De cada "+real+" cuentas: aproximadamente "+
-      fmt(survivors)+" llegan al primer retiro y "+
-      fmt(failures)+" se pierden antes de cobrar. "+
-      "Las que cobran se reponen al agotar sus "+
-      withdrawals+" retiros.";
+      "De tus "+active+" fondeadas: "+paying+
+      (paying===1?" llega":" llegan")+" a retiro y cobra"+(paying===1?"":"n")+" "+
+      v.withdrawals+(v.withdrawals===1?" vez":" veces")+", "+money(v.payout)+
+      " cada "+v.days+" días. "+burned+
+      (burned===1?" se quema":" se queman")+" sin cobrar y se repone"+
+      (burned===1?"":"n")+" a "+money(v.fundedCost)+" cada una.";
 
     $("frIncome").textContent = money(income);
     $("frMonthlyCost").textContent = "-"+money(replacementCost);
     $("frNet").textContent = money(net);
 
     const scale = Math.max(income,replacementCost,Math.abs(net),1);
-    $("frIncomeBar").style.width = (income/scale*100)+"%";
-    $("frCostBar").style.width = (replacementCost/scale*100)+"%";
-    $("frNetBar").style.width = (Math.max(0,net)/scale*100)+"%";
+    $("frIncomeBar").style.width = pct(income,scale);
+    $("frCostBar").style.width = pct(replacementCost,scale);
+    $("frNetBar").style.width = pct(net,scale);
 
-    $("frStart").textContent = money(real*cost);
+    const evaluations = v.pass > 0 ? Math.ceil(active/v.pass) : 0;
+    $("frStart").textContent = money(evaluations*v.price);
     $("frStartNote").textContent =
-      "Capital estimado para conseguir "+real+
-      " cuentas fondeadas a "+money(cost)+" cada una.";
-
+      evaluations+" evaluaciones a "+money(v.price)+" para tener "+active+" fondeadas.";
     $("frAverage").textContent = money(net);
-
-    const timeline = $("frTimeline");
-    timeline.innerHTML = "";
-
-    const entries = [{label:"DÍA 0",value:"Fondeada"}];
-
-    for(let i=1;i<=withdrawals;i++){
-      entries.push({
-        label:"DÍA "+(i*days),
-        value:"+"+money(payout)
-      });
-    }
-
-    entries.forEach(entry=>{
-      const row = document.createElement("div");
-      row.className = "funding-bar-row";
-      row.style.gridTemplateColumns = "72px 1fr";
-      row.innerHTML =
-        "<span>"+entry.label+"</span>"+
-        "<strong style='font-size:12px'>"+entry.value+"</strong>";
-      timeline.append(row);
-    });
-
-    return {income,replacementCost,net,real,easy};
   }
 
-  function updateProfit(){
-    const pass = val("fcPass")/10;
-    const success = val("frSurvival")/10;
-    const withdrawals = val("frWithdrawals");
-    const payout = val("frPayout");
-    const price = val("fcPrice");
-
+  /* 4 · DÓNDE SALE LA RENTABILIDAD (tanda de 10 evaluaciones) */
+  function updateProfit(v){
+    const passCount = val("fcPass");
     const evaluations = 10;
-    const passed = evaluations*pass;
-    const payoutAccounts = passed*success;
-    const payoutCount = payoutAccounts*withdrawals;
-    const gross = payoutCount*payout;
-    const spend = evaluations*price;
+    const passed = evaluations*v.pass;
+    const payoutAccounts = passed*v.survival;
+    const payoutCount = payoutAccounts*v.withdrawals;
+    const gross = payoutCount*v.payout;
+    const spend = evaluations*v.price;
     const net = gross-spend;
 
-    const extraPass = success*withdrawals*payout;
-    const extraWithdrawal = payoutAccounts*payout;
+    const canPassMore = passCount < 10;
+    const canWithdrawMore = v.withdrawals < 5;
+    const extraPass = canPassMore ? v.survival*v.withdrawals*v.payout : 0;
+    const extraWithdrawal = canWithdrawMore ? payoutAccounts*v.payout : 0;
 
-    $("fpPassOut").textContent = val("fcPass")+" de cada 10";
+    $("fpPassOut").textContent = passCount+" de cada 10";
     $("fpSuccessOut").textContent = val("frSurvival")+" de cada 10";
-    $("fpWithdrawalsOut").textContent = withdrawals;
-    $("fpPayoutOut").textContent = money(payout);
-    $("fpPriceOut").textContent = money(price);
+    $("fpWithdrawalsOut").textContent = v.withdrawals;
+    $("fpPayoutOut").textContent = money(v.payout);
+    $("fpPriceOut").textContent = money(v.price);
 
     $("fpSpend").textContent = money(spend);
     $("fpNet").textContent = money(net);
     $("fpGrossCaption").textContent =
       "Cobras "+money(gross)+" en "+fmt(payoutCount)+" retiros";
 
-    $("fpExtraPass").textContent = "+"+money(extraPass);
-    $("fpPassBase").textContent = val("fcPass");
-    $("fpPassNext").textContent = clamp(val("fcPass")+1,1,10);
+    $("fpExtraPass").textContent = canPassMore ? "+"+money(extraPass) : "Máximo";
+    $("fpPassBase").textContent = passCount;
+    $("fpPassNext").textContent = canPassMore ? passCount+1 : passCount;
 
-    $("fpExtraWithdrawal").textContent = "+"+money(extraWithdrawal);
-    $("fpWBase").textContent = withdrawals;
-    $("fpWNext").textContent = Math.min(5,withdrawals+1);
+    $("fpExtraWithdrawal").textContent = canWithdrawMore ? "+"+money(extraWithdrawal) : "Máximo";
+    $("fpWBase").textContent = v.withdrawals;
+    $("fpWNext").textContent = canWithdrawMore ? v.withdrawals+1 : v.withdrawals;
 
     const scenarios = $("fpScenarios");
     scenarios.innerHTML = "";
-
     for(let n=1;n<=5;n++){
-      const scenarioGross = payoutAccounts*n*payout;
+      const scenarioGross = payoutAccounts*n*v.payout;
       const scenarioNet = scenarioGross-spend;
       const card = document.createElement("div");
-
-      card.className =
-        "funding-mini"+(n===withdrawals?" active":"");
-
+      card.className = "funding-mini"+(n===v.withdrawals?" active":"");
       card.innerHTML =
-        "<div class='funding-eyebrow'>"+n+
-        (n===1?" RETIRO":" RETIROS")+"</div>"+
+        "<div class='funding-eyebrow'>"+n+(n===1?" RETIRO":" RETIROS")+" POR CUENTA</div>"+
         "<strong>"+money(scenarioNet)+"</strong>"+
-        "<small>Ingresos: "+money(scenarioGross)+
-        " · Coste: "+money(spend)+"</small>";
-
+        "<small>Ingresos: "+money(scenarioGross)+" · Coste: "+money(spend)+"</small>";
       scenarios.append(card);
     }
+
+    let message;
+    if(!canPassMore && !canWithdrawMore){
+      message = "YA ESTÁS EN EL MÁXIMO DE LAS DOS PALANCAS.";
+    }else if(extraWithdrawal >= extraPass){
+      message = "LA RENTABILIDAD SALE DE COBRAR MUCHAS VECES DE LA MISMA CUENTA. NO DE PASAR MÁS EVALUACIONES.";
+    }else{
+      message = "CON TUS NÚMEROS, PASAR MÁS EVALUACIONES PESA MÁS QUE UN RETIRO EXTRA POR CUENTA.";
+    }
+    $("fpHighlight").textContent = message;
   }
 
   function updateAll(){
-    updateEasy();
-    updateCost();
-    updateReal();
-    updateProfit();
+    const v = inputs();
+    updateEasy(v);
+    updateCost(v);
+    updateReal(v);
+    updateProfit(v);
   }
 
-  [
-    "fcPass",
-    "fcPrice",
-    "frGoal",
-    "frPayout",
-    "frSurvival",
-    "frManualCost",
-    "frWithdrawals",
-    "frDays"
-  ].forEach(id=>{
+  ["fcPass","fcPrice","frGoal","frPayout","frSurvival","frWithdrawals","frDays"].forEach(id=>{
     $(id).addEventListener("input",updateAll);
     $(id).addEventListener("change",updateAll);
   });
 
+  /* Perfiles de riesgo */
   const riskPresets = {
     conservador:{survival:2,withdrawals:2,days:10},
     realista:{survival:3,withdrawals:2,days:7},
     agresivo:{survival:5,withdrawals:3,days:5}
   };
+  const riskButtons = [...document.querySelectorAll("#frRisk [data-risk]")];
 
-  document.querySelectorAll("#frRisk [data-risk]").forEach(btn=>{
+  riskButtons.forEach(btn=>{
     btn.addEventListener("click",()=>{
-      document.querySelectorAll("#frRisk [data-risk]").forEach(x=>{
-        x.classList.toggle("active",x===btn);
-      });
-
+      riskButtons.forEach(x=>x.classList.toggle("active",x===btn));
       const preset = riskPresets[btn.dataset.risk];
-
       $("frSurvival").value = preset.survival;
       $("frWithdrawals").value = preset.withdrawals;
       $("frDays").value = preset.days;
-
       updateAll();
+    });
+  });
+
+  /* Si se mueve un slider a mano, se desmarca el perfil que ya no coincide */
+  ["frSurvival","frWithdrawals","frDays"].forEach(id=>{
+    $(id).addEventListener("input",()=>{
+      riskButtons.forEach(btn=>{
+        const p = riskPresets[btn.dataset.risk];
+        const match = p.survival===val("frSurvival") &&
+          p.withdrawals===val("frWithdrawals") && p.days===val("frDays");
+        btn.classList.toggle("active",match);
+      });
     });
   });
 
@@ -1110,7 +1071,6 @@ function saveTrades(){
 }
 
 /* ESTADÍSTICAS Y DRAWDOWN */
-  /* ESTADÍSTICAS Y DRAWDOWN */
 
 function calculateMaxDrawdown(list){
   const chronological=[...list].sort((a,b)=>
