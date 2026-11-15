@@ -587,7 +587,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
    $("fcEquation").textContent=money(price)+" ÷ "+Math.round(pass*100)+"% = "+money(cost);
    $("fcCostDesc").textContent="No pagas "+money(price)+" por cada cuenta fondeada. Pagas "+money(cost)+", contando las evaluaciones que no pasan.";
    $("fcEvalTotal").textContent=money(price*10);
-   $("fcPassTotal").textContent=fmt(10*pass);
+   
    $("fcPayoutTotal").textContent=fmt(10*pass*survival);
    $("fcEvalBar").style.width="100%";
    $("fcPassBar").style.width=(pass*100)+"%";
