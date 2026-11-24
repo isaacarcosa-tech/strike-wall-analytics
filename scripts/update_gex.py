@@ -6,7 +6,7 @@ El open interest se publica una vez al día (de madrugada), así que con el OI
 del cierre anterior + el precio estimado premarket se calculan:
 
   - Gamma neto (GEX, $M por 1 % de movimiento)
-  - Delta neto de las opciones abiertas
+  - Delta neto de las opciones abiertas (millones de deltas)
   - Zero Gamma (precio donde el GEX total cambia de signo)
   - Put Wall / Call Wall
   - IV ATM y movimiento implícito del 0DTE
@@ -186,13 +186,10 @@ def compute(df: pd.DataFrame, spot: float, now: datetime) -> dict:
     df["gex"] = gex
 
     by_strike = df.groupby("strike")["gex"].sum()
-    # Walls: concentración de gamma en cada strike si el precio llegara allí
-    # (gamma evaluada con S = K), para no favorecer solo a los strikes
-    # pegados al precio actual.
-    gK, _ = gamma_bs(K, K, T, iv)
-    df["gex_at_k"] = gK * oi * CONTRACT * K * K * 0.01
-    calls = df[df["type"] == "C"].groupby("strike")["gex_at_k"].sum()
-    puts = df[df["type"] == "P"].groupby("strike")["gex_at_k"].sum()
+    # Walls: strike con más gamma de calls por encima del precio (Call Wall)
+    # y con más gamma de puts por debajo (Put Wall), medida en el precio actual.
+    calls = df[(df["type"] == "C") & (df["strike"] >= spot)].groupby("strike")["gex"].sum()
+    puts = df[(df["type"] == "P") & (df["strike"] <= spot)].groupby("strike")["gex"].sum()
 
     # Perfil de gamma para el Zero Gamma
     grid = np.linspace(spot * 0.92, spot * 1.08, 321)
@@ -234,10 +231,10 @@ def compute(df: pd.DataFrame, spot: float, now: datetime) -> dict:
         "spot": round(spot, 2),
         "net_gex_m": round(net_gex / 1e6, 1),
         "regime": "positivo" if net_gex >= 0 else "negativo",
-        "net_delta_bn": round(float(np.sum(delta * oi * CONTRACT * spot)) / 1e9, 2),
+        "net_delta_m": round(float(np.sum(delta * oi * CONTRACT)) / 1e6, 2),
         "zero_gamma": round(zero_gamma, 2) if zero_gamma else None,
         "call_wall": float(calls.idxmax()),
-        "put_wall": float(puts.idxmax()),
+        "put_wall": float(puts.idxmin()),
         "iv_atm_0dte": round(iv_atm * 100, 1),
         "implied_move": round(implied_move, 2),
         "implied_move_method": move_method,
@@ -292,14 +289,14 @@ def main():
 
     # Histórico (una fila por sesión)
     fields = ["session", "spot", "zero_gamma", "put_wall", "call_wall",
-              "net_gex_m", "net_delta_bn", "iv_atm_0dte", "implied_move"]
+              "net_gex_m", "net_delta_m", "iv_atm_0dte", "implied_move"]
     rows = []
     if OUT_HIST.exists():
         with OUT_HIST.open() as f:
             rows = [r for r in csv.DictReader(f) if r["session"] != result["session"]]
     rows.append({k: result[k] for k in fields})
     with OUT_HIST.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
+        w = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
 
