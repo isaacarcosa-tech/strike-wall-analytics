@@ -89,6 +89,10 @@ canvas{width:100%;height:100%;display:block;cursor:crosshair;touch-action:pan-y}
   background:#51436D;
   border-color:#756493;
 }
+.strategy-card.netgex{
+  background:#5A3F1F;
+  border-color:#8C6531;
+}
 .strategy-card .strategy-title{
   color:#ffffff;
   font-weight:800;
@@ -130,6 +134,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
 .strategy-label.put-wall{color:#65b5ff}
 .strategy-label.call-wall{color:#9bb8d4}
 .strategy-label.discretional{color:#bba9e8}
+.strategy-label.netgex{color:#f2bd55}
 .backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
 .vol-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin:6px 0 4px}
 .vol-controls input{width:110px}
@@ -216,6 +221,7 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
             <option value="PW">Put Wall</option>
                         <option value="CW">Call Wall</option>
             <option value="DIS">Discrecional</option>
+            <option value="NGX">Net gex fondeo NQ</option>
           </select>
         </div>
         <div class="field">
@@ -279,6 +285,17 @@ th{position:sticky;top:0;background:#172335;color:var(--muted);z-index:1}
           <div><small>Ganadoras / Perdedoras / BE</small><strong id="disRecord">0 / 0 / 0</strong></div>
           <div><small>Promedio por operación</small><strong id="disAvg">$0.00</strong></div>
           <div><small>Drawdown máximo</small><strong id="disDd">$0.00</strong></div>
+        </div>
+      </div>
+      <div class="strategy-card netgex">
+        <div class="strategy-title">NET GEX FONDEO NQ</div>
+        <div class="strategy-stats">
+          <div><small>Operaciones</small><strong id="ngxTotal">0</strong></div>
+          <div><small>Win rate</small><strong id="ngxRate">—</strong></div>
+          <div><small>Balance neto</small><strong id="ngxNet">$0.00</strong></div>
+          <div><small>Ganadoras / Perdedoras / BE</small><strong id="ngxRecord">0 / 0 / 0</strong></div>
+          <div><small>Promedio por operación</small><strong id="ngxAvg">$0.00</strong></div>
+          <div><small>Drawdown máximo</small><strong id="ngxDd">$0.00</strong></div>
         </div>
       </div>
     </div>
@@ -606,7 +623,7 @@ function loadTrades(){
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
     trades=Array.isArray(saved)?saved.filter(t=>
       t&&typeof t.id==="string"&&
-      ["PW","CW","DIS"].includes(t.strategy)&&
+      ["PW","CW","DIS","NGX"].includes(t.strategy)&&
       ["TP","SL","BE"].includes(t.result)&&
       Number.isFinite(Number(t.pnl))
     ).map(t=>({
@@ -679,7 +696,8 @@ function renderStats(){
   const strategyStats=[
     {key:"PW",prefix:"pw"},
     {key:"CW",prefix:"cw"},
-    {key:"DIS",prefix:"dis"}
+    {key:"DIS",prefix:"dis"},
+    {key:"NGX",prefix:"ngx"}
   ];
 
   strategyStats.forEach(({key,prefix})=>{
@@ -699,12 +717,14 @@ function renderStats(){
 function strategyName(strategy){
   if(strategy==="PW")return "Put Wall";
   if(strategy==="CW")return "Call Wall";
+  if(strategy==="NGX")return "Net gex fondeo NQ";
   return "Discrecional";
 }
 
 function strategyClass(strategy){
   if(strategy==="PW")return "put-wall";
   if(strategy==="CW")return "call-wall";
+  if(strategy==="NGX")return "netgex";
   return "discretional";
 }
 
@@ -741,7 +761,7 @@ function renderVolatility(){
     {label:"Media · "+low.toFixed(2)+"–"+high.toFixed(2)+"%",test:v=>v>=low&&v<high},
     {label:"Alta · ≥ "+high.toFixed(2)+"%",test:v=>v>=high}
   ];
-  const keys=["PW","CW","DIS"].filter(k=>k!=="DIS"||trades.some(t=>t.strategy==="DIS"));
+  const keys=["PW","CW","DIS","NGX"].filter(k=>(k!=="DIS"&&k!=="NGX")||trades.some(t=>t.strategy===k));
 
   box.innerHTML=keys.map(key=>{
     const list=trades.filter(t=>t.strategy===key).map(t=>({...t,atr:atrBefore(t.date)}));
@@ -896,7 +916,7 @@ $("importFile").addEventListener("change",async event=>{
       };
     }).filter(t=>
       /^\d{4}-\d{2}-\d{2}$/.test(t.date)&&
-      ["PW","CW","DIS"].includes(t.strategy)&&
+      ["PW","CW","DIS","NGX"].includes(t.strategy)&&
       ["TP","SL","BE"].includes(t.result)&&
       Number.isFinite(t.pnl)&&
       (t.result!=="TP"||t.pnl>0)&&
